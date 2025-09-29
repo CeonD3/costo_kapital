@@ -1,0 +1,43 @@
+{% extends "home/main.twig" %}
+
+{% block css %}
+<link rel="stylesheet" href="/assets/css/style_costo_capital.css">
+<link rel="stylesheet" href="/assets/css/style_page_home.css">
+{% endblock %}
+
+{% block content %}
+	<section class="bgwhite">
+		<div class="container container-custom">
+			<div class="row mx-auto pt-4 pb-4">
+				<div class="col-lg-12 form-group">
+					<div class="accordion" id="accordionExample">
+						{% for i, servicio in servicio.data%}
+						<div class="card acordion {{ i == 0 ? ' acordion-active shadow ' : '' }}" data-id="{{ i+1 }}">
+							<div class="acordion-header" id="heading{{ i+1 }}">
+								<h2 class="mb-0">
+									<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ i+1 }}" aria-expanded="true" aria-controls="collapse{{ i+1 }}">
+										{{ servicio.titulo | raw }}
+									</button>
+								</h2>
+							</div>
+
+							<div id="collapse{{ i+1 }}" class="collapse {{ i == 0 ? ' show' : '' }}" aria-labelledby="heading{{ i+1 }}" data-parent="#accordionExample">
+								<div class="card-body acordion-body">
+									{{ servicio.stitulo | raw }}
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{% include "home/panel.cost.float.twig" %}
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(".header-item ul .nav-item").eq(3).addClass("active-head");
+    </script>
+{% endblock %}

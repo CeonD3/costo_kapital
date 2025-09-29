@@ -1,0 +1,155 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+    <style>
+        table th,
+        table td {
+            text-align: center;
+            padding: .9rem !important;
+            font-weight: 500;
+        }
+        table td {
+            color: gray;
+        }
+        table.dataTable,
+        .dataTables_filter,
+        .dataTables_length {
+            margin-bottom: 15px !important;
+        }
+        table.dataTable.no-footer{
+            border: 0;
+        }
+        table.dataTable thead th, table.dataTable thead td{
+            border-bottom: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'notificaciones' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <h4 class="d-inline">CONTACTOS RECIBIDOS DESDE LA PLATAFORMA</h4> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="table-responsive">
+                        <table class="table hover" id="table-contacts" width="100%" cellpadding="2" cellspacing="0" border="0" >
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Usuario</th>
+                                    <th>Correo</th>
+                                    <th>Fecha</th>
+                                    <th>Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% set total = rsp.data.contacts|length %}
+                            {% for index, item in rsp.data.contacts %}
+                                <tr>
+                                    <td>{{ total - index }}</td>
+                                    <td>{{ item.names }}</td>
+                                    <td>{{ item.email }}</td>
+                                    <td>{{ item.created_at }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#modal-{{ index }}">
+                                            <i class="fa fa-address-card" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="modal fade" id="modal-{{ index }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" style="color:#000;" id="exampleModalLabel">INFORMACIÓN</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body text-left">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Nombres y Apellidos</label> 
+                                                            <div class="card p-3">
+                                                                {{ item.names }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Email</label>
+                                                            <div class="card p-3">
+                                                                {{ item.email }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Descripción </label> 
+                                                            <div class="card p-3">
+                                                                {{ item.description }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Fecha</label>
+                                                            <div class="card p-3">
+                                                                {{ item.created_at }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function() {
+            $('#table-contacts').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No hay elementos por mostrar",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                ordering: false,
+                reponsive: true
+            });
+        });
+    </script>
+{% endblock %}

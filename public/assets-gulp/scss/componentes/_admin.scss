@@ -1,0 +1,90 @@
+.nav-main {
+    // position: fixed;
+    min-height: 100vh;
+    ul li{
+        a{
+            color: white;
+            i{
+                width: 3.5rem;
+                font-size: 1.5rem;
+                text-align: center;
+            }
+        }
+        &:hover {
+            background-color: #f8f9fa;
+            a{
+                color: #343a40;
+            }
+        }
+        //border-right: 5px solid #343a40;
+    }
+}
+
+.active {
+    background-color: #f8f9fa;
+    a{
+        color: #343a40 !important;
+    }
+}
+
+.previewImg{ 
+    img {
+        width: 100%;
+    }
+    video {
+        width: 100%;
+    }
+}
+
+.action {
+    position: absolute;
+    right: 0;
+    margin-right: 2rem;
+}
+.credit-block {
+    border: 1px solid #0056b3;
+    padding: 1rem;
+    margin: 0.2rem;
+    
+    .credit-title {
+        color:#007bff;
+        font-weight: 600;
+    }
+    .credit-stitle {
+        font-weight: 600;
+    }
+    .credit-logo {
+        margin: auto;
+        img{
+            width: 100%;
+        }
+
+    }
+    .credit-contact{
+        img{
+            width: 1.5rem;
+        }
+    }
+    .credit-link{
+        text-align: right;
+        a {
+            margin: 3px;
+            background-color: #0056b3;
+            color: white;
+            padding: 0.3rem 0.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            &:hover{
+                background-color: white;
+                color: #0056b3;
+                border: 1px solid #0056b3;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-main {
+        display: none;
+    }
+}

@@ -1,0 +1,119 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'landing' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="col-12">
+                {% include "admin/elements/nav_landing.twig" %}
+                <div class="row py-2">
+                    <div class="col-md-12">
+                        <form id="frmTextTeam" class="w-100">
+                            <div class="mb-4">
+                                <label for="sn-titulo" class="form-label">Descripción del equipo</label>
+                                <textarea class="form-control" id="sn-equipo" name="team">{{ contacto.data.team | raw }}</textarea>
+                            </div>
+                            <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmTextTeam">Guardar</button>
+                        </form>
+                    </div>
+                    <div class="col-md-12 mt-5">
+                        <div class="table-responsive">
+                            <button type="button" onclick="getItemTeam('', 'frmTeam', 'modal_team')" class="btn btn-outline-secondary float-right"><i class="fas fa-plus"></i> Agregar</button>
+                            <h3>Equipo</h3>
+                            <p>Lista de miembros del equipo.</p>
+
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Orden</th>
+                                    <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {#
+                                <tr>
+                                    <td class="align-middle">25</td>
+                                    <td class="align-middle"><img src="/assets/image/icon-info.svg" alt=""></td>
+                                    <td class="align-middle">Información a un clic</td>
+                                    <td class="align-middle">Con nuestra plataforma, obtendrás el costo de capital y el costo promedio ponderado de capital de tu inversión.</td>
+                                    <td class="aling-top">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                #}
+
+                                {% for equipo in team.data %}
+                                <tr>
+                                    <td class="align-middle">{{ equipo.id }}</td>
+                                    <td class="align-middle">{{ equipo.name | raw }}</td>
+                                    <td class="align-middle">{{ equipo.order | raw }}</td>
+                                    <td class="aling-top">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" onclick="getItemTeam({{ equipo.id }}, 'frmTeam', 'modal_team')" class="btn btn-outline-secondary mr-2"><i class="fas fa-edit"></i></button>
+                                            <button type="button" onclick="deleteItemTeam({{ equipo.id }}, 'frmTeam', 'modal_team')" class="btn btn-outline-secondary"><i class="far fa-trash-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal_team" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edición Servicio</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="frmTeam" class="w-100">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="name" id="name">
+                    <input class="form-control form-control-lg d-none" name="id_team" id="id_team" type="number">
+                </div>
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Orden</label>
+                    <input type="number" class="form-control" name="order" id="order">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmTeam">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block js %} 
+<script type="text/javascript">
+    $(".nav-admin ul .nav-item").eq(6).addClass("active");
+</script>
+{% endblock %}

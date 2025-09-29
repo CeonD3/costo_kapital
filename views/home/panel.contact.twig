@@ -1,0 +1,92 @@
+{% extends "home/main.twig" %}
+
+{% block css %}
+<!--link rel="stylesheet" href="/assets/css/style_contacto.css"-->
+<link rel="stylesheet" href="/assets/css/style_page_home.css">
+<style>
+	.slide-content{
+		background-image: url('/assets/image/Imagen3.jpg');
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+	<section class="slide-content">
+		<div class="container pb-5">
+			<div class="row">
+				<div class="col-lg-12 float-left form-group text-center">
+					<div class="section-panel-title">
+						<h4>Contacto</h4>
+						<p>Costo Kapital</p>
+					</div>
+				</div>
+				<div class="col-lg-6 float-left form-group">
+					<div class="row">
+						<div class="col-lg-12 form-group">
+							<div class="card section-card" style="min-height:6rem;">
+								<h3>¡Estamos aquí <strong> para ayudarte!</strong></h3>
+								<p><span>Teléfono: </span>{{ contacto.data.telefono | raw }}</p>
+								<p><span>Correo: </span> {{ contacto.data.correo | raw }}</p>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="card section-card">
+								<h3 class="text-left">Consultoría en línea</h3>
+								<p class="text-left">Resuelve tus consultas con nuestro staff de especialistas en evaluación y financiamiento de proyectos; además, de otros temas de asesoría financiera.</p>
+								<div class="col-lg-6 text-center mx-auto" style="margin-top:27.5px;">
+									<a class="btn btn-three" href="{{ contacto.data.url_uno | raw }}" target="_blank">Platinum Consulting</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 float-left form-group">
+					<div class="card section-card">
+						<h3>Formulario <strong>de contacto</strong></h3>
+						<form id="frmContactUser">
+							<div class="cont-form">
+								<div class="cont-content">
+									<div class="row justify-content-md-center">
+										<div class="form-group col-md-12 float-left">
+											<input type="text" class="form-control" name="names" placeholder="Nombres y Apellidos" required>
+										</div>
+										<div class="form-group col-md-12 float-left">
+											<input type="email" class="form-control" name="email" placeholder="Correo electrónico" required>
+										</div>
+										<div class="form-group col-md-12 float-left">
+											<textarea class="form-control" name="description" placeholder="Descripción" required></textarea>
+										</div>
+										<div class="col-md-12 float-left">
+											<div class="form-check">
+												<input type="checkbox" class="form-check-input" name="accept" id="chkallaccept" required>
+												<label class="form-check-label" for="chkallaccept"><span>Acepto los <a href="#" data-toggle="modal" data-target="#terminos-modal" style="color: var(--color-three);">términos y condiciones</a></span></label>
+											</div>
+										</div>
+										<button class="btn btn-three m-5" type="submit" id="btnSendForm">Enviar</button>                   
+									</div>
+								</div> 
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Modal -->
+	<div class="modal fade" id="terminos-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-lg" role="document">
+	        <div class="modal-content">
+	            <div class="modal-body p-5">
+	                <h3>Términos y condiciones</h3><br>
+	                {{ contacto.data.terminos_condiciones | raw }}
+	            </div>
+	        </div>
+	    </div>
+	</div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(".header-item ul .nav-item").eq(3).addClass("active-head");
+    </script>
+{% endblock %}

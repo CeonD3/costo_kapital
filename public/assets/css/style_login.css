@@ -1,0 +1,143 @@
+/* line 1, public/assets-gulp/scss/componentes/_login.scss */
+body {
+  background-image: url(/assets/image/Imagen3.jpg);
+  background-size: cover;
+}
+
+/* line 6, public/assets-gulp/scss/componentes/_login.scss */
+.slide-one {
+  height: 75vh;
+  margin-top: 7rem;
+  position: absolute;
+  top: 4rem;
+  z-index: 1;
+  width: 100%;
+}
+
+/* line 15, public/assets-gulp/scss/componentes/_login.scss */
+.slide-one-text {
+  padding: 0rem;
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 21, public/assets-gulp/scss/componentes/_login.scss */
+.slide-one-text h1 {
+  text-transform: uppercase;
+}
+
+/* line 25, public/assets-gulp/scss/componentes/_login.scss */
+.slide-one-text h4 {
+  text-transform: capitalize;
+  font-family: "Lato Black";
+  color: var(--color-for);
+  font-size: 1.5rem;
+  margin-bottom: 2px;
+}
+
+/* line 33, public/assets-gulp/scss/componentes/_login.scss */
+.slide-one-text h4 span {
+  color: var(--color-three);
+}
+
+/* line 37, public/assets-gulp/scss/componentes/_login.scss */
+.linea-two {
+  width: 3rem;
+  border-bottom: 5px solid var(--color-for);
+  display: inline-block;
+}
+
+/* line 43, public/assets-gulp/scss/componentes/_login.scss */
+.slide-one-text p {
+  font-size: 1.2rem;
+  color: var(--color-three);
+  font-family: "Lato Black";
+}
+
+/* line 49, public/assets-gulp/scss/componentes/_login.scss */
+.data-content {
+  color: white;
+  padding: 5px;
+  position: absolute;
+  bottom: 0;
+  font-size: 0.8rem;
+  background-color: var(--color-for);
+  width: 100%;
+}
+
+/* line 59, public/assets-gulp/scss/componentes/_login.scss */
+.data-content-item {
+  padding: 2rem 0rem;
+}
+
+/* line 63, public/assets-gulp/scss/componentes/_login.scss */
+.data-content-item div {
+  background-color: white;
+  padding: 1rem 2rem;
+  height: 13rem;
+}
+
+/* line 69, public/assets-gulp/scss/componentes/_login.scss */
+.data-content-item div img {
+  height: 5rem;
+}
+
+/* line 73, public/assets-gulp/scss/componentes/_login.scss */
+.data-content-item div h5 {
+  color: var(--color-two);
+}
+
+/* line 77, public/assets-gulp/scss/componentes/_login.scss */
+.data-content-item div p {
+  color: black;
+  font-size: 1.1rem;
+}
+
+/* line 82, public/assets-gulp/scss/componentes/_login.scss */
+.item-float {
+  background: var(--color-for);
+}
+
+/* line 86, public/assets-gulp/scss/componentes/_login.scss */
+.block-content {
+  padding: 0rem 3rem 3rem 3rem;
+  max-width: 40rem;
+}
+
+/* line 91, public/assets-gulp/scss/componentes/_login.scss */
+.block-content .item {
+  padding: 2rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* line 99, public/assets-gulp/scss/componentes/_login.scss */
+.block-content .item h3 {
+  font-family: "Lato Bold";
+  font-size: 1.2rem;
+  color: var(--color-for);
+  margin-bottom: 2rem;
+}
+
+/* line 106, public/assets-gulp/scss/componentes/_login.scss */
+.block-content .item a {
+  font-family: "Lato Regular";
+  font-size: 1	rem;
+  color: var(--color-for);
+}
+
+/* line 112, public/assets-gulp/scss/componentes/_login.scss */
+.block-content .item h3 span {
+  color: var(--color-three);
+}
+
+/* line 116, public/assets-gulp/scss/componentes/_login.scss */
+.block-content .item p {
+  font-family: "Lato Regular";
+  color: var(--color-seven);
+}
+
+/* line 121, public/assets-gulp/scss/componentes/_login.scss */
+.block-content .item p span {
+  color: var(--color-for);
+}

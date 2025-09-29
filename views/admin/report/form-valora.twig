@@ -1,0 +1,164 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+	<link rel='stylesheet' href='https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.common.min.css' type='text/css'>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'documentos-valora' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center" id="AppDesignFormAdmin">
+    <div class="col-lg-11">
+        <div class="card card-custom mb-4">
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <h4 class="d-inline">
+                    {% if rsp.data.design.id %}
+                        EDITAR 
+                    {% else %}
+                        CREAR 
+                    {% endif %}
+                    DISEÑO DE DOCUMENTO                
+                    </h4> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-9 col-md-9 form-group">
+                    <div class="row">
+                        <input type="hidden" :value="design.id" name="id" form="formDesign">
+                        <input type="hidden" value="2" name="platform_id" form="formDesign">
+                        <div class="col-lg-10 col-md-8 form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" form="formDesign" name="name" :value="design.name" required>
+                        </div>
+                        {# <div class="col-lg-12 form-group">
+                            <label>Cabeza de página</label>
+                            <textarea name="header" id="header_summernote" form="formDesign" :value="design.header"></textarea>
+                        </div> 
+                        <div class="col-lg-12 form-group">
+                            <label>Pie de página</label>
+                            <textarea name="footer" id="footer_summernote" form="formDesign" :value="design.footer"></textarea>
+                        </div>  #}
+                        <div class="col-lg-2 col-md-4 form-group">
+                            <div class="form-group mt-4">
+                                <div class="form-check text-right">
+                                    <input class="form-check-input" type="checkbox" value="1" form="formDesign" name="status" id="invalidCheck2" {{ rsp.data.design.status == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label ml-2" for="invalidCheck2">
+                                        Activar
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label>Precio</label>
+                            <input type="text" class="form-control" form="formDesign" name="price" :value="design.price">
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label>Moneda</label>
+                            <select class="form-control" form="formDesign" name="currency">
+                                <option value="PEN" {{ rsp.data.design.currency == 'PEN' ? 'selected' : '' }}>SOLES</option>
+                                <option value="USD" {{ rsp.data.design.currency == 'USD' ? 'selected' : '' }}>DOLARES</option>
+                            </select>
+                        </div>           
+                        <div class="col-lg-12 form-group">
+                            <label>Link de pago</label>
+                            <input type="text" class="form-control" form="formDesign" name="link_payment" :value="design.link_payment">
+                        </div>
+                        {# <div class="col-lg-12 form-group">
+                            <label>Portada</label>
+                            <div class="custom-file">
+                                <input type="file" name="image" form="formDesign" class="custom-file-input" id="img-file"  accept="image/*">
+                                <label class="custom-file-label" for="img-file">{{ rsp.data.design.image ? rsp.data.design.image : 'Seleccione Portada' }}</label>
+                            </div>
+                        </div> #}
+                        <div class="col-lg-12 mt-3">
+                            <div class="alert alert-info" role="alert">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <b>$BLOQUE_INICIO$</b> <br>Inicia una fila de columnas<br>
+                                        <b>$BLOQUE_FIN$</b> <br>Cierra la fila iniciada
+                                    </div>
+                                    <div class="col-md-8">
+                                        <b>Para insertar estilos y clases a un elemento ingresado debe de seguir estos patrones como ejemplo:</b>
+                                        $$W6OMQ$$[*height:350px;][.col-6]<br>
+                                        Estilos: [*height:350px;*width:50%;]<br>
+                                        Clases: [.col-2.col-3.col-4] => [1|2|3|4|5|6|7|8|9|10|11|12]<br>
+                                        Las clases que contengan <b>col</b> se comportarán como columnas si están dentro de un bloque.<br>
+                                        Para la edición de textos se debe de ingresar dentro de estas llaves por ejemplo <b>{= hola =}</b> o <b>{= hola =}[.col-6]</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Cuerpo de página</label>
+                            <textarea name="body" id="body_summernote" form="formDesign" :value="design.body"></textarea>
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 form-">
+                    <div class="panel-admin-sticky">
+                        <label>Estructura de Gráficos</label>
+                        <div id="accordion">
+                            {% for index, item in rsp.data.structure %}
+                                <div class="card">
+                                    <div class="card-header" id="heading-{{ index }}">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{ index }}" aria-expanded="true" aria-controls="collapse-{{ index }}">
+                                            {{ item.name }}
+                                        </button>
+                                    </h5>
+                                    </div>
+
+                                    <div id="collapse-{{ index }}" class="collapse {{index == 0 ? 'show' : ''}}" aria-labelledby="heading-{{ index }}" data-parent="#accordion">
+                                        <div class="card-body">
+
+                                            <ul class="list-group">
+                                            {% for index2, item2 in item.contents %}
+                                                <li class="list-group-item">
+                                                    <span class="text-three cursor-pointer" onClick="copyClipboardReport('copy-{{item2.id}}')">{{ item2.code }}</span>
+                                                    <input type="text" id="copy-{{item2.id}}" value="{{ item2.code }}" style="opacity: 0;width:10px;"><br>
+                                                    <span class="text-secondary">{{ item2.name }}</span><br>
+                                                    {% if item2.image %}
+                                                    <img src="{{ item2.image }}" style="max-height:90px; max-width:100%;">
+                                                    {% endif %}
+                                                </li>             
+                                            {% endfor %}
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div><small>No hay datos para mostrar</small></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <hr>
+                    <form @submit="onFormData" id="formDesign" class="text-right">
+                        {% if rsp.data.design.id %}
+                        {# <button type="button" class="btn btn-four mr-2 float-left btnExportPdf" data-id="{{ rsp.data.design.id }}">Exportar PDF</button> #}
+                        {# <a href="/admin/documento/{{ rsp.data.design.id }}/download" target="_blank" type="button" class="btn btn-four mr-2 float-left">Visualizar Documento</a> #}
+                        {% endif %}
+                        <button type="submit" class="btn btn-three">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'export/report.twig' %}
+{% endblock %}
+
+{% block js %}
+	<script type='text/javascript' src='https://kendo.cdn.telerik.com/2020.3.915/js/kendo.all.min.js'></script>
+    <script>
+        window.addEventListener('load', window.AppDesignAdmin.form(JSON.parse("{{ rsp.data|json_encode|e('js') }}")));
+        window.addEventListener('load', window.AppExportPDF.report({}));
+    </script>
+{% endblock %}

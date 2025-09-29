@@ -1,0 +1,211 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+<style>
+	.olegend{
+		background-color: #f4f6f9;
+		height:15px;
+		width:15px;
+		border: 1px solid gray;
+	}
+	.fa-cursor:hover{
+		color: red;
+	}
+	.col-input{
+		border: 2px solid #0BE9CE !important;
+	}
+	.wvalue{
+		width: 180px;
+	}
+</style>
+<style>
+	.chartCustom {
+		width: 85%;
+	}
+    .chartCustom .chartItem {
+        margin: 0 3em !important;
+    }
+	.chartCustom .chartLine {
+    	border-top: 2px solid #b0bec5;
+		width: 100%;
+	}
+	.chartCustom .chartLine span {
+		margin-top: -25px;
+		position: absolute;
+		left: 0;
+		right: 0;
+		text-align: center;
+		float: none;
+		margin-right: 0;
+		margin-left:-100px;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+	{% set data = rsp.data %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					{% include "system/information.twig" %}
+				</div>
+				<div class="row panel-parameter-market" id="AppStructureCompany">
+					<div class="col-lg-12">
+						<div class="card-panel">
+							<div class="row">
+								<div class="col-lg-12 mb-4">
+									<div class="bg-five text-center py-2">
+										<h4 class="m-0">Mi Empresa: Información relevante</h4>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="row">
+										<div class="col-lg-12 col-md-12">
+											<div class="form-group">
+												<label class="label-control">7. Ingrese el costo de deuda de su empresa (puede ingresarlo en dólares o en su moneda nacional):</label>
+												<div class="table-responsive">
+													<table class="table table-group">
+														<tbody>
+															<tr>
+																<td class="border-0"></td>
+																<td class="bgone" v-html="general.dolares.label"></td>
+																<td class="bgone" v-html="general.derivative.label"></td>
+																<td class="bgone" v-html="general.national.label"></td>
+															</tr>
+															<tr>
+																<td class="bgone">
+																	<span v-text="general.label"></span>
+																	<i class="fa fa-info-circle ml-2" aria-hidden="true" title="Solo debe ingresar la tasa en dólares o en soles"></i>
+																</td>
+																<td :style="{ backgroundColor: (general.dolares.currency == 1 ? '#f4f6f9' : 'white') }">
+																	<strong v-text="general.dolares.value + '%'"></strong>
+																	<i class="fas fa-edit ml-2 cursor-pointer fa-cursor" title="Editar" @click="onCurrency(general.dolares.value, 'D')"></i> 
+																</td>
+																<td>
+																	<strong v-text="general.derivative.value + '%'"></strong>
+																</td>
+																<td :style="{ backgroundColor: (general.national.currency == 1 ? '#f4f6f9' : 'white') }">
+																	<strong v-text="general.national.value + '%'"></strong>
+																	<i class="fas fa-edit ml-2 cursor-pointer fa-cursor" title="Editar" @click="onCurrency(general.national.value, 'S')"></i> 
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 col-md-12">
+											<div class="form-group">
+												<label class="label-control">8. Parámetros de la empresa:</label>
+												<div class="table-responsive">
+													<table class="table table-one">
+														<tbody>
+															<tr>
+																<td>
+																	<span v-text="prima.label"></span>
+																	<i aria-hidden="true" :title="prima.comment" class="fa fa-info-circle ml-2"></i>																
+																</td>
+																<td v-html="prima.value"></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 col-md-12">
+											<div class="form-group">
+												<label class="label-control">9. Ingresar los datos de la estructura de financiamiento de su inversión:</label>
+												<div class="table-responsive">
+													<table class="table table-one">
+														<tbody>
+															<tr>
+																<td v-html="opercentage.debt.label"></td>
+																<td class="col-input wvalue" style="padding:0px !important;">
+																	<div class="input-group">
+																		<input type="text" class="form-control text-center" form="formPercentageInvestment" @keyup="onCalculation" v-model="deuda" name="debt" placeholder="Ingrese el porcentaje" pattern="^\d+(,\d+)*(\.\d+)?" required>
+																		<div class="input-group-append">
+																			<span class="input-group-text">%</span>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td v-html="opercentage.capital.label"></td>
+																<td class="wvalue">
+																	<strong v-html="myCapital"></strong>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<div class="text-right">
+														<form id="formPercentageInvestment">
+															{# <button type="submit" class="btn btn-three">Calcular</button> #}
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									{% include 'system/chartDeuda.twig' with { items: rsp.data.system.graph.deuda,  groups: rsp.data.system.graph.general.groups } %}
+									{# <div id="groupChart" style="min-height:350px;"></div> #}
+								</div>
+							</div>
+							<div class="row panel-navigation">
+								<div class="col-lg-12 text-center">
+									<a href="/estructura-mercado-emergente/{{ rsp.data.code }}" class="float-left">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									</a>
+									<button type="button" class="btnform float-right" @click="onPercentageInvestment" form="formPercentageInvestment">									
+										<i class="fa fa-arrow-right" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+							{# {% include 'system/navigation.twig' with  { _back: '/promedio-mercado-emergente/' ~ rsp.data.code, _next: '/parametros-empresa/' ~ rsp.data.code, _code: rsp.data.code } %} #}
+						</div>
+					</div>
+					{% include 'system/publicidad.twig' %}
+					<!-- Modal -->
+					<div class="modal fade" id="modal-currency" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content p-4" style="border-radius: 2rem;">
+								<div class="modal-body">
+									<form @submit="onFormPercentage">
+										<div class="text-center mb-4">
+											<h5 v-text="currency == 'S' ? 'Moneda Nacional' : 'Dólares' ">MONEDA SELECCIONADA</h5>
+											<small>Ingrese el porcentage de la moneda seleccionada</small>
+										</div>
+										<div class="mb-4">
+											<div class="input-group">
+												<input type="text" class="form-control text-center" :value="percentage" name="percentage" placeholder="Ingrese el porcentaje" pattern="^\d+(,\d+)*(\.\d+)?" required>
+												<input type="hidden" :value="currency" name="currency">
+												<div class="input-group-append">
+													<span class="input-group-text">%</span>
+												</div>
+											</div>
+										</div>
+										<div class="pt-4 text-right">
+											<button type="button" class="btn btn-four mr-2" data-dismiss="modal">Cancelar</button>
+											<button type="submit" class="btn btn-three">Calcular</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %} 
+	<script type="text/javascript">
+		let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+		window.addEventListener('load', window.AppStructureCompany.init(args));
+	</script>
+{% endblock %}

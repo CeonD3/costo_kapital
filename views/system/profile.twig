@@ -1,0 +1,93 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+	{% set data = rsp.data %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 banner-text-two form-group text-center">
+						<h2>MI PERFIL</h2>
+						<p>Gestiona tus datos de usuario y suscripciones</p>
+					</div>
+				</div>
+				<div class="row panel-parameter-market">
+					<div class="col-md-8 card-panel k-card-profile">
+						<div class="">
+							<div class="row k-panel-profile">
+								<ul class="col-md-4 nav nav-pills k-panel-menu mb-3" id="pills-tab" role="tablist">
+									<li class="nav-item k-panel-item">
+										<a class="nav-link k-panel-link" href="/historial">
+											<i class="fas fa-chevron-left mr-3"></i>Regresar
+										</a>
+									</li>
+									<li class="nav-item k-panel-item">
+										<a class="nav-link k-panel-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">
+											<i class="fas fa-user mr-3"></i> Actualizar datos
+										</a>
+									</li>
+									<li class="nav-item k-panel-item">
+										<a class="nav-link k-panel-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">
+											<i class="fas fa-lock mr-3"></i>
+											Cambiar contraseña
+										</a>
+									</li>
+								</ul>
+								<div class="col-md-8 tab-content k-panel-body" id="pills-tabContent">
+									<div class="tab-pane active " id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+										<div class="col-lg-12">
+											<form id="formSaveUser">
+												<div class="form-group text-center">
+													<h4>ACTUALIZAR DATOS</h4>
+													<small class="text-secondary">Actualizar tu emaill requiere una nueva validación</small>
+												</div><br>
+												<div class="form-group">
+													<input type="text" class="form-control" value="{{ data.user.name }}" name="name" placeholder="Nombre"  autocomplete="off" required>
+												</div>
+												<div class="form-group">
+													<input type="text" class="form-control" value="{{ data.user.lastname }}" name="lastname" placeholder="Apellido"  autocomplete="off">
+												</div>
+												<div class="form-group">
+													<input type="email" class="form-control" value="{{ data.user.email }}" name="email" placeholder="Correo"  autocomplete="off" required>
+												</div>
+												<div class="form-group text-center pt-4">
+													<button type="submit" class="btn btn-three">ACTUALIZAR</button>
+												</div>
+											</form>
+										</div>
+									</div>
+									<div class="tab-pane fade k-panel-body" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+										<div class="col-lg-12">
+											<form id="formSavePassword">
+												<div class="form-group text-center">
+													<h4>CAMBIAR CONTRASEÑA</h4>
+													<small class=" text-secondary">Debe tener al menos 6 caracteres</small>
+												</div><br>
+												<div class="form-group">
+													<input type="password" class="form-control" name="password" placeholder="Nueva contraseña" minlength="6"  autocomplete="off" required>
+												</div>
+												<div class="form-group">
+													<input type="password" class="form-control" name="repeat_password" placeholder="Repetir Nueva contraseña" minlength="6"  autocomplete="off" required>
+												</div>
+												<div class="form-group text-center pt-4">
+													<button type="submit" class="btn btn-three">ACTUALIZAR</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

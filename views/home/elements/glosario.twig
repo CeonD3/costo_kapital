@@ -1,0 +1,74 @@
+<style>
+.item-float2 {
+    /* background: var(--color-five);*/
+    position: fixed;
+    right: 0;
+    /* width: 3rem; */
+    border-radius: 0px 15px 15px 0px;
+    top: 16%;
+    /*margin-right: 11%;*/
+    z-index: 2;
+}
+</style>
+<div class="item-float2">
+	<a type="button" class="btn btn-primary btn-lg btn-block btn-three" data-toggle="modal" data-target="#modal-glosario">
+		<img class="logo-footer" src="/assets/image/icono_glosario.png" height="45" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Glosario"> 
+	</a>  
+</div>
+
+<div class="modal fade" id="modal-glosario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content" style="border-radius: 2rem;/*width: 100rem;*/">
+            <div class="modal-body p-5">
+                <form>
+                    <div class="text-center mb-5">
+                        <h4 class="k-title-modal">Glosario</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                {{glosario.data.data_glosario.descripcion |raw}}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                  {{glosario.data.data_glosario.titulo_b |raw}}
+
+                                    <div class="table-responsive">
+
+                                        <table class="table align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Industria</th>
+                                                    <th>Compañias</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for key, industria in glosario.data.data_industria %}
+                                                    <tr>
+                                                        <td class="align-middle">{{ industria.nombre_industria }}</td>   
+
+                                                        <td class="align-middle">
+                                                          {% for key2, companias in industria.companias %}  
+
+                                                                {% if  key2 >0 %} , {% endif %}  
+                                                                {{ companias.nombre_compania }}
+
+                                                          {% endfor %}                                                                                                                  
+                                                        </td>  
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                  
+                            </div>
+                        </div>
+                    </div>                  
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,44 @@
+<nav class="row navbar navbar-expand-lg navbar-light  mx-auto navbar-header">
+	<a href="#menu-toggle" class="btn-menu-toggle" id="menu-toggle">
+        <span class="navbar-toggler-icon"></span>
+    </a>
+    <a class="navbar-brand" href="/"><img src="/assets/image/logo.png"></a>
+    {# <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button> #}
+
+    <div class="collapse navbar-collapse header-item mx-auto m-width" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link mx-2 m-2" href="/costo-capital">¿COSTO DE CAPITAL?</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mx-2 m-2" href="{{ contacto.data.url_uno }}" target="_blank">CONSULTORÍAS ESPECIALIZADAS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mx-2 m-2" href="/reportes">REPORTES</a>
+            </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+            {% if user_session %}
+            <li class="nav-item border-right">
+                <a class="nav-link mx-2 m-2" href="/historial">HISTORIAL</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mx-2 m-2 btn btn-four" href="/perfil">MI PERFIL</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mx-2 m-1" id="sing-out" style="cursor: pointer;"><i style="font-size: 2rem;" class="fas fa-sign-out-alt"></i></a>
+            </li>
+            {% else %}
+            <li class="nav-item border-right">
+                <a class="nav-link mx-2 m-2" href="/contacto">CONTACTO</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mx-2 m-2 btn btn-four" href="/login">INICIAR SESIÓN</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    <a class="navbar-brand logo-header-second" href="https://fri.com.pe/"><img src="/assets/image/logo-header-3.png"></a>
+</nav>

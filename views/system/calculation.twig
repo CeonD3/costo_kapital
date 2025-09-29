@@ -1,0 +1,187 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+<style>
+	.cboChartCosto {
+		margin-bottom: -40px;
+		z-index: 5;
+		position: absolute;
+		right: 45px;
+	}
+	@media (max-width: 920px) {
+		.cboChartCosto {
+			margin-bottom: 0px;
+			position: initial;
+		}
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set data = rsp.data %}
+{% set bonus = 'Bono EE.UU' %}
+{% set adjust = 'Ajustar Rf empleado' %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					<div class="col-lg-12 banner-text-two form-group">
+						<h2>CÁLCULA EL COSTO DE CAPITAL</h2>
+					</div>
+				</div>
+			</div>
+			<div class="container container-custom" id="AppCalculation">
+				<div class="row">
+					<div class="col-lg-12 panel-body">
+						<div class="card-panel">
+							<form id="frmCalculation">
+								<div class="row justify-content-center">
+									<div class="col-lg-4 col-md-6">
+										<div class="form-group mb-4">
+											<label>1. Selecciona el sector en el que debe realizarse el cálculo:</label>
+											<div class="d-flex">
+												<select class="form-control" v-model="sector" name="sector" @change="onCalculation">
+													{% for item in data.system.sectors %}
+													<option value="{{ item }}" {{ item == data.system.sector ? 'selected' : '' }}>{{ item }}</option>
+													{% endfor %}
+												</select>
+												<span class="badge badge-pill bg-three ml-2 cursor-pointer" style="height: 16px;margin-top:7px;" data-toggle="tooltip" data-placement="top" title="El Sector es según el giro de negocio de la empresa o del proyecto. Para mayor información revisar el Glosario">
+													<i class="fa fa-info" aria-hidden="true"></i>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-1"> &nbsp;
+									</div>
+									<div class="col-lg-4 col-md-6">
+											<div class="form-group mb-4">
+												<label>2. Selecciona la tasa libre de riesgo:</label>
+												{% for index, item in data.system.instruments %}
+												<div class="form-check mb-1">
+													<input class="form-check-input" type="radio" name="instrument" id="free_rate{{ index }}" value="{{ item }}" {{ item == data.system.instrument ? 'checked' : '' }} @change="onCalculation">
+													<label class="form-check-label" for="free_rate{{ index }}">
+														{{ item }}
+													</label> 
+													<span class="badge badge-pill bg-three ml-2 cursor-pointer" data-toggle="modal" data-target="#modal-info-{{ index }}">
+														<i class="fa fa-info" aria-hidden="true"></i>
+													</span>
+												</div>
+												{% endfor %}
+											</div>
+									</div>
+								</div>
+							</form>
+							<div class="row cboChartCosto">
+								<div class="col-lg-12">
+									<div class="float-right">
+										<select class="form-control" @change="onChangeGraph">
+											<option value="" selected hidden>Ordenar</option>
+											<option value="1">Alfabéticamente</option>
+											<option value="2">Por Nivel de Riesgo (Boa)</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div id="myChart" style="min-height:450px;"></div>
+								</div>
+							</div>
+							<div class="modal fade" id="modal-info-0" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content p-4" style="border-radius: 2rem;">
+										<div class="modal-header border-0 pb-0">
+											<h4 class="m-0">
+												<span class="badge badge-pill bg-three" data-toggle="modal" data-target="#exampleModal2">
+													<i class="fa fa-info" aria-hidden="true"></i>
+												</span>
+											</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body pl-5 pr-5 pb-5">
+											<div class="container col-md-12">
+												<h3 class="text-center mb-4"><b><span class="text-three">Instrumento: </span> Bono EE.UU</b></h3>
+												<p class="text-center">Para el cálculo del costo de capital se puede tomar como instrumento libre de riesgo al bono del Tesoro Americano de 10 años.</p>
+												{% if rsp.data.landing.url_bono %}
+												<p>Puede conocer más en: <a href="{{ rsp.data.landing.url_bono }}" target="_blank">click aquí</a></p>
+												{% endif %}
+												<div class="text-center">
+													{% if rsp.data.landing.image_bono %}
+														{% if rsp.data.landing.url_bono %}
+														<a href="{{ rsp.data.landing.url_bono }}" target="_blank">
+															<img src="{{ rsp.data.landing.image_bono }}" style="height: 300px;"/>
+														</a>
+														{% else %}
+															<img src="{{ rsp.data.landing.image_bono }}" style="height: 300px;"/>
+														{% endif %}
+													{% endif %}
+													<br>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal fade" id="modal-info-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content p-4" style="border-radius: 2rem;">
+										<div class="modal-header border-0 pb-0">
+											<h4 class="m-0">
+												<span class="badge badge-pill bg-three" data-toggle="modal" data-target="#exampleModal2">
+													<i class="fa fa-info" aria-hidden="true"></i>
+												</span>
+											</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body pl-5 pr-5 pb-5">
+											<div class="container col-md-12">
+												<h3 class="text-center mb-4"><b><span class="text-three">Instrumento: </span> Ajustar Rf según duración del proyecto</b></h3>
+												<p class="text-center">Para el cálculo del costo de capital se puede tomar como instrumento libre de riesgo el que se ajuste a la duración de la inversión realizada. Con este fin, se solicitan los flujos de la inversión. </p>
+												{% if rsp.data.landing.url_ajustado %}
+												<p>Puede conocer más en: <a href="{{ rsp.data.landing.url_ajustado }}" target="_blank">click aquí</a></p>
+												{% endif %}
+												<div class="text-center">									
+													{% if rsp.data.landing.image_ajustado %}
+														{% if rsp.data.landing.url_ajustado %}
+														<a href="{{ rsp.data.landing.url_ajustado }}" target="_blank">
+															<img src="{{ rsp.data.landing.image_ajustado }}" style="height: 300px;"/>
+														</a>
+														{% else %}
+															<img src="{{ rsp.data.landing.image_ajustado }}" style="height: 300px;"/>
+														{% endif %}
+													{% endif %}													
+													<br>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row panel-navigation">
+								<div class="col-lg-12">
+									<a href="/historial" class="float-left">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									</a>
+									<a :href="redirect" class="float-right">
+										<i class="fa fa-arrow-right" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %} 
+<script type="text/javascript">
+    let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+	window.addEventListener('load', window.AppCalculation.init(args));
+</script>
+{% endblock %}

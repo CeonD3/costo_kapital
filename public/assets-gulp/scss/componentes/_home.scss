@@ -1,0 +1,70 @@
+header {
+	/*margin-top: 0.5rem;*/
+	box-shadow: 5px 5px 5px rgba(0,0,0,0.05);	
+}
+
+
+.slide-one {
+	background-color: rgba(0,0,0,.7);
+	height: 78vh;
+}
+
+.slide-one-text {
+	padding: 8rem 2rem;
+	color: white !important;
+	font-family: 'Lato Regular', sans-serif !important;
+}
+
+.slide-one-text h1 {
+	text-transform: uppercase;
+	font-size: 3rem;
+}
+
+.slide-one-text p {
+	font-size: 1.5rem;
+}
+
+.data-content {
+    color: white;
+    padding: 5px;
+    position: absolute;
+    bottom: 0;
+    font-size: 0.8rem;
+    background-color: var(--color-for);
+    width: 100%;
+}
+
+.data-content-item {
+	padding: 2rem;
+}
+
+.data-content-item div {
+	background-color: white;
+	padding: 0.5rem 2rem;
+	height: 13rem;
+}
+
+.data-content-item div img {
+	height: 4rem;
+}
+
+.data-content-item div h5 {
+	color: var(--color-two);
+}
+
+.data-content-item div p {
+	color: black;
+	font-size: 1.1rem;
+}
+
+.home-footer {
+  height: 22vh;
+  position: absolute;
+}
+
+.home-footer .data-content-item{
+  margin-top: -10rem;
+  div{
+    border-radius: 20px;    
+  }
+}

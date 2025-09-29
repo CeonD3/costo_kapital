@@ -1,0 +1,82 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'landing' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="col-12">
+                {% include "admin/elements/nav_landing.twig" %}
+                <div class="row py-2">
+                    <div class="col-md-12 pt-4">
+                        <form id="frmInformationAdmin" class="w-100">
+                            <ul class="list-group mb-5">
+                                <li class="list-group-item" style="background-color:#f4f6f9;">
+                                    <h5>Link de revista</h5>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-group">
+                                        <label for="link_revista" class="form-label">URL</label>
+                                        <input class="form-control" name="link_revista" value="{{ contacto.data.link }}" type="text">
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-group mb-5">
+                                <li class="list-group-item" style="background-color:#f4f6f9;">
+                                    <h5>Bono EE.UU</h5>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-group">
+                                        <label for="telefono" class="form-label">URL</label>
+                                        <input class="form-control" name="url_bono" value="{{ data.url_bono }}" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Portada</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="image_bono" class="custom-file-input" id="img-file"  accept="image/*">
+                                            <label class="custom-file-label" for="img-file">{{ data.image_bono ? data.image_bono : 'Seleccione Portada' }}</label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <ul class="list-group">
+                                <li class="list-group-item" style="background-color:#f4f6f9;">
+                                    <h5>Ajustar Rf según duración del proyecto</h5>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-group">
+                                        <label for="telefono" class="form-label">URL</label>
+                                        <input class="form-control" name="url_ajustado" value="{{ data.url_ajustado }}" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Portada</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="image_ajustado" class="custom-file-input" id="img-file"  accept="image/*">
+                                            <label class="custom-file-label" for="img-file">{{ data.image_ajustado ? data.image_ajustado : 'Seleccione Portada' }}</label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <br>
+                            <button class="px-3 py-2 btn btn-dark border-0" type="submit">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(".nav-admin ul .nav-item").eq(5).addClass("active");
+</script>
+{% endblock %}

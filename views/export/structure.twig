@@ -1,0 +1,53 @@
+{% include "export/partials/style.twig" %}
+<script type="x/kendo-template" id="page-template">
+	# var html = ``; #
+ 	# if (pageNum > 1) {
+		# var html = `
+		<div class="page-template">
+			<div class="header">
+				<div class="panel">
+					<div style="text-align:right;">
+						Reporte detallado - {{ report is defined ? report.entity : 'Nombre de la empresa' }}
+					</div>
+				</div>
+			</div>
+			<div class="footer">
+				<div class="panel">
+					<div class="item" style="text-align:left;">
+						<img src="/assets/image/logo.png" style="height:45px" />
+					</div>
+					<div class="item" style="text-align:center;">
+						pág. #:pageNum#
+					</div>
+					<div class="item" style="text-align:right;">
+						<img src="/assets/image/logo2.png" style="height:55px" />
+					</div>
+				</div>
+			</div>
+		</div>`; #
+	 } #
+	 #=html#
+</script>
+<div id="cover-page" class="row">
+	<div style="background-image: url(/assets/image/cover-kapital-v2.jpg);background-repeat: no-repeat;background-size: 100% 100%;width:850px;height:1210px;">
+		<div class="col12">
+			<div class="cover-panel-entity">
+				{% if design.type_id == 1 %}
+					<span>{{ report.entity ? report.entity : 'Nombre de la empresa' }} </span>
+				{% else %}
+					<span>CÁLCULO POR SECTOR</span>
+				{% endif %}
+			</div>
+		</div>
+		<div class="col12 cover-panel-sector">
+		{% if design.type_id == 1 %}
+			<span>CÁLCULO POR</span><br>
+			<strong>SECTOR</strong>
+		{% endif %}
+		</div>
+		<div class="col12 cover-panel-title">
+			<span class="cover-text-title">REPORTE &nbsp;&nbsp;DETALLADO <br> DE &nbsp;&nbsp;COSTO &nbsp;&nbsp;DE &nbsp;&nbsp;CAPITAL </span>
+			<h4 class="cover-date-title">{{ datestring }}</h4>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+<div class="col-lg-12 banner-text-two text-left mx-auto">
+	<div class="row">
+		<div class="{{ APP.SESSION.user is defined ? 'col-lg-7' : 'col-lg-12' }}">
+			<h2>RESULTADOS DE COSTO DE CAPITAL</h2>
+			<h3>Visualiza los resultados generales del costo de capital. Si deseas puedes registrarte automáticamente y tener acceso al historial de tus consultas.</h3>
+		</div>
+		{% if APP.SESSION.user is defined %}
+		<div class="col-lg-5 text-right">
+			<div class="btn-three px-5 py-2" title="Copiar" style="display: inline; cursor: pointer; float: right;" onclick="copiarAlPortapapeles('codigo_valora')"><span>{{ rsp.data.code }}</span></div>
+			<input type="text" name="codigo_valora" id="codigo_valora" value="{{ rsp.data.code }}" style="opacity: 0">
+			<p class="mb-0">Puedes guardar este código para próximas consultas</p>
+		</div>
+		{% endif %}
+	</div>
+</div>

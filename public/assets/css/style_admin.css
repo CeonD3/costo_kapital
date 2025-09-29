@@ -1,0 +1,115 @@
+/* line 1, public/assets-gulp/scss/componentes/_admin.scss */
+.nav-main {
+  min-height: 100vh;
+}
+
+/* line 5, public/assets-gulp/scss/componentes/_admin.scss */
+.nav-main ul li a {
+  color: white;
+}
+
+/* line 7, public/assets-gulp/scss/componentes/_admin.scss */
+.nav-main ul li a i {
+  width: 3.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* line 13, public/assets-gulp/scss/componentes/_admin.scss */
+.nav-main ul li:hover {
+  background-color: #f8f9fa;
+}
+
+/* line 15, public/assets-gulp/scss/componentes/_admin.scss */
+.nav-main ul li:hover a {
+  color: #343a40;
+}
+
+/* line 23, public/assets-gulp/scss/componentes/_admin.scss */
+.active {
+  background-color: #f8f9fa;
+}
+
+/* line 25, public/assets-gulp/scss/componentes/_admin.scss */
+.active a {
+  color: #343a40 !important;
+}
+
+/* line 31, public/assets-gulp/scss/componentes/_admin.scss */
+.previewImg img {
+  width: 100%;
+}
+
+/* line 34, public/assets-gulp/scss/componentes/_admin.scss */
+.previewImg video {
+  width: 100%;
+}
+
+/* line 39, public/assets-gulp/scss/componentes/_admin.scss */
+.action {
+  position: absolute;
+  right: 0;
+  margin-right: 2rem;
+}
+
+/* line 44, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block {
+  border: 1px solid #0056b3;
+  padding: 1rem;
+  margin: 0.2rem;
+}
+
+/* line 49, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-title {
+  color: #007bff;
+  font-weight: 600;
+}
+
+/* line 53, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-stitle {
+  font-weight: 600;
+}
+
+/* line 56, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-logo {
+  margin: auto;
+}
+
+/* line 58, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-logo img {
+  width: 100%;
+}
+
+/* line 64, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-contact img {
+  width: 1.5rem;
+}
+
+/* line 68, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-link {
+  text-align: right;
+}
+
+/* line 70, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-link a {
+  margin: 3px;
+  background-color: #0056b3;
+  color: white;
+  padding: 0.3rem 0.5rem;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+/* line 77, public/assets-gulp/scss/componentes/_admin.scss */
+.credit-block .credit-link a:hover {
+  background-color: white;
+  color: #0056b3;
+  border: 1px solid #0056b3;
+}
+
+@media (max-width: 768px) {
+  /* line 87, public/assets-gulp/scss/componentes/_admin.scss */
+  .nav-main {
+    display: none;
+  }
+}

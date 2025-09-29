@@ -1,0 +1,13 @@
+vendor/
+app/Model/ServerMail.php
+.env
+composer.lock
+public/assets/upload/
+public/upload/*
+node_modules
+public/template/users/*
+public/template/master/*
+public/template/guests/*
+package-lock.json
+logs/*
+script/

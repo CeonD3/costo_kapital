@@ -1,0 +1,208 @@
+<div class="col-lg-12">
+	<button type="button" class="btn btn-primary btn-export-pdf">EPORTAR PDF</button>
+</div>
+<br>
+<style>
+	#AppPanelExport{
+		/*min-width: 1130px;
+		max-width: 1130px;*/
+		min-width: 1050px;
+		max-width: 1050px;
+		background-color: #fff;
+		font-family: "DejaVu Sans", "Arial", sans-serif;
+	}
+</style>
+{#
+  <style>
+        /*
+            Make sure everything in the page template is absolutely positioned.
+            All positions are relative to the page container.
+        */
+        .page-template > * {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            font-size: 90%;
+        }
+        .page-template .header {
+            top: 20px;
+            border-bottom: 1px solid #000;
+			height:50px;
+        }
+        .page-template .footer {
+            bottom: 20px;
+            border-top: 1px solid #000;
+        }
+
+        /*
+            Use the DejaVu Sans font for display and embedding in the PDF file.
+            The standard PDF fonts have no support for Unicode characters.
+        */
+        .k-grid {
+            font-family: "DejaVu Sans", "Arial", sans-serif;
+            width: 400px;
+        }
+
+    </style>
+<script type="x/kendo-template" id="page-template">
+	<div class="page-template">
+		<div class="header">
+			<div style="float: right">Page #:pageNum# of #:totalPages#</div>
+			This is a header.
+		</div>
+		<div class="footer">
+			This is a footer.
+			Page #:pageNum# of #:totalPages#
+		</div>
+	</div>
+</script> #}
+
+	<div class="row">
+		<div class="col-lg-12 mb-5">
+			<div class="bg-five text-center py-2">
+				<h4 class="m-0">CURVA DE RENDIMIENTO EN AÑOS</h4>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div id="curve-chart" style="min-height:500px;"></div>
+			<img id="curve-img" src="" style="min-height:450px;"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 my-5">
+			<div class="bg-five text-center py-2">
+				<h4 class="m-0">PARAMETROS DE UN MERCADO DESARROLLADO</h4>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-lg-6">
+					<label class="label-control">4. Parámetros del cálculo</label>
+					<div class="table-responsive">
+						<table class="table table-one">
+							<tbody>
+								{% for item in rsp.data.system.developed.structure.calculations %}
+								<tr>
+									<td>{{ item.label }}</td>
+									<td>{{ item.value }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<label class="label-control">5.  Parámetros del Sector </label>
+					<div class="table-responsive">
+						<table class="table table-two">
+							<tbody>
+								{% for item in rsp.data.system.developed.structure.sectors %}
+								<tr>
+									<td>{{ item.label }}</td>
+									<td>{{ item.value }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-lg-9">
+					<div id="developed-general-chart" style="min-height:500px;"></div>
+					<img id="developed-general-img" src="" style="min-height:450px;"/>
+				</div>
+				<div class="col-lg-3">
+					<div id="developed-structure-chart" style="min-height:500px;"></div>
+					<img id="developed-structure-img" src="" style="min-height:450px;"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 my-5">
+			<div class="bg-five text-center py-2">
+				<h4 class="m-0">COSTO DE CAPITAL SECTORIAL DE UN MERCADO DESARROLLADO</h4>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			{% set paremeter1 = rsp.data.system.developed.paremeter %}
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="label-control">6. Parámetros generales</label>
+						<div class="table-responsive">
+							<table class="table table-one">
+								<tbody>
+									{% for item in paremeter1.general %}
+									<tr>
+										<td>{{ item.label }}</td>
+										<td>{{ item.value }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="label-control">7. Parámetros del Costo de Capital Financiero ( Ke)</label>
+						<div class="table-responsive">
+							<table class="table table-item">
+								<tbody>
+									{% for item in paremeter1.finance %}
+									<tr>
+										<td class="{{ item.type == 'beta' ? 'bgone' : 'bgtwo' }}">{{ item.label }}</td>
+										<td>{{ item.value }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="label-control">8. Parámetros del Costo de Capital Económico (koa) </label>
+						<div class="table-responsive">
+							<table class="table table-item">
+								<tbody>
+									{% for item in paremeter1.economic %}
+									<tr>
+										<td class="{{ item.type == 'beta' ? 'bgone' : 'bgtwo' }}">{{ item.label }}</td>
+										<td>{{ item.value }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="label-control">9. Costo de la deuda (Kd) </label>
+						<div class="table-responsive">
+							<table class="table table-item">
+								<tbody>
+									{% for item in paremeter1.debt %}
+									<tr>
+										<td class="{{ item.type == 'beta' ? 'bgone' : 'bgtwo' }}">{{ item.label }}</td>
+										<td>{{ item.value }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div id="developed-paremeter-chart" style="min-height:500px;"></div>
+			<img id="developed-paremeter-img" src="" style="min-height:450px;"/>
+		</div>
+	</div>
+</div>

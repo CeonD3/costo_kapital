@@ -1,0 +1,34 @@
+{% include "export/partials/style.twig" %}
+<script type="x/kendo-template" id="page-template">
+	# var html = ``; #
+ 	# if (pageNum > 1) {
+		# var html = `
+		<div class="page-template">
+			<div class="header">
+				<div class="panel">
+					
+				</div>
+			</div>
+			<div class="footer">
+				<div class="panel">
+					<div class="item" style="text-align:center;width:850px;">
+						pág. #:pageNum#
+					</div>
+				</div>
+			</div>
+		</div>`; #
+	 } #
+	 #=html#
+</script>
+<div id="cover-page" class="row">
+	<div style="background-image: url(/assets/image/cover-valora-v1.jpg);background-repeat: no-repeat;background-size: 100% 100%;width:850px;height:1210px;">
+		<div class="col12">
+			<div class="cover-panel-title-2">			
+				<span>{{ design.name }}</span>	
+			</div>
+			<div class="col12 cover-panel-title-3">
+				<span id="date-title">[FECHA]</span>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,106 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+	<style>
+		.with-col-table{
+			width: 150px;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	{% set data = rsp.data %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					<div class="col-lg-12 banner-text-two form-group">
+						<h2>REPORTE DEL COSTO DE CAPITAL</h2>
+					</div>
+				</div>
+				<div class="row panel-parameter-market" id="AppReportCompany">
+					<div class="col-lg-12">
+						<div class="card-panel">
+							<div class="row">
+								<div class="col-lg-12 mb-4">
+									<div class="bg-five text-center py-2">
+										<h4 class="m-0">Reporte de mi Empresa</h4>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-9 form-group">
+									<div id="groupChart" style="min-height:350px;"></div>
+								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<div class="table-responsive">
+											<table class="table table-item">
+												<tbody>
+													<tr>
+														<td colspan="2" class="bgone text-center">Parámetros del reporte</td>
+													</tr>
+													{% for item in data.system.parameters %}
+													<tr>
+														<td>{{ item.label }}</td>
+														<td>{{ item.value }}</td>
+													</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row d-flex align-items-center">
+								<div class="col-lg-8 mx-auto">
+									<div class="form-group">
+										<div class="table-responsive">
+											<table class="table table-group">
+												<tbody>
+													<tr>
+														<td class="border-0"></td>
+														<td class="bgtwo with-col-table">Dólares</td>
+														<td class="bgtwo with-col-table">Moneda Nacional</td>
+													</tr>
+													{% for item in data.system.percentages %}
+													<tr>
+														<td class="bgtwo">{{ item.label }}</td>
+														<td class="font-weight-bold with-col-table">{{ item.dolar }}</td>
+														<td class="font-weight-bold with-col-table">{{ item.national }}</td>
+													</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row panel-navigation">
+								<div class="col-lg-12 text-center">
+									<a href="/parametros-empresa/{{ rsp.data.code }}" class="float-left">
+										<i class="fa fa-home-o mt-2" style="font-size:20px;">Regresar a Mi Empresa</i>
+									</a>
+									<a href="/documentos/{{ rsp.data.code }}" style="font-weight:600;">
+										<i class="fas fa-home-o mt-2" style="font-size:20px;"> Ir a Reportes</i>
+									</a>
+									<a href="/comparacion/{{ rsp.data.code }}" class="float-right">
+										<i class="fa fa-home-o mt-2" style="font-size:20px;">Ver Comparación del Sector y de Mi Empresa</i>
+									</a>
+								</div>
+							</div>
+							{# {% include 'system/navigation.twig' with  { _back: '/promedio-nacional-empresa/' ~ rsp.data.code, _next: '/documentos/' ~ rsp.data.code, _code: rsp.data.code } %} #}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %} 
+	<script type="text/javascript">
+		let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+		window.addEventListener('load', window.AppReportCompany.init(args));
+	</script>
+{% endblock %}

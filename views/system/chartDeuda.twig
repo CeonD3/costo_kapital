@@ -1,0 +1,30 @@
+
+{# https://codepen.io/Victa/pen/kGRyVE #}
+{# {% set items = rsp.data.system.graph.deuda %}
+{% set groups = rsp.data.system.graph.general.groups %} #}
+{% set mypixel = 20 %}
+<div class="d-block text-center">
+    <label>COSTO DE DEUDA</label>
+</div>
+<ul class="chartCustom" id="chartCustomId">
+    {% for item in items %}
+    <li>
+        <div class="chartTextTop"><span>{{ item.value }}%</span></div>
+        {% if item.value == item.measure %}
+        {% else %}
+
+        {% if item.prima > 0 %}
+            <div class="chartLine" style="height:{{ item.prima * mypixel }}px;">
+            {% if item.text %}
+                <span>{{ item.text }}%</span>
+            {% endif %}
+            </div>
+        {% endif %}
+
+        {% endif %}
+
+        <div class="chartItem" style="height:{{ item.value * mypixel }}px; border: 2px solid {{ item.color }};" title="{{ item.label }}">
+        </div>
+    </li>        
+    {% endfor %}
+</ul>    

@@ -1,0 +1,101 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'landing' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="col-12">
+                {% include "admin/elements/nav_landing.twig" %}
+                <div class="row py-2">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <button type="button" onclick="getItemServicio('', 'frmServicioCapital', 'modal_servicio', 3)" class="btn btn-outline-secondary float-right"><i class="fas fa-plus"></i> Agregar</button>
+                            <h3>Detalle de Reportes</h3>
+                            <p>Lista de bloques donde se detallan los reportes del sistema.</p>
+                            
+                            {% for regimen in regimens %}
+                            
+                            {% endfor %}
+
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                    <th>ID</th>
+                                    <th>Titulo</th>
+                                    <th>Descripción</th>
+                                    <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for servicio in data %}
+                                <tr>
+                                    <td class="align-middle">{{ servicio.id }}</td>
+                                    <td class="align-middle">{{ servicio.titulo | raw }}</td>
+                                    <td class="align-middle">{{ servicio.stitulo | raw }}</td>
+                                    <td class="aling-top">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" onclick="getItemServicio({{ servicio.id }}, 'frmServicioCapital', 'modal_servicio', {{ servicio.tipo }})" class="btn btn-outline-secondary mr-2"><i class="fas fa-edit"></i></button>
+                                            <button type="button" onclick="deleteItemServicio({{ servicio.id }}, 'frmServicioCapital', 'modal_servicio')" class="btn btn-outline-secondary"><i class="far fa-trash-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal_servicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edición Servicio</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="frmServicioCapital" class="w-100">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título</label>
+                    <textarea class="form-control" id="titulo" name="titulo">...</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="stitulo" class="form-label">Descripción</label>
+                    <textarea class="form-control" id="stitulo" name="stitulo">...</textarea>
+                </div>
+                <input type="hidden" name="tipo_id" id="tipo_id" value="">
+                <input type="hidden" name="id_servicio" id="id_servicio" value="">
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmServicioCapital">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(".nav-admin ul .nav-item").eq(3).addClass("active");
+</script>
+{% endblock %}

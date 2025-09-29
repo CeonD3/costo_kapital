@@ -1,0 +1,112 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	{% set data = rsp.data %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					{% include "system/information.twig" %}
+				</div>
+				<div class="row panel-parameter-market" id="AppAverageEmerging">
+					<div class="col-lg-12">
+						<div class="card-panel">
+							<div class="row">
+								<div class="col-lg-12 mb-4">
+									<div class="bg-five text-center py-2">
+										<h4 class="m-0">Costo de Capital en un Mercado Emergente (En dólares)</h4>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-5">
+									<div class="form-group">
+										<label class="label-control">16. Parámetros del Costo Promedio Ponderado de Capital ( CPPC)</label>
+										<div class="table-responsive">
+											<table class="table table-item">
+												<tbody>
+													{% for index, item in data.system.general.parameters %}
+													<tr>
+														<td class="bgone">
+														{% if index == 0 %}
+															<i class="fa fa-info-circle mr-1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="El porcentaje de deuda y capital son un promedio del sector en el New York Stock Change"></i>	
+														{% endif %}
+														{{ item.label }}
+														</td>
+														<td class="width-value">{{ item.value }}</td>
+													</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+										<div class="table-responsive">
+											<table class="table table-item">
+												<tbody>
+													{% for item in data.system.general.results %}
+													<tr>
+														<td class="bgtwo text-center">{{ item.label }}</td>
+														<td class="width-value">{{ item.value }}</td>
+													</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="label-control">17. Parámetros del Costo Promedio Ponderado de Capital ( CPPC)</label>
+										<div class="table-responsive">
+											<table class="table table-item">
+												<tbody>
+													{% for index, item in data.system.general.comparations %}
+													<tr>
+														<td class="bgone">
+														{{ item.label }}
+														</td>
+														<td class="width-value">{{ item.value }}</td>
+													</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-7 float-left">
+									<div id="lineChart" style="min-height:350px;"></div>
+								</div>
+							</div>
+							<div class="row panel-navigation">
+								<div class="col-lg-12 text-center">
+									<a href="/parametros-mercado-emergente/{{ rsp.data.code }}" class="float-left">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									</a>
+									<a href="/documentos/{{ rsp.data.code }}" style="font-weight:600;">
+										<i class="fas fa-home-o mt-2" style="font-size:20px;"> Ir a Reportes</i>
+									</a>
+									<a href="/reporte-sectorial/{{ rsp.data.code }}" class="float-right">
+										<i class="fa fa-home-o mt-2" style="font-size:20px;">Ir a Resumen Sectorial</i>
+									</a>
+								</div>
+							</div>
+							{# {% if rsp.data.report.type_id == 2 %}
+								{% include 'system/navigation.twig' with  { _back: '/parametros-mercado-emergente/' ~ rsp.data.code, _next: '/documentos/' ~ rsp.data.code, _code: rsp.data.code } %}
+							{% else %}
+								{% include 'system/navigation.twig' with  { _back: '/parametros-mercado-emergente/' ~ rsp.data.code, _next: '/estructura-empresa/' ~ rsp.data.code, _code: rsp.data.code } %}
+							{% endif %} #}
+						</div>
+					</div>
+					{% include 'system/publicidad.twig' %}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %} 
+	<script type="text/javascript">
+		let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+		window.addEventListener('load', window.AppAverageEmerging.init(args));
+	</script>
+{% endblock %}

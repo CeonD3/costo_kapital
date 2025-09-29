@@ -1,0 +1,70 @@
+{% extends "home/main.twig" %}
+
+{% block css %}
+<link rel="stylesheet" href="/assets/css/style_home.css">
+<link rel="stylesheet" href="/assets/css/style_page_home.css">
+<style>
+	.slide-content{
+		background-image: url({{ landing.data.img|raw }});
+	}
+	.max-button{
+		max-width: 450px;
+	}
+	.card-image{
+		width: 120px;
+    	margin: auto;
+		margin-right: 15px;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="slide-item">
+					<div class="col-lg-12">
+						<div class="row mx-0">
+							<div class="col-lg-7">
+								<h1>{{ landing.data.titulo | raw }}</h1>
+								<p class="my-5" style="font-size:1.2rem;">{{ landing.data.stitulo | raw }}</p>
+								<div class="row pt-5">
+									<div class="col-lg-12 mb-5 text-center">
+										<form id="formCreateSectorial">
+											<button type="submit" class="btn btn-primary btn-lg btn-block btn-three max-button mx-auto">
+												Calcula el Costo de capital sectorial <i class="fa fa-info-circle ml-2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Calcula el costo de capital del sector en el mercado desarrollado y emergente"></i>
+											</button>
+										</form>
+									</div>
+									<div class="col-lg-12 mb-5">
+										<form id="formCreateRecord">
+											<button type="submit" class="btn btn-primary btn-lg btn-block btn-three max-button mx-auto">
+												Calcula el Costo de capital de tu empresa <i class="fa fa-info-circle ml-2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Calcula el costo de capital de tu empresa en un mercado desarrollado y emergente"></i>
+											</button>    
+										</form>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-5">
+								<div class="row panel-item p-4 m-0 mt-5 pt-5 mb-4">
+									{% for servicio in servicio.data %}
+									<div class="col-lg-12 p-0 d-flex mb-5">
+										<img src="{{ servicio.icono }}" class="card-image py-auto" />
+										<div class="col px-4">
+											{{ servicio.titulo | raw }}
+											{{ servicio.stitulo | raw }}
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

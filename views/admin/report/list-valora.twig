@@ -1,0 +1,104 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+    <style>
+        .table th,
+        .table td {
+            text-align: center;
+            padding: .9rem !important;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+        .table td {
+            color: gray;
+        }
+        table.dataTable,
+        .dataTables_filter,
+        .dataTables_length {
+            margin-bottom: 15px !important;
+        }
+        table.dataTable.no-footer{
+            border: 0;
+        }
+        table.dataTable thead th, table.dataTable thead td{
+            border-bottom: 0;
+        }
+        .bge {
+            padding: .75rem;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'documentos-valora' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <h4 class="d-inline">GESTIÓN DE DISEÑO DE DOCUMENTOS</h4>
+                    <a href="/admin/valora/reportes/crear" type="button" class="btn btn-outline-secondary float-right">
+                        <i class="fa fa-plus mr-2" aria-hidden="true"></i> Nuevo
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="table-responsive">
+                        <table class="table hover" id="table-design" width="100%" cellpadding="2" cellspacing="0" border="0" >
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Portada</th>
+                                    <th>Reporte</th>
+                                    <th>Precio</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for index, item in rsp.data.designs %}
+                                <tr>
+                                    <td>{{ item.id }}</td>
+                                    <td><img src="{{ item.image ? item.image : '/assets/image/notfound.png' }}" class="border" style="height: 60px;width:50px;"/></td>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.currency }} {{ item.price ? item.price : '0.00'  }}</td>
+                                    <td>{{ item.created_at }}</td>
+                                    <td>
+                                        {% if item.status == 1 %}
+                                            <span class="badge badge-secondary bge">Activado</span>
+                                        {% else %} 
+                                            <span class="badge badge-light bge">Desactivado</span>              
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="/admin/valora/reportes/editar/{{ item.id }}" type="button" class="btn btn-outline-secondary btn-sm mr-2">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-delete" data-id="{{ item.id }}">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {# <script src="/assets/js/admin_landing.min.js"></script> #}
+    <script>
+        $(document).ready(window.AppDesignAdmin.list({}));
+    </script>
+{% endblock %}

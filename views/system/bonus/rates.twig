@@ -1,0 +1,151 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+<style>
+    .table-inf tbody td{
+        font-weight: 600;
+    }
+    .table-inf tbody td:nth-child(1){
+        border-left: 2px solid var(--color-five);
+        background: var(--color-five-out);
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+	<section class="container-fluid">
+		{% include "system/results.twig" %}
+        <div class="row width-100 p-0 table-one justify-content-center">
+			<div class="col-sm-8 table-one-data shadow">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="bg-five text-center py-3 mb-4">
+                            <h4 class="m-0">Reporte Costo de Capital Sectorial para países emergentes</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <canvas id="myChart" class="mb-4" height="80"></canvas>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-9 form-group">
+                                <ul class="list-group-custom">
+                                    <li class="d-block">
+                                        <div class="float-left d-block f-w300 borde-0">&nbsp;</div>
+                                        <div class="item-value w150 bg-five">Dolares</div>
+                                        <div class="item-value w150 bg-five">Soles</div>
+                                    </li>
+                                    {% for item in rsp.data.system.report %}
+                                        <li class="list-group-item-custom">
+                                            <div class="item-name f-w300">{{ item.name }}</div>
+                                            <div class="item-value w150">{{ item.dolares }}</div>
+                                            <div class="item-value w150">{{ item.soles }}</div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                       		<div class="col-md-3 form-group">
+                                <div class="table-responsive">
+                                    <table class="table table-dev">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="2" class="text-center">Parametros del reporte</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in rsp.data.system.legend %}
+                                                <tr>
+                                                    <td>{{ item.name }}</td>
+                                                    <td>{{ item.value }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>                                
+	    					</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %} 
+<script>
+    window.addEventListener('load', function(){
+        let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+        let labels = args.system.graph.statistics.labels, values = args.system.graph.statistics.values;
+
+        var ctx = document.getElementById('myChart');
+        var myLineChart = new Chart(ctx, {
+            type:"horizontalBar",
+            data:{
+                labels: labels,
+                datasets:[{
+                    label:"Proyección",
+                    data: values,
+                    fill:false,
+                    borderColor:"rgb(255, 193, 3)",
+                    lineTension:0,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                    ],
+                }],
+            },
+            options:{
+                animations: {
+                    radius: {
+                        duration: 500,
+                        easing: 'linear',
+                        loop: (context) => context.active
+                    }
+                },
+                legend: {
+                    display: false,
+                },
+                responsive: true,
+                indexAxis: 'y',
+                title:{
+                    display: true,
+                    text: "Tasas de la empresa"
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {                        
+                            min: 0,
+                            //max: 100,
+                            callback: function(value){
+                                value = (value * 100).toFixed(2);
+                                return value + '%';
+                            }
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            let value = (tooltipItem.value * 100).toFixed(2);
+                            return value + '%';
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

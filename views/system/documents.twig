@@ -1,0 +1,133 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+
+<style>
+	.btn-block{
+		font-family: "Lato Bold";
+	}
+</style>
+
+{% endblock %}
+
+{% block content %}
+	{% set data = rsp.data %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					<div class="col-lg-6 banner-text-two form-group">
+						<h2>REPORTE DEL COSTO DE CAPITAL</h2>
+						<h3>Descarga los resultados generales del costo de capital de su empresa con los siguientes reportes.</h3>
+					</div>
+				</div>
+				<div class="row panel-parameter-market">
+					<div class="col-lg-12">
+						<div class="card-panel">
+							<div class="row">
+								<div class="col-lg-12 mb-4">
+									<div class="bg-five text-center py-2">
+										<h4 class="m-0">Reportes</h4>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-12 float-left d-flex justify-content-center align-items-center" style="height: 300px;">
+									<div class="px-4">
+										<a type="button" href="/estructura-mercado-desarrollado/{{ rsp.data.code  }}" class="btn btn-primary btn-three btn-block py-2 mb-4">Ver Mercado Desarrollado</a>
+										<a type="button" href="/parametros-mercado-emergente/{{ rsp.data.code  }}" class="btn btn-primary btn-three btn-block py-2 mb-4">Ver Mercado Emergente</a>
+										<a type="button" href="/reporte-sectorial/{{ rsp.data.code }}" class="btn btn-primary btn-three btn-block py-2 mb-4">Ver Resumen Sectorial</a>
+										{% if rsp.data.report.type_id == 1 %}
+										<a type="button" href="/parametros-empresa/{{ rsp.data.code  }}" class="btn btn-primary btn-three btn-block py-2 mb-4">Ver Tu Empresa</a>
+										<a type="button" href="/comparacion/{{ rsp.data.code  }}" class="btn btn-primary btn-three btn-block py-2 mb-4">Ver Comparación del Sector y de tu Empresa </a>
+										{% endif %}
+										{% if not (rsp.data.report.type_id == 2 and APP.SESSION.user) %}
+										<button type="button" class="btn btn-primary btn-four btn-block py-2 mt-4" data-toggle="modal" data-target="#modal-register-report">Guardar Información</button>
+										{% endif %}
+									</div>
+								</div>
+								<div class="col-lg-7 col-md-12">
+									<div class="row text-center">
+										{% for item in rsp.data.designs %}
+											<div class="col-lg-4 col-md-6">
+												<div class="form-group text-center">
+													<div class="card mb-3">
+														<img src="{{ item.image ? item.image : '/assets/image/notfound.png' }}" style="height: 220px;width:100%;"/>
+														<div class="card-footer bg-white p-2">
+														<h6 class="font-weight-bold m-0" style="overflow: hidden; height: 18px;" title="{{ item.name }}">{{ item.name }}</h6>
+														{% if item.price > 0 %}
+															<h5 class="text-danger font-weight-bold m-0">{{ item.currency }} {{ item.price }}</h5>
+														{% else %}
+															<h5 class="text-danger font-weight-bold m-0">GRATIS</h5>
+														{% endif %}
+														</div>
+													</div>
+													{% if APP.SESSION.user is defined %}
+														{% if item.bitacora_code %}
+															{# <a type="button" class="btn-three py-2 btn-block" href="/reporte/documento/{{ item.bitacora_code }}" target="_blank">Descargar</a> #}
+															{% if rsp.data.report.type_id == 1 %}
+																<a type="button" class="btn-three py-2 btn-block ondocument" data-id="{{ item.id }}" data-code="{{ rsp.data.code }}" >Descargar</a>
+															{% else %}
+																<a type="button" class="btn-three py-2 btn-block" href="/reporte/{{ rsp.data.code }}/documento/{{ item.id }}/download" target="_blank">Descargar</a>
+															{% endif %}
+														{% else %}
+															{% if item.price > 0 %}
+																<a type="button" class="btn-three py-2 btn-block" href="/reporte/{{ rsp.data.code }}/documento/{{ item.id }}/compra">Comprar ahora</a>
+															{% else %}
+																{% if rsp.data.report.type_id == 1 %}
+																	<a type="button" class="btn-three py-2 btn-block ondocument" data-id="{{ item.id }}" data-code="{{ rsp.data.code }}">Descargar</a>
+																{% else %}
+																	<a type="button" class="btn-three py-2 btn-block" href="/reporte/{{ rsp.data.code }}/documento/{{ item.id }}/download" target="_blank">Descargar</a>
+																{% endif %}
+															{% endif %}
+														{% endif %}
+													{% else %}
+														{% if item.price > 0 %}
+															<a type="button" class="btn-three py-2 btn-block" href="/reporte/{{ rsp.data.code }}/documento/{{ item.id }}/compra">Comprar ahora</a>
+														{% else %}
+															{% if rsp.data.report.type_id == 1 %}
+																<a type="button" class="btn-three py-2 btn-block ondocument" data-id="{{ item.id }}" data-code="{{ rsp.data.code }}">Descargar</a>
+															{% else %}
+																<a type="button" class="btn-three py-2 btn-block" href="/reporte/{{ rsp.data.code }}/documento/{{ item.id }}/download" target="_blank">Descargar</a>
+															{% endif %}
+														{% endif %}
+													{% endif %}
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-12 float-right">
+									<div class="form-group text-center">
+										<div class="mb-2 block p-0 py-4">
+											<p>Solicita aquí una <br> <span>consultoría especializada:</span></p>
+											<img src="/assets/image/logo-consulting.png">
+											<a class="btn btn-four" target="_blank" href="https://tawk.to/chat/5e306a3e8e78b86ed8ab7f00/default"><span>Consultar ahora</span></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row panel-navigation">
+								<div class="col-lg-12 text-center">
+									{% if rsp.data.report.type_id == 2 %}
+									<a href="{{ '/estructura-mercado-emergente/' ~ rsp.data.code }}" class="float-left">
+									{% else %}
+									<a href="{{ '/estructura-empresa/' ~ rsp.data.code }}" class="float-left">
+									{% endif %}
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{% include 'system/register.report.modal.twig' %}
+	{% include 'system/login.modal.twig' %}
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

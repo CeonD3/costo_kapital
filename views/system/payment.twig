@@ -1,0 +1,217 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	{% set data = rsp.data %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					<div class="col-lg-6 banner-text-two form-group">
+						<h2>REPORTE DEL COSTO DE CAPITAL</h2>
+						<h3>Compra los resultados generales del costo de capital de su empresa con los siguientes reportes.</h3>
+					</div>
+				</div>
+				<div class="row panel-parameter-market">
+					<div class="col-lg-12">
+						<div class="card-panel">
+							<div class="row">
+								<div class="col-lg-12 mb-4">
+									<div class="bg-five text-center py-2">
+										<h4 class="m-0">Realizar transferencia de pago</h4>
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-lg-3 col-md-12 form-group">
+									<div class="card">
+										<img src="{{ rsp.data.design.image ? rsp.data.design.image : '/assets/image/notfound.png' }}" style="height: 350px;width:100%;"/>
+										<div class="card-footer text-center bg-white p-3">
+											<h5>{{ rsp.data.design.name }}</h5>
+										{% if rsp.data.design.price > 0 %}
+											<h4 class="text-danger font-weight-normal m-0">{{ rsp.data.design.currency }} {{ rsp.data.design.price }}</h4>
+										{% else %}
+											<h4 class="text-danger font-weight-normal m-0">GRATIS</h4>
+										{% endif %}
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-9 col-md-12 form-group">
+								{% if APP.SESSION.user is defined and rsp.data.bitacoraVenta and rsp.data.bitacoraVenta.status == 'pagado' %}
+									<div class="alert alert-success" role="alert">
+										<b>Nota: </b>Estimado, usted ya ha adquirido este documento con el correo <b>{{ rsp.data.bitacoraVenta.email }}</b> en la fecha <b>{{ rsp.data.bitacoraVenta.created_at|date("m/d/Y") }}</b>.
+									</div>
+									<a type="button" class="btn-three px-5 py-2" href="/reporte/documento/{{ rsp.data.bitacoraVenta.code }}" target="_blank">DESCARGAR</a>
+								{% else %}
+									<form id="formPaymentTransfer">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="alert alert-info" role="alert">
+													<b>Nota:</b> Envía su comprobante de pago para validar su compra, se notificará con un correo electrónico sobre el estado de su transacción.
+												</div>
+											</div>
+											<input type="hidden" name="report" value="{{ rsp.data.code }}">
+											<input type="hidden" name="document" value="{{ rsp.data.design.id }}">
+											{% if rsp.data.report.type_id == 1 %}
+											<div class="col-lg-12 form-group">
+												<div class="card py-4">
+													<div class="col-lg-12 form-group">
+														<h4 class="text-four">Información para el Reporte</h4>
+													</div>
+													<div class="col-lg-12 form-group">
+														<label>Empresa</label>
+														<input type="text" class="form-control" name="entity" required>
+													</div>
+													<div class="col-lg-12 form-group">
+														<label>Proyecto</label>
+														<input type="text" class="form-control" name="project" required>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+											{% if APP.SESSION.user is not defined %}
+											<div class="col-lg-12 form-group">
+												<div class="card py-4">
+													<div class="col-lg-12 form-group">
+														<h4 class="text-four">Datos del Usuario</h4>
+													</div>
+													<div class="col-lg-12 form-group">
+														<label>Correo electrónico</label>
+														<input type="email" class="form-control" name="email" required>
+													</div>
+													<div class="col-lg-12 form-group">
+														<label>Contraseña</label>
+														<input type="password" class="form-control" name="password" required>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+											<div class="col-lg-12 form-group">
+												<div class="card py-4">
+													<div class="col-lg-12 form-group">
+														<h4 class="text-four">Datos del Pago</h4>
+													</div>
+													<div class="col-lg-12 form-group">
+														<label>Comprobante de pago</label>	
+														<div class="custom-file">
+															<input type="file" class="custom-file-input" id="customFile" name="file" required>
+															<label class="custom-file-label" for="customFile">Seleccionar</label>
+														</div>							
+													</div>
+													<div class="col-lg-12 form-group">
+														<label>Comentario</label>
+														<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
+													</div>
+													<div class="col-lg-12 form-group">
+														<div class="form-check">
+															<label class="form-check-label d-block">
+																<input type="checkbox" class="form-check-input" name="" id="" value="checkedValue" checked required>
+															</label>
+															<span class="ml-2">	Acepta nuestros <a href="javascript:;" data-toggle="modal" data-target="#modal_terminos_condiciones">terminos y condiciones</a></span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-lg-12 form-group text-right pt-4">
+												<button type="submit" class="btn btn-three">Enviar Comprobante de Pago</button>
+											</div>
+										</div>	
+									</form>
+								{% endif %}
+								</div>
+							</div>
+							<br><br>
+							<div class="row">
+								{% if rsp.data.design.link_payment %}
+								<div class="col-lg-12 form-group">
+									<h4>Link de Pago</h4>
+									<ul class="list-group">
+										<li class="list-group-item p-4">
+											<a href="javascript:;">{{ rsp.data.design.link_payment }}</a>
+										</li>
+									</ul>
+								</div>
+								{% endif %}
+								{% if rsp.data.mobiles %}
+								<div class="col-lg-6 form-group">
+									<h4>Transferencia Móvil</h4>
+									<ul class="list-group">
+										{% for item in rsp.data.mobiles %}
+										<li class="list-group-item p-4  text-center">
+											<div class="form-group">
+												<h6>{{ item.account }}</h6>
+												<h6><b>{{ item.number }}</b></h6>
+											</div>
+											<div>
+											{% if item.image %}
+												<img src="{{ item.image }}" style="max-width:300px;">
+											{% endif %}                        
+											</div>
+										</li>
+										{% endfor %}
+									</ul>
+								</div>
+								{% endif %}
+								{% if rsp.data.banks %}
+								<div class="col-lg-6 form-group">
+									<h4>Transferencia Bancaría</h4>
+									<ul class="list-group">
+										{% for item in rsp.data.banks %}
+										<li class="list-group-item p-4 text-center">
+											<div class="form-group">
+												<h6>{{ item.account }}</h6>
+												<h6>Número: <b>{{ item.number }}</b></h6>
+												<h6>CCI: <b>{{ item.cci }}</b></h6>
+											</div>
+											<div>
+											{% if item.image %}
+												<img src="{{ item.image }}" style="max-width:300px;">
+											{% endif %}                        
+											</div>
+										</li>
+										{% endfor %}
+									</ul>
+								</div>
+								{% endif %}
+							</div>
+							<div class="row panel-navigation">
+								<div class="col-lg-12 text-center">
+									<a href="{{ '/documentos/' ~ rsp.data.code }}" class="float-left">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									</a>
+									<a href="/calcula/{{ rsp.data.code }}" style="font-weight:600;">
+										<i class="fas fa-home-o mt-2" style="font-size:20px;"> Ir a Inicio</i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="modal_terminos_condiciones" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body px-5 pb-5">
+						{{ contacto.data.terminos_condiciones|raw }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{% include 'system/login.modal.twig' %}
+{% endblock %}
+
+{% block js %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}

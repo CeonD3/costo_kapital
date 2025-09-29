@@ -1,0 +1,134 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+<link rel="stylesheet" href="/assets/css/style_system.css">
+<style>
+	table{
+		margin: 0;
+		border-bottom:0px;
+	}
+    .dataTable thead tr th{
+		color: var(--color-five);
+	    background: var(--color-five-out);
+        border: 1px solid var(--color-five-out);
+		text-align: center;
+    }
+    .dataTable tbody tr td{
+        background-color: #FFF;
+        border: 1px solid var(--color-five-out);
+		color: gray;
+    }
+    .dataTable thead tr th,
+	.dataTable tbody tr td{
+        padding: 10px 20px;
+    }
+	table.dataTable.no-footer {
+    	border-bottom: 0px;
+	}
+	.dataTables_paginate span .paginate_button{
+		padding: 0.3em 0.8em !important;
+	}
+	.dataTables_length,
+	.dataTables_filter{
+		margin-bottom: 1rem;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row panel-header">
+					<div class="col-lg-12 banner-text text-center">
+						<h1>¡Bienvenido a <br> <em>Costo de Kapital</em> !</h1>
+						{# <button class="btn-three px-5 py-2 mt-4" type="button" data-toggle="modal" data-target="#modal-selected"><span>INICIAR CÁLCULO</span></button> #}
+					</div>
+					<div class="col-lg-12">
+						<div class="row d-flex justify-content-center">
+							<div class="col-lg-4 form-group">
+								<form id="formCreateSectorial">
+									<button type="submit" class="btn btn-primary btn-lg btn-block btn-three">
+										Calcula el Costo de capital sectorial <i class="fa fa-info-circle ml-2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Calcula el costo de capital del sector en el mercado desarrollado y emergente"></i>
+									</button>
+								</form>
+							</div>
+							<div class="col-lg-4 form-group">
+								<form id="formCreateRecord">
+									<button type="submit" class="btn btn-primary btn-lg btn-block btn-three">
+										Calcula el Costo de capital de tu empresa <i class="fa fa-info-circle ml-2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Calcula el costo de capital de tu empresa en un mercado desarrollado y emergente"></i>
+									</button>    
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container container-custom" id="AppRecordCost">
+				<div class="row">
+					<div class="col-lg-12 panel-body">
+						<div class="card-panel">
+							<div class="cab_table">
+								<h2>HISTORIAL</h2>
+								<p>Revisa tu lista de reportes</p>
+							</div>
+							<div class="table-responsive">
+								<table id="table-report" class="mb-3" style="width:100%">
+									<thead>
+										<tr>
+											<th>CÓDIGO</th>
+											<th>NOMBRE DE LA INVERSIÓN</th>
+											<th>EMPRESA</th>
+											<th>TIPO</th>
+											<th>FECHA</th>
+											<th style="min-width:300px;">ACCIONES</th>
+											<th class="pl-0 pr-0"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(item, index) in reports">
+											<td v-text="item.code"></td>
+											<td v-text="item.name"></td>
+											<td v-text="item.entity"></td>
+											<td v-text="item.type_id == 2 ? 'Sectorial' : 'Empresa'"></td>
+											<td class="text-center" v-text="item.created_at"></td>
+											<td class="text-center" style="min-width:300px;">
+												<button type="button" @click="onDelete(item.code, index)" class="btn btn-out-three-sm mr-1">
+													<i class="fa fa-trash mr-1" aria-hidden="true"></i> Eliminar
+												</button>
+												<a type="button" :href="'/calcula/'+item.code" class="btn btn-out-three-sm mr-1">
+													<i class="fa fa-calculator mr-1" aria-hidden="true"></i> Revisar
+												</a>
+												<a type="button" :href="'/documentos/'+item.code" class="btn btn-out-three-sm mr-1">
+													<i class="fa fa-book mr-1" aria-hidden="true"></i> Documentos
+												</a>
+											</td>
+											<td class="text-center pl-0 pr-0">
+												<template v-if="template.id != item.template_id">
+													<button type="button" @click="onNewVersion(item.code, index)" class="btn btn-out-three-sm mr-1" title="Hay una nueva actualización">
+														Nueva Versión
+													</button>
+												</template>
+											</td>
+										</tr>
+									</tbody>			        
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+{# {% include 'system/record.modal.twig' %} #}
+{% endblock %}
+
+{% block js %} 
+<script type="text/javascript">
+	let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+	window.addEventListener('load', AppRecordCost.init(args));
+	$(".header-item ul .nav-item").eq(4).addClass("active-head");
+</script>
+{% endblock %}

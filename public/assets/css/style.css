@@ -1,0 +1,661 @@
+@font-face {
+  font-family: "Lato Regular";
+  src: url("/assets/font/Lato-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lato Bold";
+  src: url("/assets/font/Lato-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Lato Black";
+  src: url("/assets/font/Lato-Black.ttf");
+}
+
+/* line 16, public/assets-gulp/scss/style.scss */
+html {
+  font-size: 13px;
+}
+
+/* line 20, public/assets-gulp/scss/style.scss */
+body {
+  font-size: 1rem !important;
+  --color-one: white;
+  --color-two: #02abde;
+  --color-three: #02abde;
+  --color-for: #2d205f;
+  --color-five: #2d205f;
+  --color-five-out: #f4f6f9;
+  --color-six: #f7f7f7;
+  --color-seven: #4d4d53;
+  --color-eigth: #c5b46d;
+  --color-nine: #4caf50;
+  --color-nine-out: #e8f5e9;
+  --color-ten: #e1f5fe;
+  --color-eleven: #e8f5e9;
+  --color-twelve: #d0e9b5;
+  --color-thirteen: #d8e8f3;
+  font-family: 'Lato Regular', sans-serif !important;
+  font-weight: 400;
+  height: 75vh;
+}
+
+/* line 45, public/assets-gulp/scss/style.scss */
+header {
+  background: white;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  font-family: 'Lato Regular', sans-serif !important;
+  border-bottom: 0.5rem solid var(--color-for);
+}
+
+/* line 54, public/assets-gulp/scss/style.scss */
+footer {
+  background: var(--color-for);
+  color: white;
+  padding: 1rem;
+}
+
+/* line 60, public/assets-gulp/scss/style.scss */
+footer a {
+  text-decoration: none;
+  color: white;
+}
+
+/* line 65, public/assets-gulp/scss/style.scss */
+header nav img {
+  max-height: 3.5rem;
+}
+
+/* line 69, public/assets-gulp/scss/style.scss */
+.active-head a {
+  color: var(--color-three) !important;
+  font-weight: 600;
+}
+
+/* line 74, public/assets-gulp/scss/style.scss */
+.m-width {
+  max-width: 1500px;
+}
+
+/* line 78, public/assets-gulp/scss/style.scss */
+.btn-one {
+  background: var(--color-two);
+  border-radius: 20px;
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 85, public/assets-gulp/scss/style.scss */
+.btn-one a {
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 90, public/assets-gulp/scss/style.scss */
+.btn-one:hover {
+  background: white;
+  border: 1px solid var(--color-two);
+  color: var(--color-two) !important;
+}
+
+/* line 96, public/assets-gulp/scss/style.scss */
+.btn-one:hover a {
+  color: var(--color-two) !important;
+}
+
+/* line 100, public/assets-gulp/scss/style.scss */
+.btn-one-border {
+  border: 1px solid var(--color-two);
+  color: var(--color-two) !important;
+  border-radius: 20px;
+}
+
+/* line 106, public/assets-gulp/scss/style.scss */
+.btn-one-border a {
+  color: var(--color-two) !important;
+}
+
+/* line 110, public/assets-gulp/scss/style.scss */
+.btn-one-border:hover {
+  background: var(--color-two);
+  color: white;
+}
+
+/* line 115, public/assets-gulp/scss/style.scss */
+.btn-one-border:hover a {
+  color: white !important;
+}
+
+/* line 119, public/assets-gulp/scss/style.scss */
+button {
+  box-shadow: none !important;
+}
+
+/* line 123, public/assets-gulp/scss/style.scss */
+.btn-two {
+  background: var(--color-three) !important;
+  border-radius: 1rem !important;
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+  border: 1px solid var(--color-three) !important;
+  padding: .4rem 1.5rem !important;
+}
+
+/* line 132, public/assets-gulp/scss/style.scss */
+.btn-two a {
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 137, public/assets-gulp/scss/style.scss */
+.btn-two:hover {
+  background: white !important;
+  border: 1px solid var(--color-three) !important;
+  color: var(--color-three) !important;
+}
+
+/* line 143, public/assets-gulp/scss/style.scss */
+.btn-two:hover a {
+  color: var(--color-three) !important;
+}
+
+/* line 149, public/assets-gulp/scss/style.scss */
+.btn-for {
+  background: var(--color-eigth);
+  border-radius: 1rem;
+  color: var(--color-for) !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 156, public/assets-gulp/scss/style.scss */
+.btn-for a {
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 161, public/assets-gulp/scss/style.scss */
+.btn-for:hover {
+  background: white;
+  border: 1px solid var(--color-eigth);
+}
+
+/* line 167, public/assets-gulp/scss/style.scss */
+.btn-for:hover a {
+  color: var(--color-eigth) !important;
+}
+
+/* line 174, public/assets-gulp/scss/style.scss */
+.btn-five {
+  background: var(--color-for);
+  border-radius: 1rem;
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 181, public/assets-gulp/scss/style.scss */
+.btn-five a {
+  color: var(--color-for) !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 186, public/assets-gulp/scss/style.scss */
+.btn-five:hover {
+  background: white;
+  border: 1px solid var(--color-for);
+  color: var(--color-for) !important;
+}
+
+/* line 192, public/assets-gulp/scss/style.scss */
+.btn-five:hover a {
+  color: var(--color-for) !important;
+}
+
+/* line 196, public/assets-gulp/scss/style.scss */
+.k-card-profile {
+  padding: 0px !important;
+  border-radius: 2rem;
+  max-width: 800px;
+  margin: auto;
+  margin-top: 3rem !important;
+  margin-bottom: 9rem !important;
+}
+
+/* line 203, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile {
+  background-color: var(--color-for);
+  padding: 0px;
+}
+
+/* line 206, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-menu {
+  /*width: 300px;*/
+  font-size: 1.2rem;
+  margin: 0;
+  display: block;
+  padding: 1.5rem 0rem;
+}
+
+/* line 212, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-menu .k-panel-item {
+  display: block;
+  width: 100%;
+}
+
+/* line 215, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-menu .k-panel-item .active {
+  background-color: #ffffff;
+  color: var(--color-four);
+}
+
+/* line 219, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-menu .k-panel-item .active:hover {
+  color: var(--color-four);
+}
+
+/* line 223, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-menu .k-panel-link {
+  text-align: left;
+  padding: 1.8rem;
+  color: #ffffff;
+  border-radius: 0;
+}
+
+/* line 229, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-menu .k-panel-link:hover {
+  color: #ffffff;
+}
+
+/* line 234, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-body {
+  /*width: calc(100% - 300px);*/
+  background-color: #ffffff;
+}
+
+/* line 237, public/assets-gulp/scss/style.scss */
+.k-card-profile .k-panel-profile .k-panel-body .tab-pane {
+  padding: 3.5rem 3rem;
+}
+
+/* line 245, public/assets-gulp/scss/style.scss */
+.linea-prima p {
+  font-family: "Lato Black" !important;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* line 251, public/assets-gulp/scss/style.scss */
+.item-float {
+  background: var(--color-five);
+  position: fixed;
+  left: 0;
+  width: 3rem;
+  border-radius: 0px 15px 15px 0px;
+  top: 20rem;
+  z-index: 2;
+}
+
+/* line 261, public/assets-gulp/scss/style.scss */
+.item-float a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  margin: 8px 0px;
+}
+
+/* line 268, public/assets-gulp/scss/style.scss */
+.linea {
+  border-bottom: 1px solid var(--color-for);
+  height: 1rem;
+}
+
+/* line 273, public/assets-gulp/scss/style.scss */
+.bg-white {
+  padding-top: 8rem;
+}
+
+/* line 277, public/assets-gulp/scss/style.scss */
+.w-100 {
+  width: 100% !important;
+}
+
+/* line 281, public/assets-gulp/scss/style.scss */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* line 285, public/assets-gulp/scss/style.scss */
+.k-title-modal {
+  font-weight: 600;
+  color: var(--color-three);
+}
+
+/* line 290, public/assets-gulp/scss/style.scss */
+.text-three {
+  color: var(--color-three);
+}
+
+/* line 293, public/assets-gulp/scss/style.scss */
+.bg-three {
+  color: #ffffff;
+  background: var(--color-three);
+}
+
+/* line 297, public/assets-gulp/scss/style.scss */
+.btn-three {
+  color: #ffffff !important;
+  background: var(--color-three) !important;
+  box-shadow: none !important;
+  border-radius: 1rem !important;
+  border: 1px solid var(--color-three) !important;
+  padding: .4rem 1.5rem !important;
+}
+
+/* line 305, public/assets-gulp/scss/style.scss */
+.btn-out-three {
+  color: var(--color-three) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  padding: .4rem 1.5rem !important;
+  border-radius: 15px !important;
+  border: 1px solid var(--color-three) !important;
+}
+
+/* line 313, public/assets-gulp/scss/style.scss */
+.btn-three:hover,
+.btn-three-sm:hover {
+  cursor: pointer;
+  background: #ffffff !important;
+  color: var(--color-three) !important;
+  border: 1px solid var(--color-three) !important;
+}
+
+/* line 320, public/assets-gulp/scss/style.scss */
+.btn-out-three:hover,
+.btn-out-three-sm:hover {
+  cursor: pointer;
+  background: var(--color-three) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--color-three) !important;
+}
+
+/* line 327, public/assets-gulp/scss/style.scss */
+.btn-three-sm {
+  color: #ffffff !important;
+  background: var(--color-three) !important;
+  box-shadow: none !important;
+  padding: .25rem .8rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .3rem;
+}
+
+/* line 336, public/assets-gulp/scss/style.scss */
+.btn-out-three-sm {
+  background: #ffffff !important;
+  color: var(--color-three) !important;
+  box-shadow: none !important;
+  padding: .25rem .8rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .3rem !important;
+  border: 1px solid var(--color-three) !important;
+}
+
+/* line 346, public/assets-gulp/scss/style.scss */
+.btn-four {
+  color: #ffffff !important;
+  background: var(--color-for) !important;
+  box-shadow: none !important;
+  padding: .4rem 1.5rem !important;
+  border-radius: 1rem !important;
+  border: 1px solid var(--color-for) !important;
+}
+
+/* line 354, public/assets-gulp/scss/style.scss */
+.btn-out-four {
+  color: var(--color-for) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  padding: 7px 25px;
+  border-radius: 1rem !important;
+  border: 1px solid var(--color-for) !important;
+}
+
+/* line 362, public/assets-gulp/scss/style.scss */
+.btn-four:hover,
+.btn-four:focus,
+.btn-four-sm:hover {
+  cursor: pointer;
+  background: #ffffff !important;
+  color: var(--color-for) !important;
+  border: 1px solid var(--color-for) !important;
+}
+
+/* line 370, public/assets-gulp/scss/style.scss */
+.btn-four-sm {
+  color: #ffffff !important;
+  background: var(--color-for) !important;
+  box-shadow: none !important;
+  padding: .25rem .8rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .3rem !important;
+}
+
+/* line 379, public/assets-gulp/scss/style.scss */
+.btn-out-four-sm {
+  background: #ffffff !important;
+  color: var(--color-for) !important;
+  box-shadow: none !important;
+  padding: .25rem .8rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .3rem !important;
+  border: 1px solid var(--color-for) !important;
+}
+
+/* line 390, public/assets-gulp/scss/style.scss */
+.text-four {
+  color: var(--color-for);
+}
+
+/* line 394, public/assets-gulp/scss/style.scss */
+.text-three {
+  color: var(--color-three);
+}
+
+/* line 398, public/assets-gulp/scss/style.scss */
+.panel-admin-sticky {
+  position: -webkit-sticky;
+  /* Safari */
+  position: sticky;
+  top: 80px;
+}
+
+/* line 406, public/assets-gulp/scss/style.scss */
+.credit-block .credit-title {
+  color: var(--color-three) !important;
+  font-weight: 600;
+}
+
+/* line 411, public/assets-gulp/scss/style.scss */
+.credit-block .credit-pl {
+  padding-left: 2rem;
+}
+
+/* line 414, public/assets-gulp/scss/style.scss */
+.credit-block .credit-pr {
+  padding-right: 2rem;
+}
+
+/* line 417, public/assets-gulp/scss/style.scss */
+.credit-block .credit-stitle {
+  font-weight: 600;
+}
+
+/* line 420, public/assets-gulp/scss/style.scss */
+.credit-block .credit-logo {
+  margin: auto;
+}
+
+/* line 422, public/assets-gulp/scss/style.scss */
+.credit-block .credit-logo img {
+  width: 100%;
+}
+
+/* line 427, public/assets-gulp/scss/style.scss */
+.credit-block .credit-contact {
+  margin-left: 2rem;
+}
+
+/* line 429, public/assets-gulp/scss/style.scss */
+.credit-block .credit-contact img {
+  width: 1.5rem;
+}
+
+/* line 433, public/assets-gulp/scss/style.scss */
+.credit-block .credit-link {
+  text-align: right;
+}
+
+/* line 435, public/assets-gulp/scss/style.scss */
+.credit-block .credit-link a {
+  margin: 3px;
+  background-color: var(--color-for);
+  color: white;
+  padding: 0.3rem 0.5rem;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+/* line 442, public/assets-gulp/scss/style.scss */
+.credit-block .credit-link a:hover {
+  background-color: white;
+  color: var(--color-for);
+  border: 1px solid var(--color-for);
+}
+
+/* line 452, public/assets-gulp/scss/style.scss */
+.chartCustom {
+  display: table;
+  table-layout: fixed;
+  width: 70%;
+  max-width: 900px;
+  /* height:200px;*/
+  margin: 0 auto;
+  padding: 0px;
+  /*background-image:linear-gradient(bottom, rgba(0, 0, 0, 0.1) 2%, transparent 2%);
+  background-size: 100% 50px;
+  background-position: left top;*/
+  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 25px;
+}
+
+/* line 470, public/assets-gulp/scss/style.scss */
+.chartCustom li {
+  position: relative;
+  display: table-cell;
+  vertical-align: bottom;
+  height: 200px;
+}
+
+/* line 477, public/assets-gulp/scss/style.scss */
+.chartCustom .chartItem {
+  margin: 0 5em;
+  display: block;
+  background: rgba(209, 236, 250, 0.75);
+  -webkit-animation: draw 1s ease-in-out;
+          animation: draw 1s ease-in-out;
+  padding: 0.2rem 0.5rem;
+  border-bottom: 0px;
+  background-color: #fff;
+  text-align: center;
+  overflow: hidden;
+  margin-bottom: -1px;
+}
+
+/* line 490, public/assets-gulp/scss/style.scss */
+.chartCustom .chartItem:before {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  padding: 7px 1em 0;
+  display: block;
+  text-align: center;
+  content: attr(title);
+  word-wrap: break-word;
+}
+
+/* line 499, public/assets-gulp/scss/style.scss */
+.chartCustom .chartItem span {
+  font-weight: 600;
+  display: block;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  /* line 507, public/assets-gulp/scss/style.scss */
+  .chartCustom .chartItem {
+    margin: 0 1em;
+  }
+}
+
+/* line 512, public/assets-gulp/scss/style.scss */
+.chartCustom .chartLine {
+  border-top: dotted 3px #E52320;
+  margin: 0 1rem;
+  position: absolute;
+  width: 70%;
+  background: transparent;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+}
+
+/* line 523, public/assets-gulp/scss/style.scss */
+.chartCustom .chartLine span {
+  float: right;
+  margin-right: -60px;
+  margin-top: -25px;
+}
+
+/* line 530, public/assets-gulp/scss/style.scss */
+.chartCustom .chartTextTop {
+  margin: 0 1rem;
+  position: absolute;
+  width: 90%;
+  text-align: center;
+}
+
+/* line 535, public/assets-gulp/scss/style.scss */
+.chartCustom .chartTextTop span {
+  margin-top: -25px;
+  position: absolute;
+  font-weight: 600;
+  left: 0;
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  /* line 547, public/assets-gulp/scss/style.scss */
+  .chartCustom {
+    width: 100%;
+  }
+}
+
+@-webkit-keyframes draw {
+  0% {
+    height: 0;
+  }
+}
+
+@keyframes draw {
+  0% {
+    height: 0;
+  }
+}

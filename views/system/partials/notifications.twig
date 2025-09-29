@@ -1,0 +1,17 @@
+{% if ( rsp.success is defined and rsp.success == false) %}
+    <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
+        <strong>Error: </strong> {{ rsp.message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% else %}
+    {% if ( rsp.data.newVersion is defined and rsp.data.newVersion == true) %}
+        <div class="alert alert-info alert-dismissible fade show text-center mb-0" role="alert">
+            <b>Hay una nueva actualización sobre cálculo del costo capital </b> <a href="javascript:void(0);" id="btnAlertVersion" class="ml-1">Click aquí </a> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+{% endif %}

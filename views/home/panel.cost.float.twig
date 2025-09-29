@@ -1,0 +1,28 @@
+<section class="bgsix">
+	<div class="container container-custom">
+		<div class="row page-caption">
+			<div class="col linea form-group"></div>
+			<div class="col-12 col-sm-5 col-lg-3">
+				<h4><b>¡Empieza ahora!</b></h4>
+			</div>
+			<div class="col linea form-group"></div>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="section-footer-float">
+		<div class="col-sm-12 logo-banner">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 col-sm-10 text-center item">
+					<img src="./assets/image/logo.png">
+					<p>Una plataforma para  el calculo del costo de capital</p>
+					{% if user_session %}
+						<a class="btn btn-three px-5" href="/historial">Calcula aquí</a>
+					{% else %}
+						<button class="btn btn-three px-5" data-toggle="modal" data-target="#modal-selected">Calcula aquí</button>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,176 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'landing' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="col-12">
+                {% include "admin/elements/nav_landing.twig" %}
+                <div class="row py-2">
+                    <div class="col-md-12">
+                        <form id="frmGlosario" class="w-100"> 
+                            <div class="mb-4">
+                                <label for="g_descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="g_descripcion" name="g_descripcion">{{ data.data_glosario.descripcion | raw }}</textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="g_titulo_b" class="form-label">Título secundario</label>
+                                <textarea class="form-control" id="g_titulo_b" name="g_titulo_b">{{ data.data_glosario.titulo_b | raw }}</textarea>
+                                
+                            </div>
+                            <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmGlosario">Guardar</button>
+                        </form>
+                    </div>
+                    <div class="col-md-12">
+                        <br>                   
+                        <div class="table-responsive">
+                            <button type="button" class="btn btn-outline-secondary float-right" onclick="editarModalIndustria( 0 , '' )">
+                            <i class="fas fa-plus"></i> Agregar Industria</button>
+                        
+                            <h3>Detalle de Empresas por Industrias</h3>
+                            <p></p>
+                           
+                            <table class="table align-middle" style='width: 100%;text-align: center;'>
+                                <thead>
+                                    <tr>
+                                    <th style='width: 10%;'>Id</th>
+                                    <th style='width: 40%;'>Nombre</th>
+                                    <th style='width: 20%;'>Compañias</th>
+                                    <th style='width: 40%;'>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{data.data_industria|length}}
+                                    {% for key, industria in data.data_industria %}
+                                        <tr>
+                                            <td class="align-middle">{{industria.industria_id }}</td>
+                                            <td class="align-middle" style="text-align: left;">{{ industria.nombre_industria }}</td>      
+                                                <td class="align-middle" style="text-align: left;"> 
+
+                                                         {% for  key2,companias in industria.companias %}   
+
+                                                              {% if  key2 >0 %} , {% endif %}  
+                                                              
+                                                               {{ companias.nombre_compania }} 
+
+                                                          {% endfor %}                                            
+                                                    
+                                                </td>                                      
+                                            <td class="aling-top">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+
+                                                    <!-- button type="button" class="btn btn-outline-secondary float-right" data_id="{{ industria.id }}" data_nombre="{{ industria.nombre }}"
+                                                           data-toggle="modal" data-target="#modal_industria" data-dismiss="modal"> 
+                                                    <i class="fas fa-plus"></i> Editar Industria</button-->
+
+                                                    <button type="button" class="btn btn-outline-secondary float-right" onclick="editarModalIndustria( {{industria.industria_id}} , '{{ industria.nombre_industria }}' )"> 
+                                                    <i class="fa fa-edit" aria-hidden="true"></i> Editar</button>
+
+                                                    <button type="button" class="btn btn-outline-secondary float-right" onclick="addCompanias( {{industria.industria_id}} , '{{ industria.nombre_industria }}' )" style="margin-left: 5px;"> 
+                                                    <i class="fa fa-plus" aria-hidden="true"></i> Agregar Compañias</button>                                               
+
+                                                    <button type='button' class='btn btn-outline-secondary float-right' onclick='deleteIndustria({{industria.industria_id}})' style="margin-left: 5px;"> 
+                                                    <i class='fa fa-trash' aria-hidden='true'></i></button> 
+
+                                                  </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Industrias-->
+<div class="modal fade" id="modal_industria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Industria</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="frmIndustria" class="w-100">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Nombre Industria</label>
+                    <input type="text" class="form-control" id="nombre_i" name="nombre_i">
+                </div>
+                <input type="hidden" name="id_i" id="id_i" value="0">
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmIndustria">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- Modal Companias-->
+<div class="modal fade" id="modal_companias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Compañias</h5>
+          
+          <!--button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button-->
+       
+        </div>
+        <div class="modal-body">
+            <div class="col-12">
+               <div class="row py-2">
+                    <div class="col-md-12" style="padding: 10px;">
+                        <form id="frmCompania" class="w-100">
+                            <div class="mb-3">
+                                <label for="titulo" class="form-label">Nombre Compañia</label>
+                                <input type="text" class="form-control" id="nombre_c" name="nombre_c">
+                            </div>
+                            <input type="hidden" name="id_c" id="id_c" value="0">
+                            <input type="hidden" name="id_in" id="id_in" value="0">
+                        </form>
+                        
+                        <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmCompania">Guardar cambios</button>
+                    </div>
+                    <hr>
+                    <div class="col-md-12">
+
+                         <div id="tabla_companias">
+                         </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="closeModalCompanias" class="btn btn-secondary" onclick='closeModalCompanias()'>Cerrar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(".nav-admin ul .nav-item").eq(7).addClass("active");
+</script>
+{% endblock %}

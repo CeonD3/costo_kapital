@@ -1,0 +1,227 @@
+/* line 1, public/assets-gulp/scss/componentes/_page_home.scss */
+body {
+  background-color: var(--color-for);
+}
+
+/* line 5, public/assets-gulp/scss/componentes/_page_home.scss */
+.wrapper {
+  padding-top: 5rem;
+}
+
+/* line 9, public/assets-gulp/scss/componentes/_page_home.scss */
+.slide-content {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* line 14, public/assets-gulp/scss/componentes/_page_home.scss */
+.slide-reflex {
+  background-color: rgba(0, 0, 0, 0.7);
+  min-height: 75vh;
+  flex-wrap: wrap;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* line 24, public/assets-gulp/scss/componentes/_page_home.scss */
+.slide-item {
+  color: #ffffff;
+  font-family: 'Lato Regular', sans-serif !important;
+  padding: 3rem 0rem 0rem 0rem;
+}
+
+/* line 28, public/assets-gulp/scss/componentes/_page_home.scss */
+.slide-item h1 {
+  text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4), 0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+}
+
+/* line 35, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-panel-float {
+  margin-top: -140px;
+}
+
+/* line 39, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-footer-float {
+  background-color: var(--color-for);
+}
+
+/* line 41, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-footer-float .item {
+  padding: 2rem 1rem;
+  background-color: white;
+  margin: -3rem 0rem 2rem 0rem;
+}
+
+/* line 47, public/assets-gulp/scss/componentes/_page_home.scss */
+.panel-item {
+  background-color: white;
+  padding: 1.1rem;
+  min-height: 14rem;
+  border-radius: 20px;
+}
+
+/* line 52, public/assets-gulp/scss/componentes/_page_home.scss */
+.panel-item img {
+  height: 4rem;
+}
+
+/* line 55, public/assets-gulp/scss/componentes/_page_home.scss */
+.panel-item p {
+  color: black;
+  font-size: 1.1rem;
+}
+
+/* line 59, public/assets-gulp/scss/componentes/_page_home.scss */
+.panel-item h5 {
+  color: var(--color-two);
+}
+
+/* line 64, public/assets-gulp/scss/componentes/_page_home.scss */
+.panel-item:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+}
+
+/* line 68, public/assets-gulp/scss/componentes/_page_home.scss */
+.page-footer-item {
+  font-size: 1.1rem;
+  text-align: center;
+  text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4), 0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+}
+
+/* line 74, public/assets-gulp/scss/componentes/_page_home.scss */
+.page-footer-item .logo-footer {
+  height: 4.2rem;
+}
+
+/* line 77, public/assets-gulp/scss/componentes/_page_home.scss */
+.page-footer-item ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 82, public/assets-gulp/scss/componentes/_page_home.scss */
+.page-footer-item a:hover {
+  color: #ffffff;
+}
+
+/* line 87, public/assets-gulp/scss/componentes/_page_home.scss */
+.page-caption {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 4rem;
+  padding-bottom: 8rem;
+}
+
+/* line 95, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-panel-title {
+  margin-top: 4rem;
+  margin-bottom: 8rem;
+}
+
+/* line 98, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-panel-title h4 {
+  text-transform: capitalize;
+  font-family: "Lato Black";
+  color: var(--color-for);
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+/* line 104, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-panel-title h4 span {
+  color: var(--color-three);
+}
+
+/* line 108, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-panel-title p {
+  font-size: 1.2rem;
+  color: var(--color-three);
+  font-family: "Lato Black";
+}
+
+/* line 114, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-card {
+  padding: 2rem;
+  background-color: white;
+  width: 100%;
+  border-bottom: 5px solid var(--color-three);
+  font-family: "Lato Regular";
+  color: var(--color-seven);
+}
+
+/* line 121, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-card h3 {
+  font-family: "Lato Bold";
+  font-size: 1.2rem;
+  color: var(--color-for);
+  margin-bottom: 2rem;
+}
+
+/* line 127, public/assets-gulp/scss/componentes/_page_home.scss */
+.section-card strong {
+  color: var(--color-three);
+}
+
+/* line 132, public/assets-gulp/scss/componentes/_page_home.scss */
+.bgsix {
+  background-color: var(--color-six);
+}
+
+/* line 136, public/assets-gulp/scss/componentes/_page_home.scss */
+.bgwhite {
+  background-color: #ffffff;
+}
+
+/* line 140, public/assets-gulp/scss/componentes/_page_home.scss */
+.bgfor {
+  background-color: var(--color-for);
+}
+
+/* line 144, public/assets-gulp/scss/componentes/_page_home.scss */
+.linea-two {
+  width: 3rem;
+  border-bottom: 5px solid var(--color-for);
+  display: inline-block;
+}
+
+/* line 150, public/assets-gulp/scss/componentes/_page_home.scss */
+.team-block {
+  background-color: var(--color-for);
+  color: white;
+  padding: 1rem 1rem;
+  font-weight: 500;
+}
+
+/* line 155, public/assets-gulp/scss/componentes/_page_home.scss */
+.team-block ul li {
+  list-style: none;
+  margin: 1rem 0rem;
+}
+
+@media (min-width: 1360px) {
+  /* line 162, public/assets-gulp/scss/componentes/_page_home.scss */
+  .container-custom {
+    max-width: 1360px;
+  }
+}
+
+@media only screen and (max-width: 1360px) {
+  /* line 168, public/assets-gulp/scss/componentes/_page_home.scss */
+  .slide-reflex {
+    min-height: 70vh;
+  }
+  /* line 171, public/assets-gulp/scss/componentes/_page_home.scss */
+  .page-footer {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  /* line 177, public/assets-gulp/scss/componentes/_page_home.scss */
+  .logo-header-second {
+    display: none;
+  }
+}

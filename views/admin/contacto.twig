@@ -1,0 +1,51 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'landing' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="col-12">
+                {% include "admin/elements/nav_landing.twig" %}
+                <div class="row py-2">
+                    <div class="col-md-12">
+                        <form id="frmContact" class="w-100">
+                            <div class="mb-3">
+                                <input class="form-control form-control-lg d-none" name="imgBanner" id="imgBanner" type="file">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input class="form-control form-control-lg" name="telefono" type="tel" value="{{ data.telefono }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo</label>
+                                <input class="form-control form-control-lg" name="email" type="email" value="{{ data.correo }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">URL consultoría</label>
+                                <input class="form-control form-control-lg" name="url" value="{{ data.url_uno }}" type="url">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Terminos y condiciones</label>
+                                <textarea class="form-control" id="terminos_condiciones" name="terminos_condiciones">{{ data.terminos_condiciones | raw }}</textarea>
+                                
+                            </div>
+                            <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmContact">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(".nav-admin ul .nav-item").eq(4).addClass("active");
+</script>
+{% endblock %}

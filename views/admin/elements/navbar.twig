@@ -1,0 +1,27 @@
+<nav class="bg-dark nav-main">
+    <div class="card text-center pt-4" style="width: 100%;">
+        <i class="fas fa-laptop-code card-img-top" style="font-size: 5rem; color: #343a40;"></i>
+        <div class="card-body">
+          <h5 class="card-title">Panel administrativo</h5>
+          <p class="card-text">Panel de adminstración de <BR> plantillas web y libros de excel.</p>
+          {#<a href="#" class="btn btn-primary">Go somewhere</a>#}
+        </div>
+    </div>
+    <ul class="nav flex-column mt-3">
+        <li class="nav-item {{ URI == '/admin/landing-home' ? 'active' : '' }}">
+        <a class="nav-link" href="/admin/landing-home"><i class="fas fa-tv"></i> Landing</a>
+        </li>
+        <li class="nav-item {{ URI == '/admin/plantillas' ? 'active' : '' }}">
+        <a class="nav-link" href="/admin/plantillas"><i class="far fa-file-excel"></i> Plantillas</a>
+        </li>
+        {# <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-users"></i> Usuarios</a>
+        </li> #}
+        <li class="nav-item {{ URI == '/admin/contactos' ? 'active' : '' }}">
+            <a class="nav-link" href="/admin/contactos"><i class="far fa-envelope"></i> Contactos</a>
+        </li>
+        <li class="nav-item {{ URI == '/admin/reportes' ? 'active' : '' }}">
+            <a class="nav-link" href="/admin/reportes"><i class="fas fa-chart-bar"></i> Reportes</a>
+        </li>
+    </ul>
+</nav>

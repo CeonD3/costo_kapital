@@ -1,0 +1,107 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'landing' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="col-12">
+                {% include "admin/elements/nav_landing.twig" %}
+                <button type="button" onclick="getItemCredit('', 'frmCredit', 'modal_Credit')" class="btn btn-outline-secondary float-right"><i class="fas fa-plus"></i> Agregar</button>
+                            <h3>Créditos</h3>
+                            <p>Lista de bloques donde se detallan los créditos del sistema.</p>
+                <div class="row py-2">
+                    
+                    <div class="col-lg-6">
+                        <div class="row credit-block">
+                            <div class="action">       
+                                <button type="button" onclick="getItemServicio({{ servicio.id }}, 'frmServicio', 'modal_servicio')" class="btn btn-outline-secondary mr-2"><i class="fas fa-edit"></i></button>
+                                <button type="button" onclick="deleteItemServicio({{ servicio.id }}, 'frmServicio', 'modal_servicio')" class="btn btn-outline-secondary"><i class="far fa-trash-alt"></i></button>
+                            </div>
+                            <div class="col-lg-8">
+                                <h5 class="credit-title">titulo</h4>
+                                <h5 class="credit-stitle">sub titulo</h5>
+                                <p class="credit-descp">parrafo pakcnsd konjfsweuihb</p>
+                                <div class="row">
+                                    <div class="col-6 credit-col">
+                                        <ul>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-6">
+                                        <ul>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="credit-contact"><img src="/assets/image/icon-email.svg" alt="">czegarra@softdynamic.org</p>
+                            </div>
+                            <div class="col credit-logo">
+                                <img src="/assets/image/logo.png" alt="">
+                            </div>
+                            <div class="col-12 credit-link">
+                                <a href="#" target="_blank">boton 1</a>
+                                <a href="#" target="_blank">boton 2</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal_Credit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edición Servicio</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="frmTeam" class="w-100">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="name" id="name">
+                    <input class="form-control form-control-lg d-none" name="id_team" id="id_team" type="number">
+                </div>
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Orden</label>
+                    <input type="number" class="form-control" name="order" id="order">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmTeam">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block js %} 
+<script type="text/javascript">
+    $(".nav-admin ul .nav-item").eq(6).addClass("active");
+</script>
+{% endblock %}

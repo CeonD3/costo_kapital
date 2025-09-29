@@ -1,0 +1,146 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+    <style>
+        table th,
+        table td {
+            text-align: center;
+        }
+        table td {
+            color: gray;
+        }
+        .custom-file-label::after {
+            content: "Elegir" !important; 
+        }
+        .bge {
+            padding: .75rem;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'plantillas' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center" id="AppAdminTemplate">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <h4 class="d-inline">GESTIONAR PLANTILLA MAESTRA</h4> 
+                    <button type="button" class="btn btn-outline-secondary float-right" @click="onForm(-1)"><i class="fa fa-plus mr-2" aria-hidden="true"></i> Nuevo</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="table-responsive">
+                        <table class="table hover" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Fecha de Actualización</th>
+                                    <th>Predeterminado</th>
+                                    <th>Versión</th>
+                                    <th>Archivo</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-if="templates.length > 0">
+                                    <tr v-for="item, index in templates" :key="item.id">
+                                        <td v-text="item.id"></td>
+                                        <td v-text="item.name"></td>
+                                        <td v-text="item.created_at"></td>
+                                        <td>
+                                            <template v-if="item.status === 1">
+                                                <span class="badge badge-secondary bge">Sí</span>
+                                            </template>
+                                            <template v-else>
+                                                <span class="badge badge-light bge">No</span>
+                                            </template>
+                                        </td>
+                                        <td v-text="'v'+item.version"></td>
+                                        <td>
+                                            <a :href="item.file ? '/template/master/'+item.file : '#' " class="text-secondary" download><i class="fa fa-download mr-2" aria-hidden="true" download></i> Descargar</a>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm mr-2" @click="onForm(index)">
+                                                <i class="fa fa-edit" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="onDelete(index)">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template v-else>
+                                    <tr><td colspan="6">No hay registros para mostrar</td></tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="mdlForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">PLANTILLA MAESTRA</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="frmSave" @submit="onSave">
+                                <input type="hidden" class="form-control" name="id" :value="template.id">
+                                <div class="form-group">
+                                    <label>Nombre</label>
+                                    <input type="text" class="form-control" name="name" :value="template.name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Archivo</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFileLang" name="file" @change="onReadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                        <label class="custom-file-label" for="customFileLang" id="lblFile" style="overflow:hidden;">Seleccionar Archivo</label>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-lg-4">
+                                        <label>versión</label>
+                                        <select class="form-control" name="version" :value="template.version ? template.version : 1" required>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="status" value="1" id="exampleCheck1" :checked="template.status == 1 ? true : false">
+                                        <label class="form-check-label" for="exampleCheck1">Predeterminado</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" form="frmSave">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+    {# <script src="/assets/js/admin_landing.min.js"></script> #}
+    <script>
+        window.addEventListener('load', window.AppAdminTemplate.init(JSON.parse("{{ rsp.data|json_encode|e('js') }}")));
+    </script>
+{% endblock %}

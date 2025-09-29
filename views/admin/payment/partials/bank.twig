@@ -1,0 +1,31 @@
+<div class="row">   
+    <input type="hidden" name="id[]" value="{{ item.id }}">
+    <div class="col-lg-2 form-group">
+        <label>Cuenta:</label>
+        <input type="text" class="form-control" name="account[]" value="{{ item.account }}" required placeholder="BCP en soles, BCP en dólares, BBVA en soles...">
+    </div>
+    <div class="col-lg-3 form-group">
+        <label>Número:</label>
+        <input type="text" class="form-control" name="number[]" value="{{ item.number }}" placeholder="197-1564145-0-62">
+    </div>
+    <div class="col-lg-3 form-group">
+        <label>CCI:</label>
+        <input type="text" class="form-control" name="cci[]" value="{{ item.cci }}" placeholder="007-123-002654413695-12">
+    </div>
+    <div class="col-lg-2 form-group">
+        <label>Imagen:</label>
+        {% if item.image %}
+            <a href="{{ item.image }}" class="float-right" download>Descargar</a>
+        {% endif %}
+        <div class="custom-file">
+            <input type="file" name="image[]" class="custom-file-input" id="customFile" accept="image/*">
+            <label class="custom-file-label" for="customFile">{{ item.image ? item.image : 'Seleccionar' }}</label>
+        </div>
+    </div>
+    <div class="col-lg-2 form-group text-right">
+        <button type="button" class="btn btn-outline-secondary mt-4 btnDeleteBank">
+            <i class="fa fa-plus mr-2"></i>
+            Eliminar
+        </button>
+    </div>
+</div>

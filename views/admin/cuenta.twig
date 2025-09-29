@@ -1,0 +1,136 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'cuentas' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center" id="AppAccountAdmin">
+    <div class="col-sm-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white p-4">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h4 class="mb-0">Onedrive</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group w-100 my-4">
+                            <span><i class="fa fa-chevron-right mr-2" aria-hidden="true"></i> Almacenamiento en su cuenta personal de ONEDRIVE</span>
+                            <div class="float-right">
+                                <div class="spinner-border text-primary mr-2" role="status" v-if="loading">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                <button class="btn btn-primary" v-if="!status" @click="onSignin" v-show="!loading">
+                                    Vincular cuenta
+                                </button>
+                                <button class="btn btn-danger" @click="onSignout" v-else v-show="!loading">
+                                    Desvincular cuenta
+                                </button>                      
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" v-if="status">
+                    <div class="col-md-12">
+                        <ul class="list-group my-4">
+                            <li class="list-group-item">Datos de la cuenta</li>
+                            <li class="list-group-item">Usuario: <b v-text="onedrive?.userPrincipalName"></b></li>
+                            <li class="list-group-item">Nombre: <b v-text="onedrive?.displayName"></b></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    const initAccount = () => {
+        let self = {};
+        return new Vue({
+            el: '#AppAccountAdmin',
+            data() {
+                return {
+                    loading: true,
+                    status: false,
+                    onedrive: {}
+                }
+            },
+            created: function() {
+                self = this;
+            },
+            mounted: function () {
+                self.onInitialize();
+            },
+            watch: {
+            },
+            computed: {
+            },
+            methods: {
+                onInitialize: function() {
+                    self.onOverview();
+                },
+                onOverview: function () {
+                    self.loading = true;
+                    helper.post('/admin/onedrive/overview')
+                    .then(function ({success, data, message}) {
+                        if (!success) {
+                            throw message;
+                        }
+                        self.loading = false;
+                        self.status = data.status;
+                        self.onedrive = data.account;
+                        sweet2.loading(false);
+                    })
+                    .catch(function (err) {
+                        self.loading = false;
+                        sweet2.error({html: err});
+                    });
+                },
+                onSignin: function() {
+                    self.loading = true;
+                    $('<form>', {
+                        id: 'frmAzure',
+                        html: `<input type="text" name="redirect" value="${ (window.location.protocol + "//" + window.location.host + '/admin/cuentas') }" />`,
+                        action: '/admin/onedrive/authUrl',
+                        // target: '_blank',
+                        method: 'post',
+                        class:'add-none'
+                    }).appendTo(document.body).submit();
+                    $('#frmAzure').remove();
+                },
+                onSignout: function() {
+                    sweet2.question({
+                        title: '¿Estás seguro de desvincular su cuenta?',
+                        onOk: () => {
+                            sweet2.loading();
+                            helper.post('/admin/onedrive/signout')
+                            .then(function ({success, data, message}) {
+                                if (!success) {
+                                    throw message;
+                                }
+                                self.onOverview();
+                                sweet2.success({text: message});
+
+                            })
+                            .catch(function (err) {
+                                sweet2.error({html: err});
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', initAccount());
+</script>
+{% endblock %}

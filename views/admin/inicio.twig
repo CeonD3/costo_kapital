@@ -1,0 +1,49 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'landing' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="col-12">
+                {% include "admin/elements/nav_landing.twig" %}
+                <div class="row py-2">
+                    <div class="col-md-12">
+                        <form id="frmLanding" class="w-100">
+                            <div class="mb-4">
+                                <label for="imgBanner" class="form-label">Banner (JPG, PNG)</label>
+                                <div class="previewImg" id="previewBanner">
+                                    <img src="{{ data.img | raw }}" class="img-fluid" alt="banner principal">
+                                </div>
+                                <input class="form-control form-control-lg" name="imgBanner" id="imgBanner" type="file">
+                            </div>
+                            <div class="mb-4">
+                                <label for="sn-titulo" class="form-label">Título principal</label>
+                                <textarea class="form-control" id="sn-titulo" name="titulo">{{ data.titulo | raw }}</textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="exampleFormControlTextarea1" class="form-label">Título secundario</label>
+                                <textarea class="form-control" id="sn-stitulo" name="stitulo">{{ data.stitulo | raw }}</textarea>
+                                
+                            </div>
+                            <button class="px-3 py-2 btn btn-dark border-0" type="submit" form="frmLanding">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(".nav-admin ul .nav-item").eq(0).addClass("active");
+</script>
+{% endblock %}

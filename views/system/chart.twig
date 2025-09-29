@@ -1,0 +1,25 @@
+
+{# https://codepen.io/Victa/pen/kGRyVE #}
+{% set items = rsp.data.system.graph.general.items %}
+{% set groups = rsp.data.system.graph.general.groups %}
+{% set mypixel = 15 %}
+<ul class="chartCustom">
+    {% for item in items %}
+    <li>
+        <div class="chartTextTop"><span>{{ item.title }}</span></div>
+        {% if item.value == item.measure %}
+        {% else %}
+        <div class="chartLine" style="height:{{ item.measure * mypixel }}px;">
+            <span>{{ item.title }}</span>
+        </div>
+        {% endif %}
+        {% for key,group in groups|reverse  %}
+            {% if item[group.index] > 0 %}
+                <div class="chartItem" style="height:{{ item[group.index] * mypixel }}px; border: 2px solid {{ group.color }};" title="{{ item.label }}">
+                    <span>{{ group.label }} = {{ item[group.index] }}%</span>
+                </div>        
+            {% endif %}
+        {% endfor %}
+    </li>        
+    {% endfor %}
+</ul>    

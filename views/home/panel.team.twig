@@ -1,0 +1,249 @@
+{% extends "home/main.twig" %}
+
+{% block css %}
+<link rel="stylesheet" href="/assets/css/style_costo_capital.css">
+<link rel="stylesheet" href="/assets/css/style_page_home.css">
+{% endblock %}
+
+{% block content %}
+<section class="bgwhite">
+	<div class="container container-custom">
+		<div class="row mx-auto pt-4 pb-4 justify-content-md-center">
+			<div class="col-lg-6 form-group">
+				<div class="accordion" id="accordionExample">
+					<div class="card acordion acordion-active shadow" data-id="" style="    box-shadow: 5px 1px 9px rgb(0 0 0 / 5%);">
+						<div class="acordion-header" id="heading">
+							<h2 class="mb-0">
+								<button class="btn btn-link btn-block text-left" type="button">
+									Director de Proyecto
+								</button>
+							</h2>
+						</div>
+						
+						<div class="row credit-block">
+                           <div class="col credit-pl">
+                                <h5 class="credit-stitle">PhD. Sergio Bravo Orellana</h5>
+                                <p class="credit-descp">Director del Instituto de Regulación y Finanzas de la Universidad ESAN								</p>
+                                {#<div class="row">
+                                    <div class="col-6 credit-col">
+                                        <ul>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-6">
+                                        <ul>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="credit-contact"><img src="/assets/image/icon-email.svg" alt="">czegarra@softdynamic.org</p>#}
+                            </div>
+                            {#<div class="col-4 credit-logo credit-pr">
+                                <img src="/assets/image/logo.png" alt="">
+                            </div>
+                            <div class="col-12 credit-link">
+                                <a href="#" target="_blank"><i class="fab fa-whatsapp"></i> Whatsapp</a>
+                                <a href="#" target="_blank">Consultar ahora</a>
+                            </div>#}
+                        </div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-lg-6 form-group">
+				<div class="accordion" id="accordionExample">
+					<div class="card acordion acordion-active shadow" data-id="" style="    box-shadow: 5px 1px 9px rgb(0 0 0 / 5%);">
+						<div class="acordion-header" id="heading">
+							<h2 class="mb-0">
+								<button class="btn btn-link btn-block text-left" type="button">
+									Colaboradores Académicos
+								</button>
+							</h2>
+						</div>
+						
+						<div class="row credit-block">
+                           <div class="col-lg-8 credit-pl">
+                                <h5 class="credit-stitle">Área de Investigación FRI ESAN</h5>
+                                {#<p class="credit-descp">parrafo pakcnsd konjfsweuihb</p>#}
+                                <div class="row">
+                                    <div class="col credit-col">
+                                        <ul>
+                                            <li>Alvina Callupe</li>
+                                            <li>Yajaira Tácunan</li>
+                                        </ul>
+                                    </div>
+                                    {#<div class="col-6">
+                                        <ul>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                        </ul>
+                                    </div>#}
+                                </div>
+                                {#<p class="credit-contact"><img src="/assets/image/icon-email.svg" alt="">czegarra@softdynamic.org</p>#}
+                            </div>
+                            {#<div class="col credit-logo credit-pr">
+                                <img src="/assets/image/logo.png" alt="">
+                            </div>
+                            <div class="col-12 credit-link">
+                                <a href="#" target="_blank"><i class="fab fa-whatsapp"></i> Whatsapp</a>
+                                <a href="#" target="_blank">Consultar ahora</a>
+                            </div>#}
+                        </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6 form-group">
+				<div class="accordion" id="accordionExample">
+					<div class="card acordion acordion-active shadow" data-id="" style="    box-shadow: 5px 1px 9px rgb(0 0 0 / 5%);">
+						<div class="acordion-header" id="heading">
+							<h2 class="mb-0">
+								<button class="btn btn-link btn-block text-left" type="button">
+									Reportes
+								</button>
+							</h2>
+						</div>
+						
+						<div class="row credit-block">
+                           <div class="col-lg-8 credit-pl">
+                                <h5 class="credit-stitle">Área de Consultoría FRI ESAN</h5>
+                                {#<p class="credit-descp">parrafo pakcnsd konjfsweuihb</p>#}
+                                <div class="row">
+                                    <div class="col-6 credit-col">
+                                        <ul>
+                                            <li>Edwin Olearte</li>
+                                            <li>Diana Boza</li>
+                                            <li>Alicia Vargas</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-6">
+                                        <ul>
+                                            <li>Edú Zanabria</li>
+                                            <li>Nicolás Alvariño</li>
+                                            <li>Noé López</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="credit-contact"><img src="/assets/image/icon-email.svg" alt="">ezanabria@esan.edu.pe</p>
+                                <p class="credit-contact"><img src="/assets/image/icon-email.svg" alt="">dboza@esan.edu.pe</p>
+                            </div>
+                            <div class="col credit-logo credit-pr">
+                                <img src="/assets/image/credit/consulting.png" alt="">
+                            </div>
+                            <div class="col-12 credit-link">
+                                <a href="https://api.whatsapp.com/send?phone=51994092767&text=Quisiera%20informaci%C3%B3n%20sobre%20el%20servicio%20de%20Consultor%C3%ADa" target="_blank"><i class="fab fa-whatsapp"></i> Whatsapp</a>
+                                <a href="https://fri.consulting.org.pe/" target="_blank">Consultar ahora</a>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6 form-group">
+				<div class="accordion" id="accordionExample">
+					<div class="card acordion acordion-active shadow" data-id="" style="    box-shadow: 5px 1px 9px rgb(0 0 0 / 5%);">
+						<div class="acordion-header" id="heading">
+							<h2 class="mb-0">
+								<button class="btn btn-link btn-block text-left" type="button">
+									Asesoría y Programación Web
+								</button>
+							</h2>
+						</div>
+						
+						<div class="row credit-block">
+                           <div class="col-lg-8 credit-pl">
+                                <h5 class="credit-stitle">Softdynamic S.A.C.</h5>
+                                {#<p class="credit-descp">parrafo pakcnsd konjfsweuihb</p>#}
+                                <div class="row">
+                                    <div class="col credit-col">
+                                        <ul>
+                                            <li>Alexander Zegarra, Gerente General
+											</li>
+                                        </ul>
+                                    </div>
+                                    {#<div class="col-6">
+                                        <ul>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                        </ul>
+                                    </div>#}
+                                </div>
+                                <p class="credit-contact"><img src="/assets/image/icon-email.svg" alt="">azegarra@softdynamic.org</p>
+                            </div>
+                            <div class="col credit-logo credit-pr">
+                                <img src="/assets/image/credit/soft.png" alt="">
+                            </div>
+                            <div class="col-12 credit-link">
+                                <a href="https://wa.me/51943777031?text=Hola.%20Necesito%20informaci%C3%B3n" target="_blank"><i class="fab fa-whatsapp"></i> Whatsapp</a>
+                                {#<a href="#" target="_blank">Consultar ahora</a>#}
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6 form-group">
+				<div class="accordion" id="accordionExample">
+					<div class="card acordion acordion-active shadow" data-id="" style="    box-shadow: 5px 1px 9px rgb(0 0 0 / 5%);">
+						<div class="acordion-header" id="heading">
+							<h2 class="mb-0">
+								<button class="btn btn-link btn-block text-left" type="button">
+									Asesoría y Diseño Web
+								</button>
+							</h2>
+						</div>
+						
+						<div class="row credit-block">
+                           <div class="col credit-pl">
+                                <h5 class="credit-stitle">Creative Marketing Ideas S.A.C</h5>
+                                {#<p class="credit-descp">parrafo pakcnsd konjfsweuihb</p>#}
+                                <div class="row">
+                                    <div class="col credit-col">
+                                        <ul>
+                                            <li>Isabel Arevalo, Gerente General</li>
+                                        </ul>
+                                    </div>
+                                    {#<div class="col-6">
+                                        <ul>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                            <li>item</li>
+                                        </ul>
+                                    </div>#}
+                                </div>
+                                <p class="credit-contact"><img src="/assets/image/icon-email.svg" alt="">isabel.arevalo@cmideas.com.pe</p>
+                            </div>
+                            <div class="col-4 credit-logo credit-pr">
+                                <img src="/assets/image//credit/cmi.png" alt="">
+                            </div>
+                            <div class="col-12 credit-link">
+                                <a href="https://wa.me/51980520626?text=Hola.%20Necesito%20informaci%C3%B3n" target="_blank"><i class="fab fa-whatsapp"></i> Whatsapp</a>
+                                <a href="https://cmideas.com.pe/" target="_blank">Consultar ahora</a>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 form-group"></div>
+		</div>
+	</div>
+</section>
+	{% include "home/panel.cost.float.twig" %}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+	$(".header-item ul .nav-item").eq(1).addClass("active-head");
+</script>
+{% endblock %}

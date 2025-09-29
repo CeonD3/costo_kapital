@@ -1,0 +1,226 @@
+/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    margin-top: 70px;
+  }
+  @media (max-width: 768px) {
+    #wrapper.toggled {
+      margin-top: 70px;    
+    }
+  }
+  #wrapper.toggled {
+    padding-left: 250px;
+  }
+  #sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background-color: var(--color-for);
+    /*background-image: linear-gradient(
+      30deg
+       , var(--color-for), #0048bd);*/
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+    transition: all 0.5s ease;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+  }
+  #page-content-wrapper {
+    width: 100%;
+    position: absolute;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+  }
+  /* Sidebar Styles */
+
+  .sidebar-profile{
+    text-align: center;
+    padding: 15px;
+    display: block;
+  }
+  .sidebar-profile img{
+    border-radius: 50%;
+    height: 140px;
+    margin-top: 15px;
+    box-shadow: 5px 5px 5px rgb(0 0 0 / 5%);
+  }
+  .sidebar-profile .profile-name{
+    font-weight: 500;
+    color: #fff;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-nav {
+    /* position: absolute; */
+    /* top: 0; */
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sidebar-nav li {
+    text-indent: 7px;
+    line-height: 40px;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav .navbar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #a2a3b7;
+  }
+  .sidebar-nav li a.collapsed:hover {
+    text-decoration: underline;
+    color: #fff;
+
+  }
+  .sidebar-nav li .active {
+    color: #fff;
+    background: none;
+  }
+
+  .sidebar-nav .panel-collapse a:hover{
+      color: #fff;
+    }
+
+  .sidebar-nav li a:active,
+  .sidebar-nav li a:focus {
+    text-decoration: none;
+  }
+  .sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+  }
+  .sidebar-nav > .sidebar-brand a {
+    color: #999999;
+  }
+  .sidebar-nav > .sidebar-brand a:hover {
+    color: #a2a3b7;
+    background: none;
+  }
+
+  .closesidebar{
+    position: absolute;
+    top: 0;
+    right: 0px;
+    background: transparent;
+    width: 30px;
+  }
+
+  .sidebar-nav li .active {
+    text-decoration: none;
+    color: #fff;
+    background: none;
+  }
+
+  .sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .nav-item li a:hover{
+    color: white !important;  
+  }
+  .nav-item{
+    color: white !important;
+    cursor: pointer;
+  }
+  /*.nav-item li .active{
+    color: white !important;
+    font-weight: 600 !important;
+    background: transparent !important;
+  }*/
+
+  .fa-nav-item{
+    font-size: 8px;
+    vertical-align: middle;
+    margin-right: 2px;
+    margin-left: -20px;
+    margin-top: -2px;
+  }
+  #sidebar-wrapper::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+    /* -webkit-box-shadow: inset 0 0 6px var(--color-three); */
+    background-color: #fff;
+  }
+
+  #sidebar-wrapper::-webkit-scrollbar
+  {
+    width: 4px;
+    background-color: #fff;
+  }
+
+  #sidebar-wrapper::-webkit-scrollbar-thumb
+  {
+    background-color: var(--color-nine);
+  }
+
+  .btn-menu-toggle{
+      font-size: 16px;
+      color: var(--color-three);
+      left: 0px;
+      top: 7px;
+      margin-right: 15px;
+  }
+
+  .btn-menu-toggle:focus, .btn-menu-toggle.focus{
+    box-shadow: none;
+  }
+
+  @media(min-width:992px) {
+    #wrapper {
+      padding-left: 250px;
+    }
+    #wrapper.toggled {
+      padding-left: 0;
+    }
+    #sidebar-wrapper {
+      width: 250px;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+      width: 0;
+    }
+    #page-content-wrapper {
+      position: relative;
+    }
+    #wrapper.toggled #page-content-wrapper {
+      position: relative;
+      margin-right: 0;
+    }
+  }
+  @media(max-width:768px) {
+    #wrapper.toggled {
+      padding-left: 0;
+    }
+  }
+  
+
+  /*.panel-collapse li a:hover{
+    background: none;
+    text-decoration: underline;
+  }*/

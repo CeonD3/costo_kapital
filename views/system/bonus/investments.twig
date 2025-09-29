@@ -1,0 +1,159 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+<style>
+    .nine-outborder{
+        background: var(--color-nine-out) !important;
+        border-left: 3px solid var(--color-nine) !important;
+    }
+    .table-sectors td:nth-child(1){
+        background: var(--color-nine);
+    }
+    .table-sectors td:nth-child(2){
+        text-align:center;
+        font-weight: 600;
+        max-width:50px;
+    }
+    .table-sectors td{
+        border: 0px;
+        border: 1px solid #dee2e6;
+    }
+    .table-sectors tbody tr:hover{
+        background: #f4f6f9;
+        border-left: 2px solid var(--color-nine);
+    }
+    .list-group-sectors{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+    .list-group-sectors li{
+        display: block;
+        margin-bottom: 20px;
+        font-size: 17px;
+    }
+    .list-group-sectors li .item-display{
+        width: calc(100% - 240px);
+        float:left;
+        background: var(--color-nine);
+        color: #fff;
+        padding: 5px;
+        font-weight:500;
+        text-align: center;
+        height: 40px;
+    }
+    .list-group-sectors li .item-value{
+        width:120px;        
+        float:left;
+        text-align: center;
+        border-bottom: 3px solid var(--color-nine);
+        height: 40px;
+    }
+    .list-group-sectors li .item-value input{
+        box-shadow: none;
+        font-size: 17px;
+        border: 0px;
+        background: var(--color-nine-out);
+    }
+    .list-group-sectors li .item-header-display{
+        width: calc(100% - 240px);
+        float:left;
+        color: #fff;
+        padding: 5px;
+        font-weight:500;
+        text-align: center;
+    }
+    .list-group-sectors li .item-header-value{
+        width:120px;       
+        float:left;
+        text-align: center;
+        background: var(--color-nine);
+        height: 40px;
+        color: #fff;
+        padding: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+	<section class="container-fluid">
+		{% include "system/results.twig" %}
+        <div class="row width-100 p-0 table-one justify-content-center">
+			<div class="col-sm-8 table-one-data shadow">
+                <div class="row text-center" id="appCalculationInvesment">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bg-five text-center py-3 mb-4">
+                                    <h4 class="m-0">Cálculo del costo de Capital de la Inversión</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mx-auto mb-1">
+                                <div class="alert alert-info p-2" role="alert">
+                                    <h4>Ingrese datos</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mx-auto">
+                                <ul class="list-group-custom">
+                                    <li class="d-block">
+                                        <div class="float-left d-block f-w300 borde-0">&nbsp;</div>
+                                        <div class="item-value w150 bg-nine-out">Dolares</div>
+                                        <div class="item-value w150 bg-nine-out">Soles</div>
+                                    </li>
+                                     {% for index,item in rsp.data.system.inputs %}
+                                        {% if index == 4 %}
+                                        <div class="text-secondary text-left mt-3 mb-2"> 
+                                            <span>
+                                                Se ha proporcionado una Tasa de Impuesto correspondiente al país de residencia de la inversión. 
+                                                <br>En caso su inversión esté bajo un régimen especial ingresar la tasa 
+                                            </span>
+                                        </div>
+                                        {% endif %}
+                                        <li class="list-group-item-custom">
+                                            <div class="item-name nine-outborder h50-25 f-w300"><span>{{ item.name }}</span></div>
+                                            <div class="item-value h50-25 w150"><span>{{ item.dolares }}</span></div>
+                                            {% if index == 0 %} 
+                                                <form id="frmSave" @submit="calculation">
+                                                    <div class="item-value h50-25 w150">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control text-center" name="percentage" placeholder="0.00" value="{{ item.soles }}">
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            {% else %}
+                                                <div class="item-value h50-25 w150"><span></span></div>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-md-12 mt-3 text-right">
+                                {# <a href="/tasas/{{ rsp.data.code }}" class="float-left"><i class="fa fa-arrow-right" aria-hidden="true"></i> Ver reporte generado anteriormente </a> #}
+                                <button type="submit" class="btn btn-three" form="frmSave">Calcular</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <canvas id="myChart" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %} 
+<script type="text/javascript">
+    let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+    window.addEventListener('load', window.AppCalculationInvesment.init(args));
+</script>
+{% endblock %}

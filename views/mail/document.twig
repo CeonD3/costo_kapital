@@ -1,0 +1,57 @@
+<div style="background-color:#f4f4f4; margin:0px; padding:30px;">
+	<div style="width:800px !important;background-color: #fff !important;margin: auto !important; border:1px solid #f4f4f4;font-weight:400;color:#000;">
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tbody>
+				<tr>
+					<td>
+						<div style="text-align: center;padding-top:5px; padding-bottom:5px;">
+							<img src="/assets/image/logo.png" />
+						</div>            
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div style="    
+							padding: 1px;
+							text-align: center;
+							color: #fff;
+							background-color: #02abde;
+							font-weight:700;
+							font-size: 20px;">
+							<p><strong>NOTIFICACIÓN DE TRANSACCIÓN</strong></p>
+						</div>            
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div style="padding:15px 30px; text-align:center; font-size: 14px;">
+							<p>Estimado: <b>{{ email }}</b></p>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div style="padding:0px 30px; text-align:center; font-size: 14px;">
+							<table>
+								<tbody>
+									{% if link %}
+									<tr>
+										<td style="padding:0px 5px 10px 0px; width:175px; vertical-align: initial; text-align:left;">Link:</td>
+										<td style="padding:0px 0px 10px 0px; text-align:left; word-break: break-word;"><a href="https://{{ APP.HOST }}/reporte/documento/{{ code }}">https://{{ APP.HOST }}/reporte/documento/{{ code }}</a> </td>
+									</tr>
+									{% endif %}
+									{% if comment %}
+										<tr>
+											<td colspan="2" style="padding:0px 0px 10px 0px; text-align:left; word-break: break-word;">{{ comment }}</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+						<br/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

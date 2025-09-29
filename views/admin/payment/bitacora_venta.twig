@@ -1,0 +1,258 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+    <style>
+        .table th,
+        .table td {
+            text-align: center;
+            padding: .9rem !important;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+        .table td {
+            color: gray;
+        }
+        table.dataTable,
+        .dataTables_filter,
+        .dataTables_length {
+            margin-bottom: 15px !important;
+        }
+        table.dataTable.no-footer{
+            border: 0;
+        }
+        table.dataTable thead th, table.dataTable thead td{
+            border-bottom: 0;
+        }
+        .bge {
+            padding: .75rem;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'bitacoras_ventas' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <h4 class="d-inline">REPORTE DE BITACORAS DE VENTAS</h4>
+                    <div class="form-group float-right">
+                      <select class="form-control" id="status">
+                        <option value="">Todos</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="enviado">Enviado</option>
+                        <option value="pagado">Pagado</option>
+                        <option value="rechazado">Rechazado</option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="table-responsive">
+                        <table class="table hover" id="table-bitacoras" width="100%" cellpadding="2" cellspacing="0" border="0" >
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Usuario</th>
+                                    <th>Precio</th>
+                                    <th>Pasarela</th>
+                                    <th>Estado</th>
+                                    <th>Archivo</th>
+                                    <th>Comentario</th>
+                                    <th>Fecha</th>
+                                    <th>Link del documento</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for index, item in rsp.data.bitacoras_ventas %}
+                                <tr>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.email }}</td>
+                                    <td>{{ item.currency }} {{ item.price ? item.price : '0.00'  }}</td>
+                                    <td>{{ item.payment|capitalize }}</td>
+                                    <td>
+                                        {% if item.status == 'pagado' %}
+                                            <button class="btn btn-success btn-sm">
+                                                {{ item.status|capitalize }}
+                                            </button>
+                                        {% elseif item.status == 'enviado' %}
+                                            <button class="btn btn-warning btn-sm">
+                                                {{ item.status|capitalize }}
+                                            </button>
+                                        {% elseif item.status == 'rechazado' %}
+                                            <button class="btn btn-danger btn-sm">
+                                                {{ item.status|capitalize }}
+                                            </button>
+                                        {% elseif item.status == 'pendiente' %}
+                                            <button class="btn btn-secondary btn-sm">
+                                                {{ item.status|capitalize }}
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ item.file }}" download>
+                                            <i class="fa fa-download mr-2"></i> Descargar
+                                        </a>
+                                    </td>
+                                    <td style="max-width:200px;">{{ item.comment }}</td>
+                                    <td>{{ item.created_at }}</td>
+                                    <td style="max-width:150px;"><a href="https://{{ APP.HOST }}/reporte/documento/{{ item.code }}" target="_blank">https://{{ APP.HOST }}/reporte/documento/{{ item.code }}</a></td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-secondary btnSettings" data-id="{{ item.id }}">
+                                            <i class="fa fa-cog" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modal-bitacora" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">GESTIONAR</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCheckout">
+                        <input type="hidden" name="id" value="" id="sid">
+                        <h6>Datos de Transacción</h6>
+                        <div class="form-group">
+                            <ul class="list-group">
+                                <li class="list-group-item"><strong>Usuario:</strong> <span id="suser"></span></li>
+                                <li class="list-group-item"><strong>Estado:</strong> <span id="sstatus"></span></li>
+                                <li class="list-group-item"><strong>Precio:</strong> <span id="sprice"></span></li>
+                            </ul>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Estado</label>
+                            <select class="form-control" name="status">
+                                <option value="pagado">Pagado</option>
+                                <option value="enviado">Enviado</option>
+                                <option value="rechazado">Rechazado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Comentario en el correo</label>
+                            <textarea class="form-control" name="comment" id="" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="send" checked>
+                                <label class="form-check-label" for="exampleCheck1">Enviar Correo</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck12" name="link" checked>
+                                <label class="form-check-label" for="exampleCheck12">Enviar Link del documento</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" form="formCheckout">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function(){
+            let data = JSON.parse("{{ rsp.data|json_encode|e('js') }}");
+            $('#table-bitacoras').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No hay elementos por mostrar",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                ordering: false,
+                reponsive: true
+            });
+
+            $('#status').on('change', function () {
+                $('#table-bitacoras').DataTable().columns(4).search($(this).val()).draw();                
+            });
+            
+            $('.btnSettings').off('click');
+            $('.btnSettings').on('click', function() {
+                let id = $(this).attr('data-id');
+                let item = data.bitacoras_ventas.find(o => { return o.id == id });
+                $('#sid').val(item.id);
+                $('#suser').text(item.email);
+                $('#sstatus').text(item.status);
+                $('#sprice').text(item.price);
+                $('#modal-bitacora').modal();
+            });
+
+            $('#formCheckout').on('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(e.currentTarget);
+                swal2.loading(false);
+                swal2.show({
+                    icon: 'question',
+                    html:'¿Estás seguro de guardar cambios?',
+                    showCancelButton: true,
+                    onOk:function(){
+                        swal2.loading();
+                        fetch("/admin/transfer/save", {method: "POST", body: formData})
+                        .then(function(res){ return res.json(); })
+                        .then(function(rsp){ 
+                            swal2.show({
+                                icon: rsp.success ? 'success' : 'error', 
+                                html: rsp.message,
+                                onOk: function () {
+                                    if (rsp.success) {
+                                        swal2.loading();
+                                        location.reload();
+                                    }
+                                }
+                            });
+                        })
+                        .catch(function () {
+                            swal2.show({icon:'error', text:'Hubo un error en el sistema.'});
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

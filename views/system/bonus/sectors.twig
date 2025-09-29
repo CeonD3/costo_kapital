@@ -1,0 +1,74 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+<style>
+    .nine-outborder{
+        background: var(--color-nine-out) !important;
+        border-left: 3px solid var(--color-nine) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    {% set data = rsp.data %}
+	<section class="container-fluid">
+		{% include "system/results.twig" %}
+        <div class="row width-100 p-0 table-one justify-content-center">
+			<div class="col-sm-8 table-one-data shadow">
+                <div class="row text-center" id="appSectorCostUser">
+                    <div class="col-md-12">
+                        <div class="bg-five text-center py-3 mb-4">
+                            <h4 class="m-0">Reporte Costo de Capital Sectorial para paises emergentes</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-8 mx-auto mb-3">
+                        <div class="alert alert-info p-2" role="alert">
+                            <h4>Ingrese datos</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-8 form-group mx-auto">
+                        <form id="frmSave" @submit="calculate">
+                             <ul class="list-group-custom">
+                                {% for k,o in rsp.data.system.inputs %}
+                                <li class="list-group-item-custom">
+                                    <div class="item-name h50-25 f-w150 nine-outborder">
+                                        <span>{{ o.name }}</span>
+                                    </div>
+                                    <div class="item-value h50-25 w150">
+                                        {% if k == 0 %}
+                                            <select class="form-control" name="country" required>
+                                            {% for kk,oo in rsp.data.system.countries %}
+                                                <option value="{{ oo.name }}" {{ o.value == oo.name ? 'selected' : '' }}>{{ oo.name }}</option>
+                                            {% endfor %}
+                                            </select>
+                                        {% elseif k == 1 %}
+                                            <span v-text="porcentage"></span>
+                                        {% elseif k == 2 %}
+                                            <input type="number" class="form-control text-center" v-model="num1" name="num1" value="{{ o.value }}" @change="onCalculationPorcentage" @keyup="onCalculationPorcentage" required>
+                                        {% elseif k == 3 %}
+                                            <input type="number" class="form-control text-center" v-model="num2" name="num2" value="{{ o.value }}" @change="onCalculationPorcentage" @keyup="onCalculationPorcentage" required>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </form>
+                        <div class="float-left mt-2">
+                            {# <a href="/emergencias/{{ rsp.data.code }}" class="float-left"><i class="fa fa-arrow-right" aria-hidden="true"></i> Ver reporte generado anteriormente </a> #}
+                        </div>
+                        <div class="float-right w150 mt-2">
+                            <button type="submit" class="btn btn-three" form="frmSave">Calcular</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %} 
+<script>
+    let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+	window.addEventListener('load', window.AppSectorCostUser.init(args));
+</script>
+{% endblock %}

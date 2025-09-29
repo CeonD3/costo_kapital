@@ -1,0 +1,72 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+<link rel="stylesheet" href="/assets/css/style_system.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css" integrity="sha512-SUJFImtiT87gVCOXl3aGC00zfDl6ggYAw5+oheJvRJ8KBXZrr/TMISSdVJ5bBarbQDRC2pR5Kto3xTR0kpZInA==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" />
+{% endblock %}
+
+{% block content %}
+	<section class="container-fluid">
+		<div class="row width-100 p-0 banner-one">
+			<div class="col-12">
+				<div class="row width-100 justify-content-center p-0 opacity-one">
+					<div class="col-8">
+						<div class="row m-width ">
+							<div class="col-md-7 banner-text-two text-left py-5 mx-auto">
+								<h2>RESULTADOS DE COSTO DE CAPITAL</h2>
+								<h3>Visualiza los resultados generales del costo de capital. Si deseas puedes registrarte automáticamente y tener acceso al historial de tus consultas.</h3>
+								<div class="btn-three px-5 py-2" title="Copiar" style="display: inline; cursor: pointer;" onclick="copiarAlPortapapeles('codigo_valora')"><span>KAP025789</span></div>
+								<input type="text" name="codigo_valora" id="codigo_valora" value="VAL025789" style="opacity: 0">
+								<p>Puedes guardar este código para próximas consultas</p>
+							</div>
+							<div class="col-md-5 text-right py-5 mx-auto">
+								<div class="block">
+									<p>Solicita aquí una <br> <span>consultoría especializada:</span></p>
+									<img src="/assets/image/logo3.png">
+									<a class="btn-three px-3 py-1" href="#"><span>Consultar ahora</span></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row width-100 p-0 table-one justify-content-center">
+			<div class="col-sm-8 table-one-data shadow">
+				...
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %} 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js" integrity="sha512-G8JE1Xbr0egZE5gNGyUm1fF764iHVfRXshIoUWCTPAbKkkItp/6qal5YAHXrxEu4HNfPTQs6HOu3D5vCGS1j3w==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js" integrity="sha512-QEiC894KVkN9Tsoi6+mKf8HaCLJvyA6QIRzY5KrfINXYuP9NxdIkRQhGq3BZi0J4I7V5SidGM3XUQ5wFiMDuWg==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	var ctx = document.getElementById('myChart');
+	var myLineChart = new Chart(ctx, {
+	    type:"line",
+	    data:{
+	    	labels:["2010","2011","2012","2013","2014","2015","2016", "2017", "2018","2019","2020"],
+	    	datasets:[{
+	    		label:"Ventas Netas",
+	    		data:[60,59,59,62,60],
+	    		fill:false,
+	    		borderColor:"rgb(75, 192, 192)",
+	    		lineTension:0
+	    	},{
+	    		label:"Proyección",
+	    		data:[60,59,59,62,60,58,57,58,58,59,59],
+	    		fill:false,
+	    		borderColor:"rgb(255, 193, 3)",
+	    		lineTension:0
+	    	}]
+	    },
+	    options:{}
+		});
+</script>
+{% endblock %}

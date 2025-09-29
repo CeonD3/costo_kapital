@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>KAPITAL</title>
+    <link rel="icon" type="image/png" href="/assets/image/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/assets/font-icons/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <!-- table -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+    <!-- END table -->
+    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/sweetalert2/css/sweetalert2.min.css">    
+    <link rel="stylesheet" href="/assets/css/style_system.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    {# <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> #}
+    {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" /> #}
+    <style>
+        .swal2-icon.swal2-question{
+            line-height: 5em;
+            font-size: 1em;
+        }
+        .slide-content{
+            background-image: url({{ rsp.data.interface.img|raw }});
+            /*background-image: url('http://kapital.test:8080/upload/home/1628205041-1626389330-background_home.jpg');*/
+        }
+    </style>
+    {% block css %} {% endblock %}
+    
+</head>
+
+<body translate="no" class="d-flex flex-column min-vh-100">
+		<header class="container-fluid bgcolor_one p-0">
+            {% include 'system/partials/notifications.twig' %}
+            {% include "home/elements/header.twig" %}
+        </header>
+   
+        <div class="wrapper">
+        {% block content %} {% endblock %}
+        {% include "home/elements/glosario.twig" %}
+        </div>
+
+        <footer>
+            {% include "system/elements/footer.twig" %}
+        </footer>
+ 
+        {% include "bubbles/messenger.twig" %}
+        
+    {% block report %} {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        crossorigin="anonymous"></script>
+    {# <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> #}
+
+    {# <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script> #}
+
+	<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+	<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+	<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/plugins/regression.js"></script> 
+
+	<script src="/assets/sweetalert2/js/sweetalert2.min.js"></script>
+	<script src="/assets/sweetalert2/js/sweet2.js"></script>
+    <!-- data table -->
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <!-- END data -->
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script src="/assets/js/main.min.js?v=0.0.22"></script>
+
+    {% block js %} {% endblock %}
+
+</body>
+
+</html>

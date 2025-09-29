@@ -1,0 +1,59 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					<div class="col-lg-12 banner-text-two form-group">
+						<h2>CÁLCULA EL COSTO DE CAPITAL</h2>
+					</div>
+				</div>
+			</div>
+			<div class="container container-custom" id="AppCurvePerformance">
+				<div class="row">
+					<div class="col-lg-12 panel-body">
+						<div class="card-panel">
+							<div id="appResultCalculation">
+								<div class="row justify-content-center">
+									<div class="col-md-12 cab_table mb-3 text-center">
+										<h2>CURVA DE RENDIMIENTO EN AÑOS</h2>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 mb-2">
+										<div id="myChart" style="height:350px;"></div>
+									</div>
+								</div>
+								<div class="row justify-content-center">
+									<div class="col-md-4">
+										<div class="form-group mb-2">
+											<label>3. Selección de bono del tesoro:</label>
+											<select class="form-control" name="period" @change="onPeriod">
+												{% for item in rsp.data.system.periods %}
+												<option value="{{ item }}" {{ item == rsp.data.system.period ? 'selected' : '' }}>{{ item }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% include 'system/navigation.twig' with  { _back: '/calcula/' ~ rsp.data.code, _next: '/estructura-mercado-emergente/' ~ rsp.data.code, _code: rsp.data.code } %}
+						</div>
+					</div>
+					{% include 'system/publicidad.twig' %}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %} 
+	<script type="text/javascript">
+		let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+		window.addEventListener('load', window.AppCurvePerformance.init(args));
+	</script>
+{% endblock %}

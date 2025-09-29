@@ -1,0 +1,185 @@
+{% extends "system/main.twig" %}
+
+{% block css %}
+	<style>
+		table td {
+			text-align: center;
+		}
+		table td input {
+			max-width: 100px;
+			text-align: center;
+			margin: auto;
+		}
+		/*table td:nth-child(1){
+			text-align: left;
+		}*/
+	</style>
+{% endblock %}
+
+{% block content %}
+	{% set data = rsp.data %}
+	<section class="slide-content">
+		<div class="slide-reflex">
+			<div class="container container-custom">
+				<div class="row">
+					{% include "system/information.twig" %}
+				</div>
+				<div class="row panel-parameter-market" id="AppDetailFlows">
+					<div class="col-lg-12">
+						<div class="card-panel">
+							<div class="row">
+								<div class="col-lg-12 mb-4">
+									<div class="bg-five text-center py-2">
+										<h4 class="m-0">Detalles de los flujos del proyecto</h4>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-7 form-group mx-auto">
+									<ul class="list-group-custom">
+										<li class="list-group-item-custom">
+											<div class="item-name h50-25 f-w150"><span>{{ data.system.html.horizon.text }}</span></div>
+											<div class="item-value w150">
+												<select class="form-control" form="frmCalculation" name="horizon" v-model="horizon" @change="onCalculation" required>
+													{% for kk,oo in data.system.horizons %}
+													<option value="{{ oo }}"> {{ oo }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</li>
+										<li class="list-group-item-custom">
+											<div class="item-name h50-25 f-w150"><span>{{ data.system.html.periodicity.text }}</span></div>
+											<div class="item-value w150">
+												<select class="form-control" form="frmCalculation" name="periodicity" v-model="periodicity" @change="onCalculation" required>
+													{% for kk,oo in data.system.periodicities %}
+													<option value="{{ oo }}"> {{ oo }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</li>
+										<li class="list-group-item-custom">
+											<div class="item-name h50-25 f-w150"><span>{{ data.system.html.period.text }}</span></div>
+											<div class="item-value h50-25 w150"><span v-text="period"></span></div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 form-group">
+									<div class="table-responsive">
+										<table class="table table-bordered table-detail-flows" width="100%">
+											{# <thead>
+												<tr class="bg-five-out">
+													<td>Periodo</td>
+													<td>Flujo de caja</td>
+													<td>Flujo de inversiones</td>
+												</tr>
+											</thead> #}
+											<tbody>
+												<tr>
+													<td class="bg-five-out">Periodo</td>
+													<template v-for="(item, index) in flows">
+														<td class="bg-five-out" v-text="index"></td>
+													</template>
+												</tr>
+												<tr>
+													<td class="bg-five-out">Flujo de caja</td>
+													<template v-for="(item, index) in flows">
+													<td>
+														<input type="text" class="form-control" form="frmCalculation" v-model="item.box" placeholder="" required>
+													</td>
+													</template>
+												</tr>
+												<tr>
+													<td class="bg-five-out">Flujo de inversiones</td>
+													<template v-for="(item, index) in flows">
+													<td>
+														<input type="text" class="form-control" form="frmCalculation" v-model="item.investment" placeholder="" required>
+													</td>
+													</template>
+												</tr>
+												{# <tr v-for="(item, index) in flows">
+													<td class="bg-five-out" v-text="index"></td>
+													<td>
+														<input type="text" class="form-control" form="frmCalculation" v-model="item.box" placeholder="" required>
+													</td>
+													<td>
+														<input type="text" class="form-control" form="frmCalculation" v-model="item.investment" placeholder="" required>
+													</td>
+												</tr> #}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<form id="frmCalculation" @submit="onCalculationDetail"></form>
+							<div class="row panel-navigation">
+								<div class="col-lg-12">
+									<a href="/calcula/{{ rsp.data.code }}">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									</a>
+									<button type="submit" class="btn btn-three float-right" form="frmCalculation">
+										Calcular
+									</button>
+								</div>
+							</div>
+							<div class="modal fade" id="modal-risk-free" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header border-0 pb-0">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body pb-5">
+											<div class="col-md-12 form-group">
+												<div id="myChart" style="min-height:380px;"></div>
+											</div>
+											<div class="col-md-12 form-group">
+												<div class="bg-five text-center py-2">
+													<h4 class="m-0">Tasa libre de riesgo del proyecto</h4>
+												</div>
+											</div>
+											<div class="col-md-12 form-group">
+												<div class="table-responsive">
+													<table class="table table-bordered">
+														<tbody>
+															<tr>
+																<td class="bg-five-out">Duración del Proyecto</td>
+																<td><strong v-html="duration"></strong> años</td>
+															</tr>
+															<tr>
+																<td class="bg-five-out">Instrumento libre de riesgo</td>
+																<td>Bono del tesoro norteamericano de <strong v-text="instrument"></strong> año(s)</td>
+															</tr>
+															<tr>
+																<td class="bg-five-out">Rendimiento del instrumento</td>
+																<td><strong v-html="performance"></strong></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="col-md-12 mt-3 text-right">
+												<a href="/estructura-mercado-desarrollado/{{ rsp.data.code }}" type="button" class="btn btn-three">
+													Ir a Reporte sectorial
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %} 
+<script type="text/javascript">
+    let args = JSON.parse("{{ rsp.data |json_encode|e('js') }}");
+    window.addEventListener('load', window.AppDetailFlows.init(args));
+</script>
+{% endblock %}

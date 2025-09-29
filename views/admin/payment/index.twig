@@ -1,0 +1,96 @@
+{% extends "admin/main.twig" %}
+
+{% block css %}
+    <style>
+    .nav-pills .nav-item a{
+        padding: 7px 30px;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+        background-color: var(--color-for);
+    }
+    .custom-file-label{
+        overflow: hidden;
+    }
+    .nav-item a {
+        color: gray;
+    }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/elements/sidebar.twig" with { menu: 'pagos' } %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center" id="AppPaymentAdmin">
+    <div class="col-lg-11">
+        <div class="card card-custom">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pills-mobile-tab" data-toggle="pill" href="#pills-mobile" role="tab" aria-controls="pills-mobile" aria-selected="true">
+                                TRANSFERENCIA MOVIL
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-bank-tab" data-toggle="pill" href="#pills-bank" role="tab" aria-controls="pills-bank" aria-selected="false">
+                                TRANSFERENCIA BANCARÍA
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-mobile" role="tabpanel" aria-labelledby="pills-mobile-tab">
+                            <form class="formTransfer">
+                                <input type="hidden" name="panel" value="transfer-mobile">
+                                <div class="row p-4 bg-white">
+                                    <div class="col-lg-12" id="panelMobile">
+                                        {% for item in rsp.data.mobiles %}
+                                            {% include "admin/payment/partials/mobile.twig" with { item: item } %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-lg-12 mt-4">
+                                        <button type="button" class="btn btn-three float-left" id="btnAddMobile"><i class="fa fa-plus mr-2"></i>Agregar</button>
+                                        <button type="submit" class="btn btn-four float-right">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="pills-bank" role="tabpanel" aria-labelledby="pills-bank-tab">
+                            <form class="formTransfer">
+                                <input type="hidden" name="panel" value="transfer-bank">
+                                <div class="row p-4 bg-white">
+                                    <div class="col-lg-12" id="panelBank">
+                                        {% for item in rsp.data.banks %}
+                                            {% include "admin/payment/partials/bank.twig" with { item: item } %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-lg-12 mt-4">
+                                        <button type="button" class="btn btn-three float-left" id="btnAddBank">Agregar</button>
+                                        <button type="submit" class="btn btn-four float-right">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <template id="template-bank">
+        {% include "admin/payment/partials/bank.twig" with { item: null } %}
+    </template>
+    <template id="template-mobile">
+        {% include "admin/payment/partials/mobile.twig" with { item: null } %}
+    </template>
+</div>
+{% endblock %}
+
+{% block js %}
+    {# <script src="/assets/js/admin_landing.min.js"></script> #}
+    <script>
+        $(document).ready(window.AppPaymentAdmin.init({}));
+    </script>
+{% endblock %}

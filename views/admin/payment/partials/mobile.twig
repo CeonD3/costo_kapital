@@ -1,0 +1,27 @@
+<div class="row">
+    <input type="hidden" name="id[]" value="{{ item.id }}">
+    <div class="col-lg-3 form-group">
+        <label>Cuenta:</label>
+        <input type="text" class="form-control" name="account[]" value="{{ item.account }}" placeholder="Yape, Plin, Tunki..." required>
+    </div>
+    <div class="col-lg-3 form-group">
+        <label>Número:</label>
+        <input type="text" class="form-control" name="number[]" value="{{ item.number }}" placeholder="987589654">
+    </div>
+    <div class="col-lg-3 form-group">
+        <label>Imagen:</label>
+        {% if item.image %}
+            <a href="{{ item.image }}" class="float-right" download>Descargar</a>
+        {% endif %}
+        <div class="custom-file">
+            <input type="file" name="image[]" class="custom-file-input" id="customFile" accept="image/*">
+            <label class="custom-file-label" for="customFile">{{ item.image ? item.image : 'Seleccionar' }}</label>
+        </div>
+    </div>
+    <div class="col-lg-3 form-group text-right">
+        <button type="button" class="btn btn-outline-secondary mt-4 btnDeleteMobile">
+            <i class="fa fa-plus mr-2"></i>
+            Eliminar
+        </button>
+    </div>
+</div>

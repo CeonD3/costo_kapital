@@ -1,0 +1,84 @@
+/* line 1, public/assets-gulp/scss/componentes/_home.scss */
+header {
+  /*margin-top: 0.5rem;*/
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* line 7, public/assets-gulp/scss/componentes/_home.scss */
+.slide-one {
+  background-color: rgba(0, 0, 0, 0.7);
+  height: 78vh;
+}
+
+/* line 12, public/assets-gulp/scss/componentes/_home.scss */
+.slide-one-text {
+  padding: 8rem 2rem;
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 18, public/assets-gulp/scss/componentes/_home.scss */
+.slide-one-text h1 {
+  text-transform: uppercase;
+  font-size: 3rem;
+}
+
+/* line 23, public/assets-gulp/scss/componentes/_home.scss */
+.slide-one-text p {
+  font-size: 1.5rem;
+}
+
+/* line 27, public/assets-gulp/scss/componentes/_home.scss */
+.data-content {
+  color: white;
+  padding: 5px;
+  position: absolute;
+  bottom: 0;
+  font-size: 0.8rem;
+  background-color: var(--color-for);
+  width: 100%;
+}
+
+/* line 37, public/assets-gulp/scss/componentes/_home.scss */
+.data-content-item {
+  padding: 2rem;
+}
+
+/* line 41, public/assets-gulp/scss/componentes/_home.scss */
+.data-content-item div {
+  background-color: white;
+  padding: 0.5rem 2rem;
+  height: 13rem;
+}
+
+/* line 47, public/assets-gulp/scss/componentes/_home.scss */
+.data-content-item div img {
+  height: 4rem;
+}
+
+/* line 51, public/assets-gulp/scss/componentes/_home.scss */
+.data-content-item div h5 {
+  color: var(--color-two);
+}
+
+/* line 55, public/assets-gulp/scss/componentes/_home.scss */
+.data-content-item div p {
+  color: black;
+  font-size: 1.1rem;
+}
+
+/* line 60, public/assets-gulp/scss/componentes/_home.scss */
+.home-footer {
+  height: 22vh;
+  position: absolute;
+}
+
+/* line 65, public/assets-gulp/scss/componentes/_home.scss */
+.home-footer .data-content-item {
+  margin-top: -10rem;
+}
+
+/* line 67, public/assets-gulp/scss/componentes/_home.scss */
+.home-footer .data-content-item div {
+  border-radius: 20px;
+}

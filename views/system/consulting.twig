@@ -1,0 +1,20 @@
+<div class="col-lg-12">
+	<div class="row">
+		<div class="col-md-8 form-group banner-text-two text-left mx-auto">
+			<h2>RESULTADOS DE COSTO DE CAPITAL</h2>
+			<h3>Visualiza los resultados generales del costo de capital. Si deseas puedes registrarte automáticamente y tener acceso al historial de tus consultas.</h3>
+			{% if APP.SESSION.user is defined %}
+			<div class="btn-three px-5 py-2" title="Copiar" style="display: inline; cursor: pointer;" onclick="copiarAlPortapapeles('codigo_valora')"><span>{{ rsp.data.code }}</span></div>
+			<input type="text" name="codigo_valora" id="codigo_valora" value="{{ rsp.data.code }}" style="opacity: 0">
+			<p class="mb-0">Puedes guardar este código para próximas consultas</p>
+			{% endif %}
+		</div>
+		<div class="col-md-4 form-group text-panel-right mx-auto">
+			<div class="mb-2 block">
+				<p>Solicita aquí una <br> <span>consultoría especializada:</span></p>
+				<img src="/assets/image/logo2.png">
+				<a class="btn btn-four" target="_blank" href="https://tawk.to/chat/5e306a3e8e78b86ed8ab7f00/default"><span>Consultar ahora</span></a>
+			</div>
+		</div>
+	</div>
+</div>

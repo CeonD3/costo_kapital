@@ -1,0 +1,156 @@
+/* line 1, public/assets-gulp/scss/componentes/_contacto.scss */
+body {
+  background-image: url(/assets/image/Imagen3.jpg);
+  background-size: cover;
+}
+
+/* line 6, public/assets-gulp/scss/componentes/_contacto.scss */
+header {
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* line 11, public/assets-gulp/scss/componentes/_contacto.scss */
+.slide-one {
+  height: 75vh;
+  margin-top: 7rem;
+  position: absolute;
+  top: 4rem;
+  z-index: 1;
+  width: 100%;
+}
+
+/* line 20, public/assets-gulp/scss/componentes/_contacto.scss */
+.slide-one-text {
+  padding: 0rem;
+  color: white !important;
+  font-family: 'Lato Regular', sans-serif !important;
+}
+
+/* line 26, public/assets-gulp/scss/componentes/_contacto.scss */
+.slide-one-text h1 {
+  text-transform: uppercase;
+}
+
+/* line 30, public/assets-gulp/scss/componentes/_contacto.scss */
+.slide-one-text h4 {
+  text-transform: capitalize;
+  font-family: "Lato Black";
+  color: var(--color-for);
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+/* line 38, public/assets-gulp/scss/componentes/_contacto.scss */
+.slide-one-text p {
+  font-size: 1.2rem;
+  color: var(--color-three);
+  font-family: "Lato Black";
+}
+
+/* line 44, public/assets-gulp/scss/componentes/_contacto.scss */
+.data-content {
+  color: white;
+  padding: 5px;
+  position: absolute;
+  bottom: 0;
+  font-size: 0.8rem;
+  background-color: var(--color-for);
+  width: 100%;
+}
+
+/* line 54, public/assets-gulp/scss/componentes/_contacto.scss */
+.data-content-item {
+  padding: 2rem 0rem;
+}
+
+/* line 58, public/assets-gulp/scss/componentes/_contacto.scss */
+.data-content-item div {
+  background-color: white;
+  padding: 1rem 2rem;
+  height: 13rem;
+}
+
+/* line 64, public/assets-gulp/scss/componentes/_contacto.scss */
+.data-content-item div img {
+  height: 5rem;
+}
+
+/* line 68, public/assets-gulp/scss/componentes/_contacto.scss */
+.data-content-item div h5 {
+  color: var(--color-two);
+}
+
+/* line 72, public/assets-gulp/scss/componentes/_contacto.scss */
+.data-content-item div p {
+  color: black;
+  font-size: 1.1rem;
+}
+
+/* line 77, public/assets-gulp/scss/componentes/_contacto.scss */
+.item-float {
+  background: var(--color-for);
+}
+
+/* line 81, public/assets-gulp/scss/componentes/_contacto.scss */
+.block-content {
+  padding: 2rem;
+  max-width: 40rem;
+}
+
+/* line 86, public/assets-gulp/scss/componentes/_contacto.scss */
+.block-content .item {
+  padding: 2rem;
+  background-color: white;
+  width: 100%;
+  margin-bottom: 2rem;
+  border-bottom: 5px solid var(--color-three);
+}
+
+/* line 94, public/assets-gulp/scss/componentes/_contacto.scss */
+.block-content .item h3 {
+  font-family: "Lato Bold";
+  font-size: 1.2rem;
+  color: var(--color-for);
+  margin-bottom: 2rem;
+}
+
+/* line 101, public/assets-gulp/scss/componentes/_contacto.scss */
+.block-content .item a {
+  font-family: "Lato Regular";
+  font-size: 1	rem;
+  color: var(--color-for);
+}
+
+/* line 107, public/assets-gulp/scss/componentes/_contacto.scss */
+.block-content .item h3 span {
+  color: var(--color-three);
+}
+
+/* line 111, public/assets-gulp/scss/componentes/_contacto.scss */
+.block-content .item p {
+  font-family: "Lato Regular";
+  color: var(--color-seven);
+}
+
+/* line 116, public/assets-gulp/scss/componentes/_contacto.scss */
+.block-content .item p span {
+  color: var(--color-for);
+}
+
+@media only screen and (max-width: 768px) {
+  /* line 121, public/assets-gulp/scss/componentes/_contacto.scss */
+  .data-content {
+    display: none;
+  }
+}
+
+@media only screen and (max-height: 550px) {
+  /* line 127, public/assets-gulp/scss/componentes/_contacto.scss */
+  .data-content {
+    display: none !important;
+  }
+  /* line 130, public/assets-gulp/scss/componentes/_contacto.scss */
+  .slide-one {
+    top: 1rem;
+  }
+}
