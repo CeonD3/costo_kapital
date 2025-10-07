@@ -4,12 +4,42 @@ namespace App\Model;
 
 use App\Utilitarian\{Crypt, FG};
 use App\Persistence\{utils};
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\FinanceExcelTrait;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Eloquent\Model;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\DefaultReadFilter;
+
+// Mover la clase ReadFilter fuera del método
+class TemplateReadFilter extends DefaultReadFilter
+{
+
+    private $startRow;
+    private $endRow;
+    private $columns;
+
+    public function __construct($startRow, $endRow, $columns)
+    {
+        $this->startRow = $startRow;
+        $this->endRow = $endRow;
+        $this->columns = $columns;
+    }
+
+    public function readCell($column, $row, $worksheetName = '')
+    {
+        if ($this->startRow !== null && $row < $this->startRow) {
+            return false;
+        }
+        if ($this->endRow !== null && $row > $this->endRow) {
+            return false;
+        }
+        return in_array($column, $this->columns);
+    }
+}
 
 class Template extends Model
 {
-
+    use FinanceExcelTrait;
     protected $fillable = ['templates'];
 
     public function list($request)
@@ -40,14 +70,27 @@ class Template extends Model
                 }
             }
 
+            // Definir valores por defecto para variables que pueden no existir
+            $status = isset($status) ? $status : 0;
+            $version = isset($version) ? $version : 1;
+
             $template = is_numeric($id) ? Template::where('id', $id)->first() : new Template();
 
             if (isset($_FILES['file']) && !(0 < $_FILES['file']['error'])) {
                 $filename = $_FILES['file']['name'];
                 $fileuri = uniqid(time()) . '-' . $filename;
                 move_uploaded_file($_FILES['file']['tmp_name'], FG::getPathMaster($fileuri));
+
+                // Crear archivo de datos
+                $this->createDataFile($fileuri);
+
                 if (is_numeric($id)) {
                     unlink(FG::getPathMaster($template->file));
+                    // También eliminar el archivo de datos anterior
+                    $oldDataFile = $this->getDataFileName($template->file);
+                    if (file_exists(FG::getPathMaster($oldDataFile))) {
+                        unlink(FG::getPathMaster($oldDataFile));
+                    }
                 }
                 $template->file = $fileuri;
             }
@@ -57,7 +100,6 @@ class Template extends Model
                 $myTemplate->status = $status == 1 ? 0 : $status;
                 $myTemplate->save();
             }
-            // Capsule::select('UPDATE templates SET status = 0');
 
             $template->name = $name;
             $template->status = $status;
@@ -71,6 +113,106 @@ class Template extends Model
             $rsp['message'] = $e->getMessage();
         }
         return $rsp;
+    }
+
+    private function createDataFile($templateFile)
+    {
+        $masterTemplatePath = FG::getPathMaster($templateFile);
+        $dataFileName = $this->getDataFileName($templateFile);
+        $dataFilePath = FG::getPathMaster($dataFileName);
+
+        $result = [
+            'sectors' => [],
+            'instruments' => [],
+            'dates' => [],
+            'bonos' => [],
+            'currencies' => [],
+            'countries' => []
+        ];
+
+
+        // 1. Cargar solo las hojas de Industrias, Tablas y Países
+        $reader = IOFactory::createReader('Xlsx');
+        $sheetsToLoad = [$this->sheetname_industries, $this->sheetname_tablas, $this->sheetname_contries];
+        $reader->setLoadSheetsOnly($sheetsToLoad);
+
+        // 2. Definir y aplicar el filtro para leer solo las columnas A y L desde la fila 2 en adelante.
+        // Se agrega la columna 'C' para poder leer los bonos solicitados
+        $columnsToRead = ['A', 'C', 'L'];
+        $filter = new TemplateReadFilter(2, null, $columnsToRead);
+        $reader->setReadFilter($filter);
+
+        // 3. Cargar el archivo con todas las optimizaciones aplicadas.
+        $spreadsheet = $reader->load($masterTemplatePath);
+
+        // 1. Leer la hoja de Industrias
+        $worksheet = $spreadsheet->getSheetByName($this->sheetname_industries);
+        if ($worksheet) {
+            $lastRow = $worksheet->getHighestRow();
+            for ($row = 3; $row <= $lastRow; $row++) {
+                $value = $worksheet->getCell('A' . $row)->getValue();
+                if (!$value) break;
+                $result['sectors'][] = $value;
+            }
+        }
+
+        // 2. Leer la hoja de Tablas (para fechas y monedas)
+        $worksheet = $spreadsheet->getSheetByName($this->sheetname_tablas);
+        if ($worksheet) {
+            $lastRow = $worksheet->getHighestRow();
+            // Leer instrumentos (columna A desde fila 2 hasta vacío)
+            for ($row = 2; $row <= $lastRow; $row++) {
+                $value = $worksheet->getCell('A' . $row)->getValue();
+                if (!$value) break;
+                $result['instruments'][] = $value;
+            }
+            // Leer fechas (columna A desde fila 41)
+            for ($row = 41; $row <= $lastRow; $row++) {
+                $value = $worksheet->getCell('A' . $row)->getFormattedValue();
+                if (!$value) break;
+                if ($value) {
+                    try {
+                        $datetime = new \DateTime($value);
+                        $result['dates'][] = $datetime->format('d/m/Y');
+                    } catch (\Exception $e) {
+                        continue;
+                    }
+                }
+            }
+            // Leer bonos (columna C desde fila 2 hasta vacío)
+            for ($row = 2; $row <= $lastRow; $row++) {
+                $value = $worksheet->getCell('C' . $row)->getValue();
+                if (!$value) break;
+                $result['bonos'][] = $value;
+            }
+            // Leer monedas (columna L desde fila 2 hasta vacío)
+            for ($row = 2; $row <= $lastRow; $row++) {
+                $value = $worksheet->getCell('L' . $row)->getValue();
+                if (!$value) break;
+                $result['currencies'][] = $value;
+            }
+        }
+
+        // 3. Leer la hoja de Países
+        $worksheet = $spreadsheet->getSheetByName($this->sheetname_contries);
+        if ($worksheet) {
+            $lastRow = $worksheet->getHighestRow();
+            for ($row = 2; $row <= $lastRow; $row++) {
+                $value = $worksheet->getCell('A' . $row)->getValue();
+                if (!$value) break;
+                $result['countries'][] = $value;
+            }
+        }
+
+        // Guardar los datos en archivo JSON
+        file_put_contents($dataFilePath, json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
+
+    private function getDataFileName($templateFile)
+    {
+        $pathInfo = pathinfo($templateFile);
+        $dirname = $pathInfo['dirname'] === '.' ? '' : $pathInfo['dirname'] . '/';
+        return $dirname . $pathInfo['filename'] . '-data.json';
     }
 
     public function remove($request)

@@ -130,93 +130,52 @@ class ValoraExcel
             throw new \InvalidArgumentException('El parámetro $report es obligatorio cuando $propietary es true');
         }
 
-        // Define la ruta del archivo maestro que se usará para los datos del formulario.
-        $masterTemplatePath = __DIR__ . '/../../template/master/plantilla.xlsx';
+        // Obtener el último template activo desde la base de datos
+        $latestTemplate = \Illuminate\Database\Capsule\Manager::table('templates')
+            ->where('status', 1)
+            ->where('version', '2')
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'desc')
+            ->first();
 
-        if (!file_exists($masterTemplatePath)) {
-            throw new \Exception("El archivo de plantilla maestro no se encuentra en: " . $masterTemplatePath);
+        if (!$latestTemplate) {
+            throw new \Exception("No se encontró ningún template activo en la base de datos");
         }
 
+        // Construir las rutas del archivo Excel y su archivo JSON de datos
+        $masterTemplatePath = FG::getPathMaster($latestTemplate->file);
+        $dataFileName = $this->getDataFileName($latestTemplate->file);
+        $dataFilePath = FG::getPathMaster($dataFileName);
 
         if (!file_exists($masterTemplatePath)) {
-            throw new \Exception("El archivo de plantilla maestro no se encuentra en: " . $masterTemplatePath);
+            throw new \Exception("El archivo de plantilla no se encuentra en: " . $masterTemplatePath);
+        }
+
+        if (!file_exists($dataFilePath)) {
+            throw new \Exception("El archivo de datos JSON no se encuentra en: " . $dataFilePath);
+        }
+
+        // Leer los datos desde el archivo JSON
+        $jsonData = file_get_contents($dataFilePath);
+        $templateData = json_decode($jsonData, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception("Error al decodificar el archivo JSON: " . json_last_error_msg());
         }
 
         $result = [
-            'dates' => [],
+            'dates' => $templateData['dates'] ?? [],
             'date' => '',
-            'sectors' => [],
+            'sectors' => $templateData['sectors'] ?? [],
             'sector' => '',
-            'countries' => [],
+            'countries' => $templateData['countries'] ?? [],
             'country' => '',
-            'currencies' => [],
+            'currencies' => $templateData['currencies'] ?? [],
             'currency' => '',
             'action' => ''
         ];
-        // --- OPTIMIZACIÓN: Cargar el archivo UNA SOLA VEZ ---
-        // 1. Define los nombres de las hojas que necesitas leer.
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
-        // 1. Cargar solo las hojas de Industrias, Tablas y Países
-        $sheetsToLoad = [$this->sheetname_industries, $this->sheetname_tablas, $this->sheetname_contries];
-        $reader->setLoadSheetsOnly($sheetsToLoad);
-
-        // 2. Definir y aplicar el filtro para leer solo las columnas A y L desde la fila 2 en adelante.
-        // Esto cubrirá todas las columnas que necesitamos de las 3 hojas.
-        $columnsToRead = ['A', 'L'];
-        $filter = new ReadFilter(2, null, $columnsToRead); // Desde la fila 2 hasta el final, solo columnas A y L.
-        $reader->setReadFilter($filter);
-
-        // 3. Cargar el archivo con todas las optimizaciones aplicadas.
-        $spreadsheet = $reader->load($masterTemplatePath);
-        // 1. Leer la hoja de Industrias
-        $worksheet = $spreadsheet->getSheetByName($this->sheetname_industries);
-        if ($worksheet) {
-            $lastRow = $worksheet->getHighestRow();
-            for ($row = 3; $row <= $lastRow; $row++) {
-                $value = $worksheet->getCell('A' . $row)->getValue();
-                if (!$value) break;
-                $result['sectors'][] = $value;
-            }
-        }
-
-        // 2. Leer la hoja de Tablas (para fechas y monedas)
-        $worksheet = $spreadsheet->getSheetByName($this->sheetname_tablas);
-        if ($worksheet) {
-            $lastRow = $worksheet->getHighestRow();
-            // Leer fechas
-            for ($row = 41; $row <= $lastRow; $row++) {
-                $value = $worksheet->getCell('A' . $row)->getFormattedValue();
-                if (!$value) break;
-                if ($value) {
-                    $datetime = new \DateTime($value);
-                    $result['dates'][] = $datetime->format('d/m/Y');
-                }
-            }
-            // Leer monedas
-            for ($row = 2; $row <= $lastRow; $row++) {
-                $value = $worksheet->getCell('L' . $row)->getValue();
-                if (!$value) break;
-                $result['currencies'][] = $value;
-            }
-        }
-
-        // 3. Leer la hoja de Países
-        $worksheet = $spreadsheet->getSheetByName($this->sheetname_contries);
-        if ($worksheet) {
-            $lastRow = $worksheet->getHighestRow();
-            for ($row = 2; $row <= $lastRow; $row++) {
-                $value = $worksheet->getCell('A' . $row)->getValue();
-                if (!$value) break;
-                $result['countries'][] = $value;
-            }
-        }
-
-        // Liberar memoria del objeto spreadsheet ya que no se usará más
-        $spreadsheet->disconnectWorksheets();
-        unset($spreadsheet);
         if ($propietary) {
-
             $company = DB::table('empresas')->whereNull('deleted_at')->first();
 
             $onedriveDow = new OnedriveDow();
@@ -1057,5 +1016,12 @@ class ValoraExcel
         }
 
         return compact('companies');
+    }
+
+    private function getDataFileName($templateFile)
+    {
+        $pathInfo = pathinfo($templateFile);
+        $dirname = $pathInfo['dirname'] === '.' ? '' : $pathInfo['dirname'] . '/';
+        return $dirname . $pathInfo['filename'] . '-data.json';
     }
 }

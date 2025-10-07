@@ -228,83 +228,21 @@ class KapitalExcel
             'ekd'         => ''
         );
 
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-
-        $reader->setLoadSheetsOnly($this->sheetname_industries);
-        $spreadsheet = $reader->load($filename);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $lastRow = $worksheet->getHighestRow();
-        $sectors = array();
-        for ($row = 3; $row <= $lastRow; $row++) {
-            $value = $worksheet->getCell('A' . $row)->getValue();
-            if (!$value) {
-                break;
+        // Cargar listas desde el archivo JSON de datos (sin leer el Excel para estas listas)
+        $pathInfo = pathinfo($filename);
+        $dataFilePath = $pathInfo['dirname'] . DIRECTORY_SEPARATOR . $pathInfo['filename'] . '-data.json';
+        if (file_exists($dataFilePath)) {
+            $jsonData = file_get_contents($dataFilePath);
+            $templateData = json_decode($jsonData, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($templateData)) {
+                $result['sectors']     = $templateData['sectors'] ?? [];
+                $result['instruments'] = $templateData['instruments'] ?? [];
+                $result['dates']       = $templateData['dates'] ?? [];
+                $result['bonos']       = $templateData['bonos'] ?? [];
+                $result['currencies']  = $templateData['currencies'] ?? [];
+                $result['countries']   = $templateData['countries'] ?? [];
             }
-            $sectors[] = $value;
         }
-        $result['sectors'] = $sectors;
-
-        $reader->setLoadSheetsOnly($this->sheetname_tablas);
-        $spreadsheet = $reader->load($filename);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $lastRow = $worksheet->getHighestRow();
-        $instruments = array();
-        for ($row = 2; $row <= $lastRow; $row++) {
-            $value = $worksheet->getCell('A' . $row)->getValue();
-            if (!$value) {
-                break;
-            }
-            $instruments[] = $value;
-        }
-        $result['instruments'] = $instruments;
-
-        $dates = array();
-        for ($row = 41; $row <= $lastRow; $row++) {
-            $value = $worksheet->getCell('A' . $row)->getFormattedValue();
-            if (!$value) {
-                break;
-            }
-            if ($value) {
-                $datetime = new \DateTime($value);
-                $value = $datetime->format('d/m/Y');
-            }
-            $dates[] = $value;
-        }
-        $result['dates'] = $dates;
-
-        $bonos = array();
-        for ($row = 2; $row <= $lastRow; $row++) {
-            $value = $worksheet->getCell('C' . $row)->getValue();
-            if (!$value) {
-                break;
-            }
-            $bonos[] = $value;
-        }
-        $result['bonos'] = $bonos;
-
-        $currencies = array();
-        for ($row = 2; $row <= $lastRow; $row++) {
-            $value = $worksheet->getCell('L' . $row)->getValue();
-            if (!$value) {
-                break;
-            }
-            $currencies[] = $value;
-        }
-        $result['currencies'] = $currencies;
-
-        $reader->setLoadSheetsOnly($this->sheetname_contries);
-        $spreadsheet = $reader->load($filename);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $lastRow = $worksheet->getHighestRow();
-        $countries = array();
-        for ($row = 2; $row <= $lastRow; $row++) {
-            $value = $worksheet->getCell('A' . $row)->getValue();
-            if (!$value) {
-                break;
-            }
-            $countries[] = $value;
-        }
-        $result['countries'] = $countries;
 
         $sector = "";
         $instrument = "";
@@ -438,7 +376,7 @@ class KapitalExcel
         $writer->save($filename);
     }
 
-    public function setFormCloud($report = null, $input)
+    public function setFormCloud($input, $report = null)
     {
 
         $date        = $input['date'];
@@ -766,7 +704,7 @@ class KapitalExcel
         $xlsxWriter->save($filename);
     }
 
-    public function setCostAnalysisCloud($report = null, $input)
+    public function setCostAnalysisCloud($input, $report = null)
     {
 
         $typeId   = $input['typeId'];
@@ -833,7 +771,7 @@ class KapitalExcel
         return compact('taxrate');
     }
 
-    public function getReportCloud($report = null, $company, $sheetname, $tablename)
+    public function getReportCloud($company, $sheetname, $tablename, $report = null)
     {
 
         $onedriveDow = new OnedriveDow();
