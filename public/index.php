@@ -56,9 +56,19 @@ require_once "../routes/web.php";
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
 
+// ✅ LOGS DE DEPURACIÓN DEL ROUTER
+error_log("=== ROUTER DEBUG ===");
+error_log("Request URI: " . $request->getUri()->getPath());
+error_log("Request Method: " . $request->getMethod());
+error_log("Route matched: " . var_export($route ? true : false, true));
+
 if (!$route) {
+    error_log("No route matched - redirecting to /");
     header("Location: /");
 } else {
+    error_log("Route found - Handler: " . json_encode($route->handler));
+    error_log("Route attributes: " . json_encode($route->attributes));
+
     // add route attributes to the request
     foreach ($route->attributes as $key => $val) {
         $request = $request->withAttribute($key, $val);
@@ -66,6 +76,8 @@ if (!$route) {
     $handlerData = $route->handler;
     $controllerName = $handlerData['Controller'];
     $actionName = $handlerData['Action'];
+
+    error_log("Calling: {$controllerName}::{$actionName}");
 
     $controller = new $controllerName;
     $response = $controller->$actionName($request);

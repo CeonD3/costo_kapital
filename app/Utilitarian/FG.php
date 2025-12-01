@@ -146,12 +146,16 @@ class FG
 
     public static function formatterx100val($value)
     {
-        return number_format(($value * 100), 2, '.', '');
+        // Convertir a float para manejar tanto strings como números
+        $numericValue = is_numeric($value) ? (float)$value : 0;
+        return number_format(($numericValue * 100), 2, '.', '');
     }
 
     public static function formatterx100p($value)
     {
-        $number = number_format(($value * 100), 2, '.', '');
+        // Convertir a float para manejar tanto strings como números
+        $numericValue = is_numeric($value) ? (float)$value : 0;
+        $number = number_format(($numericValue * 100), 2, '.', '');
         return $number . '%';
     }
 

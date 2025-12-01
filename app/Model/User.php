@@ -186,7 +186,7 @@ class User extends Model
                 'key' => $key,
                 'email' => $email
             );
-            $jwt = JWT::encode($payload, $key);
+            $jwt = JWT::encode($payload, $key, 'HS256');
 
             $encrypt = Crypt::encrypt($send, env('SECRET_KEY_DATA'));
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/recover-password/$jwt";

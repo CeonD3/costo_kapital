@@ -24,6 +24,14 @@ trait FinanceExcelTrait
     private $sheetname_economic = 'EE.FF Económicos';
     private $sheetname_Sensitivity = 'Sensibilidad';
     private $sheetname_BVL = 'BVL';
+    private $sheetname_Devaluation = 'Devaluación';
+    private $sheetname_RfAjustado = 'Rf Ajustado';
+    private $sheetname_RfBaseDatos = 'Rf Base de datos';
+    private $sheetname_Embi = 'Embi';
+    private $sheetname_PrimaMarket = 'Prima de mercado';
+    private $sheetname_IR = 'IR';
+    private $sheetname_Flujos = 'Flujos';
+
 
     public $colors = [
         'one'   => '#49FDAC',

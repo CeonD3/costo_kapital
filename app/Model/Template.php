@@ -84,12 +84,21 @@ class Template extends Model
                 // Crear archivo de datos
                 $this->createDataFile($fileuri);
 
+                // Crear archivo Excel con solo hoja WACC
+                $this->createWaccExcelFile($fileuri);
+
                 if (is_numeric($id)) {
                     unlink(FG::getPathMaster($template->file));
                     // También eliminar el archivo de datos anterior
                     $oldDataFile = $this->getDataFileName($template->file);
                     if (file_exists(FG::getPathMaster($oldDataFile))) {
                         unlink(FG::getPathMaster($oldDataFile));
+                    }
+
+                    // También eliminar el archivo Excel WACC anterior
+                    $oldWaccFile = $this->getWaccFileName($template->file);
+                    if (file_exists(FG::getPathMaster($oldWaccFile))) {
+                        unlink(FG::getPathMaster($oldWaccFile));
                     }
                 }
                 $template->file = $fileuri;
@@ -106,8 +115,19 @@ class Template extends Model
             $template->version = $version;
             $template->save();
 
+            // Crear la estructura esperada por el frontend
+            $mergeTemplateStructures = $this->generateTemplateStructures($template->file);
+
             $rsp['success'] = true;
-            $rsp['data'] = compact('template');
+            $rsp['data'] = [
+                'template' => $template,
+                'structures' => $mergeTemplateStructures['structures'],
+                'merge_template_structures' => [
+                    'eliminados' => $mergeTemplateStructures['eliminados'],
+                    'existentes' => $mergeTemplateStructures['existentes'],
+                    'nuevos' => $mergeTemplateStructures['nuevos']
+                ]
+            ];
             $rsp['message'] = 'Se guardo correctamente';
         } catch (\Exception $e) {
             $rsp['message'] = $e->getMessage();
@@ -215,6 +235,60 @@ class Template extends Model
         return $dirname . $pathInfo['filename'] . '-data.json';
     }
 
+    private function createWaccExcelFile($templateFile)
+    {
+        $masterTemplatePath = FG::getPathMaster($templateFile);
+        $waccFileName = $this->getWaccFileName($templateFile);
+        $waccFilePath = FG::getPathMaster($waccFileName);
+
+        try {
+            // Usar el método más simple y seguro: cargar solo la hoja WACC
+            $reader = IOFactory::createReader('Xlsx');
+            $reader->setLoadSheetsOnly([$this->sheetname_wacc]);
+            $spreadsheet = $reader->load($masterTemplatePath);
+
+            // Verificar que se cargó la hoja WACC
+            $waccSheet = $spreadsheet->getActiveSheet();
+            if (!$waccSheet || $waccSheet->getTitle() !== $this->sheetname_wacc) {
+                throw new \Exception('No se encontró la hoja WACC en el archivo de plantilla');
+            }
+
+            // Guardar el archivo con solo la hoja WACC
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save($waccFilePath);
+        } catch (\Exception $e) {
+            error_log("Error creando archivo WACC Excel: " . $e->getMessage());
+            throw new \Exception("Error al crear archivo Excel WACC: " . $e->getMessage());
+        }
+    }
+
+    private function getWaccFileName($templateFile)
+    {
+        $pathInfo = pathinfo($templateFile);
+        $dirname = $pathInfo['dirname'] === '.' ? '' : $pathInfo['dirname'] . '/';
+        return $dirname . $pathInfo['filename'] . '-wacc.xlsx';
+    }
+
+    public function getWaccFilePath($templateFile)
+    {
+        return FG::getPathMaster($this->getWaccFileName($templateFile));
+    }
+
+    public function hasWaccFile($templateFile)
+    {
+        return file_exists($this->getWaccFilePath($templateFile));
+    }
+
+    public function getDataFilePath($templateFile)
+    {
+        return FG::getPathMaster($this->getDataFileName($templateFile));
+    }
+
+    public function hasDataFile($templateFile)
+    {
+        return file_exists($this->getDataFilePath($templateFile));
+    }
+
     public function remove($request)
     {
         $rsp = FG::responseDefault();
@@ -237,8 +311,20 @@ class Template extends Model
             }
             $template->deleted_at = FG::getDateHour();
             unlink(FG::getPathMaster($template->file));
-            $template->save();
 
+            // También eliminar el archivo de datos
+            $dataFile = $this->getDataFileName($template->file);
+            if (file_exists(FG::getPathMaster($dataFile))) {
+                unlink(FG::getPathMaster($dataFile));
+            }
+
+            // También eliminar el archivo Excel WACC
+            $waccFile = $this->getWaccFileName($template->file);
+            if (file_exists(FG::getPathMaster($waccFile))) {
+                unlink(FG::getPathMaster($waccFile));
+            }
+
+            $template->save();
             $rsp['success'] = true;
             $rsp['message'] = 'Se elimino correctamente';
         } catch (\Exception $e) {
@@ -273,5 +359,83 @@ class Template extends Model
         flush();
         readfile($file);
         exit;
+    }
+
+    /**
+     * Genera las estructuras de plantilla esperadas por el frontend
+     * @param string $templateFile Archivo de plantilla
+     * @return array Estructura con eliminados, existentes, nuevos y structures
+     */
+    private function generateTemplateStructures($templateFile)
+    {
+        try {
+            $dataFilePath = $this->getDataFilePath($templateFile);
+            $structures = [];
+            $eliminados = [];
+            $existentes = [];
+            $nuevos = [];
+
+            // Si existe el archivo de datos JSON, cargar las estructuras
+            if ($this->hasDataFile($templateFile)) {
+                $jsonData = file_get_contents($dataFilePath);
+                $templateData = json_decode($jsonData, true);
+
+                if (json_last_error() === JSON_ERROR_NONE && is_array($templateData)) {
+                    // Crear estructuras para el frontend basadas en los datos extraídos
+                    $structures = [
+                        'sectors' => $templateData['sectors'] ?? [],
+                        'instruments' => $templateData['instruments'] ?? [],
+                        'dates' => $templateData['dates'] ?? [],
+                        'bonos' => $templateData['bonos'] ?? [],
+                        'currencies' => $templateData['currencies'] ?? [],
+                        'countries' => $templateData['countries'] ?? []
+                    ];
+
+                    // Para una nueva plantilla, todos los elementos son "nuevos"
+                    // En una futura implementación, aquí se compararía con datos existentes
+                    foreach ($structures as $category => $items) {
+                        if (is_array($items)) {
+                            foreach ($items as $index => $item) {
+                                $nuevos[] = [
+                                    'id' => $index + 1,
+                                    'category' => $category,
+                                    'name' => $item,
+                                    'value' => $item,
+                                    'code' => $this->generateItemCode($category, $item),
+                                    'type' => $category,
+                                    'description' => ucfirst($category) . ': ' . $item
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            return [
+                'structures' => $structures,
+                'eliminados' => $eliminados,
+                'existentes' => $existentes,
+                'nuevos' => $nuevos
+            ];
+        } catch (\Exception $e) {
+            error_log("Error generating template structures: " . $e->getMessage());
+            return [
+                'structures' => [],
+                'eliminados' => [],
+                'existentes' => [],
+                'nuevos' => []
+            ];
+        }
+    }
+
+    /**
+     * Genera un código único para un elemento
+     * @param string $category Categoría del elemento
+     * @param string $value Valor del elemento
+     * @return string Código generado
+     */
+    private function generateItemCode($category, $value)
+    {
+        return strtoupper(substr($category, 0, 3)) . '_' . md5($value);
     }
 }

@@ -11,3 +11,4 @@ public/template/guests/*
 package-lock.json
 logs/*
 script/
+*.zip

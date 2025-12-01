@@ -11,7 +11,8 @@ use Curl;
 
 // https://github.com/TheNetworg/oauth2-azure/issues/83
 
-class OnedriveService {
+class OnedriveService
+{
 
     private $azure;
     private $scope = [
@@ -27,7 +28,8 @@ class OnedriveService {
     ];
     private $token;
 
-    function __construct() {
+    function __construct()
+    {
         $this->azure = new Azure([
             'clientId'      => $_ENV['ONEDRIVE_CLIENT_ID'],
             'clientSecret'  => $_ENV['ONEDRIVE_CLIENT_SECRET'],
@@ -39,21 +41,25 @@ class OnedriveService {
         ]);
     }
 
-    public function getAzure() {
-       return $this->azure;
+    public function getAzure()
+    {
+        return $this->azure;
     }
 
-    public function getGraph() {
+    public function getGraph()
+    {
         $graph = new Graph();
         $graph->setAccessToken($this->token['access_token']);
         return $graph;
     }
 
-    public function setToken($token) {
+    public function setToken($token)
+    {
         $this->token = json_decode($token, true);
     }
 
-    public function handleToken($token) {
+    public function handleToken($token)
+    {
         $token = json_decode($token, true);
         $update = false;
         if (is_array($token) && $this->isExpired($token['expires'])) {
@@ -68,61 +74,65 @@ class OnedriveService {
         return ["token" => json_encode($token), "update" => $update];
     }
 
-    public function folders($id = null) {
+    public function folders($id = null)
+    {
         $url = empty($id) ? "/me/drive/root/children" : "/me/drive/items/{$id}/children";
         $response = $this->getGraph()->createRequest("GET", $url)->execute();
         return $response->getBody();
     }
 
-    public function me() {
+    public function me()
+    {
         $response = $this->getGraph()->createRequest("GET", "/me")->execute();
         return $response->getBody();
     }
 
-    public function folder($path = null) {
+    public function folder($path = null)
+    {
         $response = $this->getGraph()->createRequest("GET", "/me/drive/root:/{$path}")->execute();
         return $response->getBody();
     }
 
-    public function uploadFilePath($filepath, $folderId = null, $filename = null, $delete = true) {
+    public function uploadFilePath($filepath, $folderId = null, $filename = null, $delete = true)
+    {
         // FG::debug($folderId);
-        $size_limit = 1024*1024*4; // 4;
+        $size_limit = 1024 * 1024 * 4; // 4;
         $fileTree = explode("/", $filepath);
         $filename = $filename ? $filename : array_pop($fileTree);
         $filesize = filesize($filepath);
         if ($size_limit >= $filesize) {
 
-            $url = empty($folderId) ?  "/me/drive/root:/".$filename.":/content" : "/me/drive/items/{$folderId}:/".$filename.":/content";
+            $url = empty($folderId) ?  "/me/drive/root:/" . $filename . ":/content" : "/me/drive/items/{$folderId}:/" . $filename . ":/content";
             $response = $this->getGraph()->createRequest("PUT", $url)
-                                            ->attachBody([
-                                                'items' => [
-                                                    "@odata.type" => "microsoft.graph.driveItemUploadableProperties",
-                                                    "@microsoft.graph.conflictBehavior" => "rename",
-                                                    "name" => $filename
-                                                ]
-                                            ])
-                                            ->upload($filepath);
+                ->attachBody([
+                    'items' => [
+                        "@odata.type" => "microsoft.graph.driveItemUploadableProperties",
+                        "@microsoft.graph.conflictBehavior" => "rename",
+                        "name" => $filename
+                    ]
+                ])
+                ->upload($filepath);
             $fileupload = $response->getBody();
             if ($delete) {
                 unlink($filepath);
             }
         } else {
-            $url = empty($folderId) ? "/me/drive/root:/".$filename.":/createUploadSession" : "/me/drive/items/".$folderId.":/".$filename.":/createUploadSession";
+            $url = empty($folderId) ? "/me/drive/root:/" . $filename . ":/createUploadSession" : "/me/drive/items/" . $folderId . ":/" . $filename . ":/createUploadSession";
             $response = $this->getGraph()->createRequest("POST", $url)
-                            ->attachBody([
-                                "fileSystemInfo"=> [ "@odata.type"=> "microsoft.graph.driveItemUploadableProperties" ],
-                                "@microsoft.graph.conflictBehavior" => "rename",
-                                "name" => $filename
-                            ])
-                            ->execute();
-            $response = $response->getBody(); 
+                ->attachBody([
+                    "fileSystemInfo" => ["@odata.type" => "microsoft.graph.driveItemUploadableProperties"],
+                    "@microsoft.graph.conflictBehavior" => "rename",
+                    "name" => $filename
+                ])
+                ->execute();
+            $response = $response->getBody();
             $uploadUrl = @$response['uploadUrl'];
-            if (!$uploadUrl){
-                throw new Exception('No se encontró la url que permite subir archivos de gran tamaño.');
+            if (!$uploadUrl) {
+                throw new \Exception('No se encontró la url que permite subir archivos de gran tamaño.');
             }
 
             $url = $uploadUrl;
-            $fragSize = 1024*1024*4;
+            $fragSize = 1024 * 1024 * 4;
             $file = file_get_contents($filepath);
             $fileSize = strlen($file);
             $numFragments = ceil($fileSize / $fragSize);
@@ -171,61 +181,69 @@ class OnedriveService {
             }
             return json_decode($response, true);
         }
-        
+
         return $fileupload;
     }
 
-    public function charts($fileId, $worksheets) {
-        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/".$fileId."/workbook/worksheets('".$worksheets."')/charts")->execute();
+    public function charts($fileId, $worksheets)
+    {
+        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/" . $fileId . "/workbook/worksheets('" . $worksheets . "')/charts")->execute();
         return $response->getBody();
     }
 
-    public function getTables($fileId, $worksheets) {
-        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/".$fileId."/workbook/worksheets('".$worksheets."')/tables")->execute();
+    public function getTables($fileId, $worksheets)
+    {
+        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/" . $fileId . "/workbook/worksheets('" . $worksheets . "')/tables")->execute();
         return $response->getBody();
     }
 
-    public function getTable($fileId, $worksheets, $table) {
-        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/".$fileId."/workbook/worksheets('".$worksheets."')/tables/".$table)->execute();
+    public function getTable($fileId, $worksheets, $table)
+    {
+        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/" . $fileId . "/workbook/worksheets('" . $worksheets . "')/tables/" . $table)->execute();
         return $response->getBody();
     }
 
-    public function getTableRows($fileId, $worksheets, $table) {
-        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/".$fileId."/workbook/worksheets('".$worksheets."')/tables/".$table."/rows")->execute();
+    public function getTableRows($fileId, $worksheets, $table)
+    {
+        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/" . $fileId . "/workbook/worksheets('" . $worksheets . "')/tables/" . $table . "/rows")->execute();
         return $response->getBody();
     }
 
-    public function imageChart($fileId, $worksheets, $chartId) {
-        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/".$fileId."/workbook/worksheets('".$worksheets."')/charts('{$chartId}')/Image(width=0,height=0,fittingMode='fit')")->execute();
+    public function imageChart($fileId, $worksheets, $chartId)
+    {
+        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/" . $fileId . "/workbook/worksheets('" . $worksheets . "')/charts('{$chartId}')/Image(width=0,height=0,fittingMode='fit')")->execute();
         return $response->getBody();
     }
 
-    public function getCell($fileId, $worksheets, $row, $column) {
-        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/".$fileId."/workbook/worksheets/".$worksheets."/cell(row=".$row.",column=".$column.")")->execute();
+    public function getCell($fileId, $worksheets, $row, $column)
+    {
+        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/" . $fileId . "/workbook/worksheets/" . $worksheets . "/cell(row=" . $row . ",column=" . $column . ")")->execute();
         return $response->getBody();
     }
 
-    public function setCell($fileId, $worksheets, $row, $column, $value, $valueType) {
+    public function setCell($fileId, $worksheets, $row, $column, $value, $valueType)
+    {
         $graph = $this->getGraph();
-        $response = $graph->createRequest("PATCH", "/me/drive/items/".$fileId."/workbook/worksheets/".$worksheets."/cell(row=".$row.",column=".$column.")")
-                        ->attachBody([
-                            "values" => [
-                                [
-                                    $value
-                                ]
-                            ],
-                            "valueTypes" => [
-                                [
-                                    $valueType
-                                ]
-                            ]
-                        ])
-                        ->execute();
+        $response = $graph->createRequest("PATCH", "/me/drive/items/" . $fileId . "/workbook/worksheets/" . $worksheets . "/cell(row=" . $row . ",column=" . $column . ")")
+            ->attachBody([
+                "values" => [
+                    [
+                        $value
+                    ]
+                ],
+                "valueTypes" => [
+                    [
+                        $valueType
+                    ]
+                ]
+            ])
+            ->execute();
         $cell = [];
         return $response->getBody();
     }
 
-    public function copyFile($cid, $filename = null, $pid = null) {
+    public function copyFile($cid, $filename = null, $pid = null)
+    {
         $graph = $this->getGraph();
         $folderParent = self::file($cid);
         $path = pathinfo($folderParent['name']);
@@ -234,20 +252,20 @@ class OnedriveService {
         $driveId = $folderParent['parentReference']['driveId'];
         $id = $folderParent['parentReference']['id'];
         if ($pid) {
-            $response = $graph->createRequest("GET", "/me/drive/items/".$pid)->execute();
+            $response = $graph->createRequest("GET", "/me/drive/items/" . $pid)->execute();
             $folderParent = $response->getBody();
             $driveId = $folderParent['parentReference']['driveId'];
             $id = $folderParent['id'];
         }
-        $response = $graph->createRequest("POST", "/me/drive/items/".$cid."/copy")
-                        ->attachBody([
-                            "parentReference" => [
-                                "driveId"=> $driveId,
-                                "id" => $id,
-                            ],
-                            "name" => $copyname
-                        ])
-                        ->execute();
+        $response = $graph->createRequest("POST", "/me/drive/items/" . $cid . "/copy")
+            ->attachBody([
+                "parentReference" => [
+                    "driveId" => $driveId,
+                    "id" => $id,
+                ],
+                "name" => $copyname
+            ])
+            ->execute();
         $folder = [];
         if ($response->getStatus() == 202) {
             $folder = $response->getBody();
@@ -256,7 +274,7 @@ class OnedriveService {
                 $response = $this->getFileStatus($pathname, 0);
                 $id = $response['resourceId'];
                 if ($id) {
-                    $response = $graph->createRequest("GET", "/me/drive/items/".$id."?select=id,name,webUrl,size,@microsoft.graph.downloadUrl&expand=thumbnails")->execute();
+                    $response = $graph->createRequest("GET", "/me/drive/items/" . $id . "?select=id,name,webUrl,size,@microsoft.graph.downloadUrl&expand=thumbnails")->execute();
                     $folder = $response->getBody();
                     $folderlink = $this->createLink($id);
                     if (count($folderlink) > 0) {
@@ -268,10 +286,11 @@ class OnedriveService {
         return $folder;
     }
 
-    public function getFileStatus($url, $step) {
+    public function getFileStatus($url, $step)
+    {
         sleep(3);
         $curl = new Curl\Curl();
-        $result = $curl->get($url, $args);
+        $result = $curl->get($url);
         if (!$curl->error) {
             $response = json_decode($result->response, true);
             $status = $response['status'];
@@ -285,26 +304,29 @@ class OnedriveService {
         }
     }
 
-    public function isExpired($expires) {
+    public function isExpired($expires)
+    {
         return ($expires > (time() + 500)) ? false : true;
     }
 
-    public function childrens($parentId) {
+    public function childrens($parentId)
+    {
         $graph = $this->getGraph();
-        $response = $graph->createRequest("GET", "/me/drive/items/".$parentId."/children?expand=thumbnails")->execute();
+        $response = $graph->createRequest("GET", "/me/drive/items/" . $parentId . "/children?expand=thumbnails")->execute();
         return $response->getBody();
     }
 
-    public function createFolder($name, $parentId = null) {
+    public function createFolder($name, $parentId = null)
+    {
         $graph = $this->getGraph();
-        $url = $parentId ? "/me/drive/items/".$parentId."/children" : "/me/drive/root/children";
+        $url = $parentId ? "/me/drive/items/" . $parentId . "/children" : "/me/drive/root/children";
         $response = $graph->createRequest("POST", $url)
-                        ->attachBody([
-                            "folder" => (Object)[],
-                            "name" => $name,
-                            "@microsoft.graph.conflictBehavior"=> "replace"
-                        ])
-                        ->execute();
+            ->attachBody([
+                "folder" => (object)[],
+                "name" => $name,
+                "@microsoft.graph.conflictBehavior" => "replace"
+            ])
+            ->execute();
         $folder = [];
         if ($response->getStatus() == 201) {
             $folder = $response->getBody();
@@ -312,26 +334,31 @@ class OnedriveService {
         return $folder;
     }
 
-    public function queryFile($q) {
+    public function queryFile($q)
+    {
         $graph = $this->getGraph();
-        $response = $graph->createRequest("GET", "/me/drive/root/search(q='".$q."')")->execute();
+        $response = $graph->createRequest("GET", "/me/drive/root/search(q='" . $q . "')")->execute();
         return $response->getBody();
     }
 
-    public function content($id) {
+    public function content($id)
+    {
+        // En lugar de usar /content, obtenemos la información del archivo que incluye downloadUrl
         $graph = $this->getGraph();
-        $response = $graph->createRequest("GET", "/drive/items/".$id."/content")->execute();
-        $pathname = null;
-        if ($response->getStatus() == 200) {
-            $pathname = $response->getHeaders()['Content-Location'][0];
+        $response = $graph->createRequest("GET", "/me/drive/items/" . $id . "?select=@microsoft.graph.downloadUrl")->execute();
+        $fileInfo = $response->getBody();
+
+        // Retornamos la URL de descarga si existe
+        if (isset($fileInfo['@microsoft.graph.downloadUrl'])) {
+            return $fileInfo['@microsoft.graph.downloadUrl'];
         }
-        return $pathname;
+
+        return null;
     }
 
-    public function downloadFileAsPath($url, $fullpath) {
+    public function downloadFileAsPath($url, $fullpath)
+    {
         try {
-            // $fz = new FuncionesZoom;
-            // $url .= "?access_token=" . $fz->getJWT();
             $ch = curl_init();
             //Set the URL that you want to GET by using the CURLOPT_URL option.
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -339,66 +366,86 @@ class OnedriveService {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             //Set CURLOPT_FOLLOWLOCATION to true to follow redirects.
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            //$ckfile  = tempnam (__DIR__."/../logs", '$random');
-            $ckfile  = __DIR__ . '/../logs/$ra8977.tmp';
-    
+
+            // Generar nombre de archivo temporal único
+            $random = uniqid();
+            $logsDir = __DIR__ . '/../../logs';
+
+            // Asegurar que el directorio existe y es escribible
+            if (!is_dir($logsDir)) {
+                mkdir($logsDir, 0755, true);
+            }
+
+            $ckfile = tempnam($logsDir, 'curl_' . $random);
+
             curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: cmb=" . $random));
             curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
             curl_setopt($ch, CURLOPT_VERBOSE, true);
-            //Execute the request.
-            // $data       = curl_exec($ch);
+
+            //Execute the request and save to file.
             file_put_contents($fullpath, curl_exec($ch));
 
-            $httpcode   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             //Close the cURL handle.
             curl_close($ch);
-            //Print the data out onto the page.
+
+            // Limpiar archivo temporal
+            if (file_exists($ckfile)) {
+                unlink($ckfile);
+            }
+
             return $fullpath;
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            die();
+        } catch (\Exception $e) {
+            throw new \Exception('Error al descargar el archivo: ' . $e->getMessage());
         }
     }
 
-    public function export($id) {
+    public function export($id)
+    {
         $graph = $this->getGraph();
-        $response = $graph->createRequest("GET", "/drive/items/".$id."/content")->execute();
+        $response = $graph->createRequest("GET", "/drive/items/" . $id . "/content")->execute();
         $pathname = null;
         if ($response->getStatus() == 200) {
-            $pathname = $response->getHeaders()['Content-Location'][0];
+            $headers = $response->getHeaders();
+            if (isset($headers['Content-Location']) && !empty($headers['Content-Location'])) {
+                $pathname = $headers['Content-Location'][0];
+            }
         }
         return $pathname;
     }
 
-    public function file($id) {
-        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/".$id)->execute();
+    public function file($id)
+    {
+        $response = $this->getGraph()->createRequest("GET", "/me/drive/items/" . $id)->execute();
         return $response->getBody();
     }
 
-    public function createLink($id) {
+    public function createLink($id)
+    {
         $response = $this->getGraph()->createRequest("POST", "/me/drive/items/{$id}/createLink")
-                        ->attachBody([ "type" => "edit", "scope" => "anonymous" ])
-                        ->execute();
+            ->attachBody(["type" => "edit", "scope" => "anonymous"])
+            ->execute();
         return $response->getBody();
     }
 
-    function setRangeCell($fileId, $hoja, $rango, $valores) {
+    function setRangeCell($fileId, $hoja, $rango, $valores)
+    {
         // Configurar cliente de Microsoft Graph
         $graph = $this->getGraph();
-    
+
         // Construir la URL para el rango de celdas
         $url = "/me/drive/items/$fileId/workbook/worksheets('$hoja')/range(address='$rango')";
-    
+
         // Preparar el cuerpo de la solicitud con los valores
         $body = [
             'values' => $valores
         ];
-    
+
         // Realizar la solicitud PATCH
         $response = $graph->createRequest('PATCH', $url)
-                          ->attachBody($body)
-                          ->setReturnType(Model\WorkbookRange::class)
-                          ->execute();
+            ->attachBody($body)
+            ->setReturnType(Model\WorkbookRange::class)
+            ->execute();
         return $response;
         // Verificar el resultado
         if ($response) {

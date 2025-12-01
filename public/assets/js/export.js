@@ -31,6 +31,7 @@ const AppExportPDF = () => {
             return new Promise((resolve, reject)=>{
                 try {
                     _data = args;
+                    // console.log('args', args);
                     let html = _defaults.html,
                     $panel = $('#' + html.AppExportGeneral);
                     $panel.append($('<div/>', {id: html.AppStructureExport, class: 'col12'}));
@@ -39,13 +40,15 @@ const AppExportPDF = () => {
                     $panel.find('#'+html.AppPanelExport).append($('<div/>', {id: html.AppContentPage, class: 'bg-white', style: 'width: 850px;'}));
                     $panel.find('#'+html.AppStructureExport).html(args.structure);
                     $panel.find('#'+html.AppCoverPage).html($panel.find('#'+html.AppStructureExport).find('#cover-page').html());
-                    $panel.find('#'+html.AppStructureExport).find('#cover-page').html('');
+                    $panel.find('#'+html.AppStructureExport).find('#cover-page').html(''); 
+                    $panel.find('#'+html.AppCoverPage).find('div').first().css('background-image', 'url(' + _data.cover_file + ')');
                     let body = args.design.body; 
                     _chartItems = [];
                     _htmlItems = [];
                     body = body.replaceAll('$BLOQUE_INICIO$', `<div class="row">`);
                     body = body.replaceAll('$BLOQUE_FIN$', `</div>`);
                     const images = [], texts = [], tables = [], htmls = [];
+                    let codes = [];
                     function recursiveCode(contents, body) {
                         for (let i = 0; i < contents.length; i++) {
                             const code = contents[i].code, index = body.indexOf(code);
@@ -152,10 +155,30 @@ const AppExportPDF = () => {
                         }
                         return body;
                     }
-                    body = recursiveContent(body);
-                    body = recursiveCode(args.contents, body);
 
-                    args.complements = JSON.stringify({images, texts, htmls, tables});
+                    function procesarTexto(texto, arreglo = []) {
+                        // Expresión regular para encontrar $$...$$ (no codicioso)
+                        const regex = /\$\$(.+?)\$\$/g;
+                      
+                        // Reemplazo y extracción
+                        const textoProcesado = texto.replace(regex, (match, contenido) => {
+                          const limpio = contenido.trim();
+                          arreglo.push(`${limpio}`); // Se guarda el código completo con los $$
+                          return `<span class="element-${limpio}">Cargando ${limpio}...</span>`; // Reemplaza en el texto
+                        });
+                      
+                        return {
+                          arreglo,
+                          textoProcesado
+                        };
+                    }
+                      
+                    // body = recursiveContent(body);
+                    // body = recursiveCode(args.contents, body);
+                    const processText = procesarTexto(body, codes);
+                    body = processText.textoProcesado;
+                    codes = processText.arreglo;
+                    args.complements = JSON.stringify({images, texts, htmls, tables, codes});
                     args.chartItems = _chartItems;
                     args.htmlItems = _htmlItems;
                     $panel.find('#'+html.AppContentPage).html('<div style="width:700px !important;">'+body+'</div>');
@@ -1722,7 +1745,17 @@ const AppExportPDF = () => {
     }
     // 649c04c1be6cd5joyv
     // 11
+
     const initBuildReport = function (uid, id, userId, platform) {
+        let num = 0;
+        let finterval = setInterval(() => {
+            $('.progress-bar').css('width', num + '%');
+            $('.progress-bar').html(num + '%');
+            num = num + 1;
+            if (num > 98){
+                clearInterval(finterval);
+            }
+        }, 500);
         let { all, scheme, graph, convert, exporting, waitTime, complement } = _methods;
         //sweet2.loading();
         all(`/api/${platform}/users/${userId}/templates/${uid}/reports/${id}/content`)
@@ -1731,21 +1764,20 @@ const AppExportPDF = () => {
             //sweet2.loading(false);
             $('#panel-acctions').html($('#template-acctions').html());
             $('#title-export').text(args.design.name.toUpperCase());
-            let num = 0;
-            let finterval = setInterval(() => {
-                $('.progress-bar').css('width', num + '%');
-                $('.progress-bar').html(num + '%');
-                num = num + 10;
-                if (num > 95){
-                    clearInterval(finterval);
-                }
-            }, 800);
+
             return new Promise((resolve, reject) => {
                 const formData = new FormData();
                 formData.append('complements', args.complements);
                 complement(`/api/${platform}/users/${userId}/templates/${uid}/reports/${id}/complement`, formData)
-                .then(({images, texts, tables, date}) => {
-                    $('#date-title').text(date);
+                .then(({images, texts, tables, date, user_template_structures}) => {
+                    if (user_template_structures && user_template_structures.length > 0) {
+                        user_template_structures.forEach(element => {
+                            // console.log(element.code);
+                            $('.element-' + element.code).html(element.html);
+                        });   
+                    }
+                    /*$('#date-title').text(date);
+
                     images.forEach(d => {
                         $('.' + d.cid).attr('src', 'data:image/png;base64,'+d.image).removeClass('d-none');
                     });
@@ -1771,14 +1803,14 @@ const AppExportPDF = () => {
                         }
                         html += `</tbody></table>`;
                         $('.' + d.cid).html(html);
-                    });
+                    });*/
                     clearInterval(finterval);
                     $('.progress-bar').css('width', '100%');
                     $('.progress-bar').html('Completado');
                     $('#btn-download').attr('disabled', false);
-                    setTimeout(() => {
+                    /*setTimeout(() => {
                         $('.panel-progress').remove();
-                    }, 2000);
+                    }, 2000);*/
                     $('#btn-download').off('click');
                     $('#btn-download').on('click', function () {
                         sweet2.loading();
@@ -1787,6 +1819,7 @@ const AppExportPDF = () => {
                             sweet2.loading(false);
                         });
                     });
+                    $('.panel-progress').remove();
                     resolve(args);
                 })
                 .catch(e => {
