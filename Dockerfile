@@ -1,10 +1,10 @@
-FROM php:7.4.30-apache
+FROM php:8.3.14-apache
 
 WORKDIR /var/www/html
 
 RUN apt-get update
 
-RUN apt-get install -y libzip-dev libpng-dev zip
+RUN apt-get install -y libzip-dev libpng-dev zip git
 
 RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql gd zip
 
@@ -22,8 +22,7 @@ RUN a2enmod rewrite
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
-RUN apt-get -y install nodejs
-
-RUN npm install
+RUN echo "upload_max_filesize=512M\npost_max_size=512M\nmemory_limit=1024M" \
+    > /usr/local/etc/php/conf.d/custom.ini
 
 RUN rm -rf /tmp/*
