@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   php:
+    container_name: costo_kapital_php
     build:
       context: .
       dockerfile: Dockerfile
